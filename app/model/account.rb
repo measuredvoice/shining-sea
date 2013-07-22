@@ -40,17 +40,22 @@ class Account < Model
     
     # puts "Tweets for #{screen_name} between #{day_start} and #{day_end}..."
     
-    Twitter.user_timeline(:screen_name => screen_name, :count => 200, :exclude_replies => true, :include_rts => false).find_all do |tweet|
-      tweet_date = tweet.created_at.in_time_zone(Time.zone)
-      # puts " checking #{tweet_date}..."
-      tweet_date >= day_start && tweet_date <= day_end
+    begin
+      Twitter.user_timeline(:screen_name => screen_name, :count => 200, :exclude_replies => true, :include_rts => false).find_all do |tweet|
+        tweet_date = tweet.created_at.in_time_zone(Time.zone)
+        # puts " checking #{tweet_date}..."
+        tweet_date >= day_start && tweet_date <= day_end
+      end
+    rescue Exception => error
+      puts "Unknown Exception when listing timeline tweets: " + error.inspect
+      return []
     end
   end
   
   def get_twitter_details!
     begin
       twitter_user = Twitter.user(screen_name)
-    rescue Twitter::NotFound
+    rescue Twitter::Error::NotFound
       puts "ERROR: Account #{screen_name} does not exist."
       return nil
     rescue Twitter::Error::TooManyRequests => error
