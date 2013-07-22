@@ -41,6 +41,10 @@ class MetricsFile < Model
     bucket.objects[filename].write(to_json)
   end
   
+  def already_exists?
+    bucket.objects[filename].exists?
+  end
+  
   private
   
   def bucket

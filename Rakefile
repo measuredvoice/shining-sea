@@ -6,22 +6,26 @@ namespace :app do
     start_time = Time.zone.now
     files_written = 0
     Account.all.each do |account|
-      puts "Account: #{account.screen_name}"
+      puts "Account: #{account.screen_name}"      
+      metrics_file = MetricsFile.new(:account => account, :date => 2.days.ago)
+
+      if metrics_file.already_exists?
+        puts "...file already exists. Skipping."
+        next
+      end
+
       account.get_twitter_details! || next
       
-      # TODO: Only generate a new file if one doesn't already exist
-      
-      metrics = MetricsFile.new(:account => account, :date => 2.days.ago)
-      metrics.tweets = account.tweets_on(metrics.date).map do |tweet|
+      metrics_file.tweets = account.tweets_on(metrics_file.date).map do |tweet|
         puts "  extracting metrics for tweet #{tweet.id}..."
         metric = TweetMetric.from_tweet(tweet)
         metric.count_reach!
         metric
       end
-      
-      puts "  writing file #{metrics.filename}..."
-      # puts metrics.to_json
-      if metrics.save
+            
+      puts "  writing file #{metrics_file.filename}..."
+      # puts metrics_file.to_json
+      if metrics_file.save
         puts "...done."
         files_written += 1
       else
