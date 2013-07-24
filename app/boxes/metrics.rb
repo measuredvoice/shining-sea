@@ -18,6 +18,7 @@ Boxer.box(:account) do |box, account|
       :agency_id    => account.agency_id,
       :agency_name  => account.agency_name,
       :organization => account.organization,
+      :followers    => account.followers,
     }
   end
 end

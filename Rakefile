@@ -38,6 +38,36 @@ namespace :app do
     puts "Wrote #{files_written} files in #{elapsed} seconds."
   end
   
+  desc "Rank accounts by audience size"
+  task :rank_account_audience do
+    files = MetricsFile.where(:date => 2.days.ago)
+    
+    # Fix the followers count if needed
+    files.each do |metrics_file|
+      account = metrics_file.account
+      unless account.followers.present?
+        puts "Updating followers count for #{account.screen_name}..."
+        if metrics_file.tweets.count > 0
+          puts "  ...from tweet..."
+          account.followers = metrics_file.tweets.first.audience
+        else
+          puts "  ...from the Twitter API..."
+          account.get_twitter_details!
+          sleep 15.seconds
+        end
+        puts "...new count: #{account.followers}"
+      end
+    end
+    
+    puts "screen_name,followers"
+    files.sort {|a,b| b.account.followers <=> a.account.followers}.each do |f|
+      puts "#{f.account.screen_name},#{f.account.followers}"
+    end
+    
+    puts "...done."
+      
+  end
+  
   desc "Generate daily metrics summary data"
   task :daily_metrics do
   end

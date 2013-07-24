@@ -1,5 +1,5 @@
 class Account < Model
-  attr_accessor :screen_name, :user_id, :name, :agency_id, :agency_name, :organization, :agencies
+  attr_accessor :screen_name, :user_id, :name, :agency_id, :agency_name, :organization, :agencies, :followers
   
   def self.all
     options = {:service_id => :twitter}
@@ -68,8 +68,9 @@ class Account < Model
       return nil
     end
       
-    self.user_id = twitter_user.id
-    self.name    = twitter_user.name
+    self.user_id   = twitter_user.id
+    self.name      = twitter_user.name
+    self.followers = twitter_user.followers_count
   end
   
   def self.endpoint
