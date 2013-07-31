@@ -2,12 +2,20 @@ require './shining-sea'
 
 namespace :app do
   desc "Gather recent metrics from the Twitter API"
-  task :collect_metrics do
+  task :collect_metrics, [:target_date] do |t, params|
     start_time = Time.zone.now
+    
+    if params[:target_date].present?
+      target_date = Time.zone.parse(params[:target_date])
+    else
+      target_date = 2.days.ago
+    end
+    puts "Collecting metrics from #{target_date.strftime('%Y-%m-%d')}"
+    
     files_written = 0
     Account.all.each do |account|
       puts "Account: #{account.screen_name}"      
-      metrics_file = MetricsFile.new(:account => account, :date => 2.days.ago)
+      metrics_file = MetricsFile.new(:account => account, :date => target_date)
 
       if metrics_file.already_exists?
         puts "...file already exists. Skipping."
