@@ -31,6 +31,9 @@ The reports can be stored indefinitely. They are generated as static files in HT
 
 ### In an existing Rails environment
 
+    bundle install --deployment
+    bundle exec rake -T
+
 ## Caveats
 
 Shining Sea is designed to combine public data sources to produce another public data source. Data is not stored securely or hidden behind access controls. 

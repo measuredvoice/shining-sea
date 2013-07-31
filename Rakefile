@@ -77,7 +77,39 @@ namespace :app do
   end
   
   desc "Generate daily metrics summary data"
-  task :daily_metrics do
+  task :daily_metrics, [:target_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:target_date].present?
+      target_date = Time.zone.parse(params[:target_date])
+    else
+      target_date = 2.days.ago
+    end
+    puts "Summarizing metrics from #{target_date.strftime('%Y-%m-%d')}"
+            
+    summary = DailySummary.from_metrics(target_date)
+    
+    puts "Writing daily summary file..."
+    summary.save
+    
+    puts "Writing tweet summary files..."
+    summary.tweet_summaries.each do |ts|
+      ts.save
+    end
+    
+    puts "Writing account summary files..."
+    summary.account_summaries.each do |as|
+      as.tweet_summaries = summary.tweet_summaries_for_account(as.screen_name).sort {|a,b| a.daily_rank <=> b.daily_rank}
+      as.save
+    end
+    
+    puts "Writing tweet ranking files..."
+    # summary.save_tweet_rankings
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweets.count} tweets from #{summary.accounts.count} accounts in #{elapsed} seconds."
   end
   
   desc "Generate weekly metrics summary data"
@@ -90,5 +122,16 @@ namespace :app do
   
   desc "Build and deploy weekly HTML reports"
   task :weekly_reports do
+  end
+end
+
+namespace :test do
+  desc "Test the basic functions of the app (without altering data)"
+  task :basic do
+    puts "Checking S3 storage..."
+    file = MetricsFile.where(:date => 3.days.ago).first
+    puts "  first file: #{file.filename}"
+    
+    puts "Looks good from here."
   end
 end

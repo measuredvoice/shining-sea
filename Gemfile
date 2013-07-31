@@ -1,5 +1,8 @@
 source 'http://rubygems.org'
 
+# Use rake for command-line tasks
+gem 'rake'
+
 # Use the Registry API
 gem 'rest-client'
 

@@ -1,8 +1,9 @@
 class MetricsFile < Model
+  include S3Storage
   attr_accessor :account, :date, :tweets
   
   def self.from_json(text)
-    puts "Loading metrics file from JSON..."
+    # puts "Loading metrics file from JSON..."
     data = MultiJson.load(text, :symbolize_keys => true)
     self.new(
       :account => Account.new(data[:account]), 
@@ -15,7 +16,7 @@ class MetricsFile < Model
     # FIXME: This is a mess.
     if options[:account] && options[:date]
       mf = self.new(:account => options[:account], :date => options[:date])
-      if mf.s3_obj = bucket.objects[mf.filename]
+      if mf.s3_obj = s3_bucket.objects[mf.filename]
         self.from_json(s3_obj.read)
       else
         nil
@@ -27,7 +28,7 @@ class MetricsFile < Model
   
   def self.where(options={})
     if options[:date]
-      bucket.objects.with_prefix(date_path(options[:date])).map do |s3_obj|
+      s3_bucket.objects.with_prefix(date_path(options[:date])).map do |s3_obj|
         puts "Loading file from #{s3_obj.key}..."
         self.from_json(s3_obj.read)
       end
@@ -56,27 +57,4 @@ class MetricsFile < Model
     date.strftime('%Y-%m-%d')
   end
   
-  def save
-    puts "  Writing #{filename} to S3..."
-    bucket.objects[filename].write(to_json)
-  end
-  
-  def already_exists?
-    bucket.objects[filename].exists?
-  end
-  
-  private
-  
-  def self.bucket
-    # TODO: Validate these values
-    key    = ENV['AWS_ACCESS_KEY']
-    secret = ENV['AWS_SECRET_ACCESS_KEY']
-    b      = ENV['AWS_BUCKET']
-    
-    AWS::S3.new(:access_key_id => key, :secret_access_key => secret).buckets[b]
-  end
-  
-  def bucket
-    self.class.bucket
-  end
 end

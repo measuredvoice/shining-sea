@@ -47,6 +47,7 @@ GEM
     net-ssh (2.6.8)
     nokogiri (1.5.10)
     rack (1.5.2)
+    rake (10.0.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     ruby-hmac (0.4.0)
@@ -70,5 +71,6 @@ DEPENDENCIES
   fog
   multi_json
   nanoc
+  rake
   rest-client
   twitter

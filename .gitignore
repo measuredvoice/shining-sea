@@ -16,4 +16,5 @@ rerun.txt
 pickle-email-*.html
 .rvmrc
 /config/too_many_secrets.rb
+.DS_Store
 

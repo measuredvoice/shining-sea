@@ -26,7 +26,7 @@ end
 Boxer.box(:tweet) do |box, tweet|
   box.view(:base) do
     {
-      :id => tweet.tweet_id,
+      :tweet_id => tweet.tweet_id,
       :reach => tweet.reach,
       :kudos => tweet.kudos,
       :audience => tweet.audience,

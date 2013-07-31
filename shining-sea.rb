@@ -11,11 +11,17 @@ require 'active_support/all'
 require_relative './config/too_many_secrets'
 
 require_relative './app/model/model'
+require_relative './app/model/s3_storage'
 require_relative './app/model/account'
 require_relative './app/model/tweet_metric'
 require_relative './app/model/metrics_file'
+require_relative './app/model/daily_summary'
+require_relative './app/model/account_summary'
+require_relative './app/model/tweet_summary'
+require_relative './app/model/rank'
 
 require_relative './app/boxes/metrics'
+require_relative './app/boxes/summaries'
 
 Twitter.configure do |config|
   config.consumer_key    = ENV['TWITTER_CLIENT_KEY']

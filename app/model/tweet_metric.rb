@@ -11,6 +11,10 @@ class TweetMetric < Model
     )
   end
   
+  def id=(value)
+    self.tweet_id ||= value
+  end
+  
   def count_reach!
     # Only use expensive API calls if there are retweets to be counted
     if raw_tweet.retweet_count == 0
