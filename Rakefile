@@ -109,7 +109,7 @@ namespace :app do
     end_time = Time.zone.now
     
     elapsed = (end_time - start_time).to_i
-    puts "Summarized #{summary.tweets.count} tweets from #{summary.accounts.count} accounts in #{elapsed} seconds."
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
   
   desc "Generate weekly metrics summary data"
