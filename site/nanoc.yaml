@@ -57,6 +57,11 @@ data_sources:
     # will have the identifier “/about/” when turned off, but when turned on
     # it will become “/about.html/” instead.
     allow_periods_in_identifiers: false
+  -
+    # The static data source preserves assets files as-is
+    # without name translations or collisions
+    type: static
+    items_root: /assets/
 
 # Configuration for the “watch” command, which watches a site for changes and
 # recompiles if necessary.

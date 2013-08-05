@@ -13,8 +13,16 @@
 #   item, use the pattern “/about/*/”; “/about/*” will also select the parent,
 #   because “*” matches zero or more characters.
 
-compile '/stylesheet/' do
-  # don’t filter or layout
+passthrough '/assets/*'
+
+compile '/tweets/*' do
+  filter :erb
+  layout 'tweet'
+end
+
+compile '/top10/*' do
+  filter :erb
+  layout 'default'
 end
 
 compile '*' do
@@ -26,8 +34,12 @@ compile '*' do
   end
 end
 
-route '/stylesheet/' do
-  '/style.css'
+route '/tweets/*' do
+  # Send /tweets/foo/12345/ to /foo/status/12345/index.html
+  parts = /\/tweets\/([^\/]+)\/(\d+)/.match(item.identifier)
+  account = parts[1]
+  tweet_id = parts[2]
+  "/#{account}/status/#{tweet_id}/index.html"
 end
 
 route '*' do

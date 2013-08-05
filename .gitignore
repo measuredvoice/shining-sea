@@ -17,4 +17,8 @@ pickle-email-*.html
 .rvmrc
 /config/too_many_secrets.rb
 .DS_Store
+/site/content/*
+/site/output/*
+/site/tmp/*
+/site/crash.log
 

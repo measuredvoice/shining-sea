@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="http://use.typekit.com/bvc1jkf.js"></script>
+  	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  	
+    <title>Great Gov Tweets</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/assets/css/ggt.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+	<div class="container">
+		<div class="row">
+		  <div class="col-12">
+			  <h1>Great Gov Tweets</h1>
+			  <hr>
+			</div>
+			<div class="col-lg-6 tweet-stats">
+			  <span class="tweet-rank"><i class="icon-trophy"></i> #<%= @item[:daily_rank] %></span>
+        <p>
+          Based on MV score among <%= @item[:daily_bucket] %> U.S. government Twitter accounts on <%= @item[:date] %>.
+        </p>
+        <hr>
+				<p>
+				  Within its first 2 days, this tweet received<br>
+				  </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= @item[:engagement] %> retweets</span></span><br>
+					<span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
+					and reached a potential<br>
+					<span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
+				</p>
+				<hr>
+				<div class="row score-rank">
+				  <div class="col-lg-6 col-6">
+				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
+				    <p>
+              Calculated by ((retweets*1.5 + favorites)/followers)*100,000
+            </p>
+				  </div>
+  				<div class="col-lg-6 col-6">
+          </div>
+				</div>
+        <div class="row">
+          <div class="col-lg-6 col-6">
+            The #14 tweet was from @nasa
+          </div>
+          <div class="col-lg-6 col-6">
+            The #12 top tweet was from @whitehouse
+          </div>
+        </div>
+      </div>
+		  <div class="col-lg-6">
+		    <!-- Twitter embed HTML goes here -->
+		    <%= yield %>
+		    
+		    <hr>
+    		<div class="row">
+    		  <div class="col-lg-6 mv-ad1">
+    		    <p>iFrame</p>
+    		  </div>
+    		  <div class="col-lg-6 mv-ad2">
+    		    <p>iFrame</p>
+    		  </div>
+    	  </div>
+		  </div>
+		</div>
+
+	  <footer>&copy; 2013 Measured Voice</footer>
+	</div>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+
+    <!-- Optionally enable responsive features in IE8 -->
+    <script src="/assets/js/respond.js"></script>
+  </body>
+</html>

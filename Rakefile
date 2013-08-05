@@ -120,7 +120,67 @@ namespace :app do
   end
   
   desc "Build and deploy daily HTML reports"
-  task :daily_reports do
+  task :daily_reports, [:target_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:target_date].present?
+      target_date = Time.zone.parse(params[:target_date])
+    else
+      # This process will almost always run the day after collecting metrics
+      target_date = 3.days.ago
+    end
+    puts "Writing reports for #{target_date.strftime('%Y-%m-%d')}"
+    
+    AccountSummary.buckets.map do |bucket|
+      ranking = DailyRanking.from_ranking_file(target_date, bucket)
+      
+      # Write the index file for this week
+      index_filename = "site/content/top10/#{ranking.bucket_path}.html"
+      puts "Writing top 10 (#{bucket}) rankings to #{index_filename}..."
+      File.open(index_filename, 'wb') do |file|
+        file.write(ranking.to_yaml)
+        file.write("\n---\n")
+      end
+      
+      # Write the summary for each tweet
+      prev_ts = nil;
+      unless Dir.exists?('site/content/tweets')
+        Dir.mkdir('site/content/tweets')
+      end
+      ranking.ranked_tweets.each do |ts|
+        if prev_ts
+          ts.daily_prev = prev_ts
+          prev_ts.daily_next = ts
+        end
+        prev_ts = ts
+      end.each do |ts|
+        # Get the Twitter embed HTML for this tweet
+        begin
+          embed = Twitter.oembed(ts.tweet_id)
+          sleep 5.seconds
+        rescue Exception => e
+          # TODO: Catch common exceptions and retry
+          puts "Can't get embed from Twitter: #{e}"
+        end
+        
+        ts_filename = "site/content/tweets/#{ts.screen_name}/#{ts.tweet_id}.html"
+        unless Dir.exists?(File.dirname(ts_filename))
+          puts "Writing directory #{File.dirname(ts_filename)}"
+          Dir.mkdir(File.dirname(ts_filename))
+        end
+        puts "Writing tweet to #{ts_filename}..."
+        File.open(ts_filename, 'wb') do |file|
+          file.write(ts.to_yaml)
+          file.write("\n---\n")
+          file.write(embed.html) if embed
+        end
+      end
+    end    
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Wrote reports in #{elapsed} seconds."
   end
   
   desc "Build and deploy weekly HTML reports"

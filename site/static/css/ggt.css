@@ -1,0 +1,41 @@
+html, body {
+  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
+
+.tweet-stats {
+	padding-top:16px;
+}
+
+.tweet-rank {
+	font-size: 400%;
+}
+.mv-score {
+	font-size: 200%;
+/*	padding:.2em;*/
+/*	background-color: #006692;*/
+/*	color:#FFF;*/
+/*	border-radius:5px;*/
+	margin-bottom: .5em;
+}
+
+.retweet-count i.icon-retweet, .favorite-count i.icon-star, .reach-total i.icon-bullhorn, .big-number  {
+	font-size: 200%;
+}
+
+.retweet-count i.icon-retweet, .favorite-count i.icon-star, .reach-total i.icon-bullhorn {
+	display:inline-block;
+	width: 1.3em;
+}
+
+.mv-ad1 p, .mv-ad2 p {
+	border-radius:5px;
+	background-color:#EFEFEF;
+	margin: 0 0 20px 0;
+	padding:10px;
+	height:140px;
+}
+
+footer {
+	margin-bottom: 50px;
+}

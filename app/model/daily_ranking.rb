@@ -15,7 +15,7 @@ class DailyRanking < Model
     data = MultiJson.load(text, :symbolize_keys => true)
     self.new(
       :date          => Time.zone.parse(data[:date]),
-      :bucket        => Time.zone.parse(data[:bucket]),
+      :bucket        => data[:bucket],
       :ranked_tweets => data[:tweets].map { |ts| TweetSummary.new(ts) },
     )
   end
@@ -33,12 +33,20 @@ class DailyRanking < Model
     JSON.pretty_generate(Boxer.ship(:daily_ranking, self))
   end
 
+  def to_yaml
+    YAML.dump(Boxer.ship(:daily_ranking, self))
+  end
+
   def iso_date
     date.strftime('%Y-%m-%d')
   end
   
   def filename
     self.class.filename(date, bucket)
+  end
+  
+  def bucket_path
+    self.class.bucket_path(bucket)
   end
   
   def self.filename(date, bucket)

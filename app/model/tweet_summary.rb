@@ -49,6 +49,10 @@ class TweetSummary < Model
     JSON.pretty_generate(Boxer.ship(:tweet_summary, self, :view => :metrics))
   end
 
+  def to_yaml
+    YAML.dump(Boxer.ship(:tweet_summary, self, :view => :metrics))
+  end
+
   def filename
     self.class.filename(date, screen_name, tweet_id)
   end
