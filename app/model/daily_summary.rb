@@ -98,6 +98,12 @@ class DailySummary < Model
     tweets_in_bucket(bucket).sort {|a,b| a.daily_rank <=> b.daily_rank}
   end
   
+  def rankings
+    AccountSummary.buckets.map do |bucket|
+      DailyRanking.from_summary(self, bucket)
+    end    
+  end
+  
   def tweet_summaries_for_account(screen_name)
     tweet_summaries.find_all {|t| t.screen_name == screen_name}
   end

@@ -83,7 +83,8 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      target_date = 2.days.ago
+      # This process will almost always run the day after collecting metrics
+      target_date = 3.days.ago
     end
     puts "Summarizing metrics from #{target_date.strftime('%Y-%m-%d')}"
             
@@ -104,7 +105,9 @@ namespace :app do
     end
     
     puts "Writing tweet ranking files..."
-    # summary.save_tweet_rankings
+    summary.rankings.each do |ranking|
+      ranking.save
+    end
     
     end_time = Time.zone.now
     

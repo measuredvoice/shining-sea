@@ -61,3 +61,17 @@ Boxer.box(:tweet_summary) do |box, ts|
     }
   end
 end
+
+Boxer.box(:daily_ranking) do |box, ranking|
+  box.view(:base) do
+    {
+      :date        => ranking.iso_date,
+      :bucket      => ranking.bucket,
+      :tweet_count => ranking.ranked_tweets.count,
+      :tweets      => ranking.ranked_tweets.map do |ts| 
+        Boxer.ship(:tweet_summary, ts, :view => :metrics)
+      end,
+    }
+  end
+end
+

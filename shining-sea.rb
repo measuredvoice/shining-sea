@@ -19,6 +19,7 @@ require_relative './app/model/daily_summary'
 require_relative './app/model/account_summary'
 require_relative './app/model/tweet_summary'
 require_relative './app/model/rank'
+require_relative './app/model/daily_ranking'
 
 require_relative './app/boxes/metrics'
 require_relative './app/boxes/summaries'
