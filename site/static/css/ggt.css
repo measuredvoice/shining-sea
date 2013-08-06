@@ -4,7 +4,7 @@ html, body {
 }
 
 .tweet-stats {
-	padding-top:10px;
+	padding:0 .5em 0 .8em;
 }
 
 .rank-score {
@@ -12,25 +12,29 @@ html, body {
 	border-radius: 5px;
 	border: 1px solid;
 	height:6em;
-	margin-bottom: 1em;
+	margin: 10px 0 1.5em 0;
 }
 
 .rank-number {
 	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 400%;
 	text-align: center;
-	text-indent: -.5em;
-	margin-top: -.1em;
+	margin-top: -.15em;
 }
 
-.rank-number superscript {
+.rank-number .superscript {
 	font-size:40%;
+	vertical-align: middle;
 }
 
 .rank-details {
 	border-left: 1px solid;
-	height:5.9em;
-	padding:.8em .5em 0 .8em;
+	height:100%;
+}
+
+.rank-details p {
+	vertical-align: middle;
+	padding: .5em 0;
 }
 
 .mv-score {
@@ -63,11 +67,9 @@ i.icon-bullhorn {
 	color:#0096D6;
 }
 
-.mv-ad1 p, .mv-ad2 p {
+.mv-ad1, .mv-ad2 {
 	border-radius:5px;
 	background-color:#EFEFEF;
-	margin: 0 0 20px 0;
-	padding:10px;
 	height:140px;
 }
 

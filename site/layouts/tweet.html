@@ -18,53 +18,64 @@
 		  <div class="col-12">
 			  <h1>Great Gov Tweets</h1>
 			</div>
-
-      <div class="col-lg-6 col-12 rank-score">
-        <div class="col-lg-3 col-3 rank-number">
-          <superscript>#</superscript><%= @item[:daily_rank] %>
-        </div>
-        <div class="col-lg-9 col-9 rank-details">
-          Based on MV score among <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= @item[:date] %></span>.
+      <div class="col-lg-6 col-12">
+        <div class="rank-score">
+          <div class="col-lg-3 col-3 rank-number">
+            <span class="superscript">#</span><%= @item[:daily_rank] %>
+          </div>
+          <div class="col-lg-9 col-9 rank-details">
+            <p>This was the #<%= @item[:daily_rank] %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= @item[:date] %></span>.</p>
+          </div>
         </div>
       </div>
-      
+     
       <div class="col-lg-6 col-12 pull-right the-tweet">
         <!-- Twitter embed HTML goes here -->
         <%= yield %>
-        <div class="col-lg-6 mv-ad1">
-          <p>iFrame</p>
-        </div>
-        <div class="col-lg-6 mv-ad2">
-          <p>iFrame</p>
-        </div>
       </div>
       
       <div class="col-lg-6 col-12">
-				<p>
-				  Within its first 2 days, this tweet received<br>
-				  </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= @item[:engagement] %> retweets</span></span><br>
-					<span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
-					and reached a potential<br>
-					<span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
-				</p>
-        <div class="row">
-          <ul class="pager">
-            <% if @item[:daily_prev] %>
-            <li class="col-lg-6 col-6 previous">
-              <a href="#">
-                <i class="icon-chevron-left"></i> #<%= @item[:daily_prev][:daily_rank] %> tweet from @<%= @item[:daily_prev][:screen_name] %>
-              </a>
-            </li>
-            <% end %>
-            <% if @item[:daily_next] %>
-            <li class="next col-lg-6 col-6 next">
-              <a href="#">
-                #<%= @item[:daily_next][:daily_rank] %> tweet from @<%= @item[:daily_next][:screen_name] %> <i class="icon-chevron-right"></i>
-              </a>
-            </li>
-            <% end %>
-          </ul>
+        <div class="tweet-stats">
+          <p>
+            Within its first 2 days, this tweet received<br>
+            <span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= @item[:engagement] %> retweets</span></span><br>
+            <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
+            and reached a potential<br>
+            <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
+          </p>
         </div>
+      </div>
+
+      <div class="col-lg-6 col-12 pull-right mv-ads">
+        <div class="col-6 col-lg-6 col-sm-6">
+          <div class="mv-ad1">
+            <p>iFrame</p>
+          </div>
+        </div>
+        <div class="col-6 col-lg-6 col-sm-6">
+          <div class="mv-ad2">
+            <p>iFrame</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 col-12 tweet-navigation">
+        <ul class="pager">
+          <% if @item[:daily_prev] %>
+          <li class="col-lg-6 col-6 previous">
+            <a href="#">
+              <i class="icon-chevron-left"></i> #<%= @item[:daily_prev][:daily_rank] %> tweet from @<%= @item[:daily_prev][:screen_name] %>
+            </a>
+          </li>
+          <% end %>
+          <% if @item[:daily_next] %>
+          <li class="next col-lg-6 col-6 next">
+            <a href="#">
+              #<%= @item[:daily_next][:daily_rank] %> tweet from @<%= @item[:daily_next][:screen_name] %> <i class="icon-chevron-right"></i>
+            </a>
+          </li>
+          <% end %>
+        </ul>
       </div>
 				<!-- <div class="row score-rank">
 				  <div class="col-lg-6 col-6">
