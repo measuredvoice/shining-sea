@@ -194,9 +194,15 @@ namespace :app do
   
   desc "Compile HTML for the current set of reports" 
   task :compile_html do
+    start_time = Time.zone.now
+    
     puts "Compiling HTML..."
-    %x(cd site && nanoc compile)
-    puts "...done"
+    puts %x(cd site && nanoc compile)
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Done. Compiled in #{elapsed} seconds."
   end
   
   desc "Deploy HTML changes to the site" 
