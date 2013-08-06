@@ -45,10 +45,14 @@
 				</div>
         <div class="row">
           <div class="col-lg-6 col-6">
-            The #14 tweet was from @nasa
+            <% if @item[:daily_next] %>
+            The #<%= @item[:daily_next][:daily_rank] %> tweet was from @<%= @item[:daily_next][:screen_name] %>
+            <% end %>
           </div>
           <div class="col-lg-6 col-6">
-            The #12 top tweet was from @whitehouse
+            <% if @item[:daily_prev] %>
+            The #<%= @item[:daily_prev][:daily_rank] %> top tweet was from @<%= @item[:daily_prev][:screen_name] %>
+            <% end %>
           </div>
         </div>
       </div>
