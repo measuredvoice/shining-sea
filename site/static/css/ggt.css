@@ -28,6 +28,18 @@ html, body {
 	width: 1.3em;
 }
 
+i.icon-retweet {
+	color:#568934;
+}
+
+i.icon-star {
+	color:#ff8b00;
+}
+
+i.icon-bullhorn {
+	color:#0096D6;
+}
+
 .mv-ad1 p, .mv-ad2 p {
 	border-radius:5px;
 	background-color:#EFEFEF;
@@ -38,4 +50,29 @@ html, body {
 
 footer {
 	margin-bottom: 50px;
+}
+
+.icon-chevron-right, .icon-chevron-left {
+	font-size: 200%;
+	display:block;
+	width:1.3px;
+	color:#AAA;
+	position: absolute;
+	top:.4em;
+}
+
+.icon-chevron-right {
+	right:.7em;
+}
+
+.icon-chevron-left {
+	left:.7em;
+}
+
+.rank-previous {
+	padding-left: 1em;
+}
+
+.rank-next {
+	padding-right: 1em;
 }

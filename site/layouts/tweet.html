@@ -20,7 +20,7 @@
 			  <hr>
 			</div>
 			<div class="col-lg-6 tweet-stats">
-			  <span class="tweet-rank"><i class="icon-trophy"></i> #<%= @item[:daily_rank] %></span>
+			  <span class="tweet-rank"><i class="icon-trophy"></i> &#8470;<%= @item[:daily_rank] %></span>
         <p>
           Based on MV score among <%= @item[:daily_bucket] %> U.S. government Twitter accounts on <%= @item[:date] %>.
         </p>
@@ -33,7 +33,7 @@
 					<span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
 				</p>
 				<hr>
-				<div class="row score-rank">
+				<!-- <div class="row score-rank">
 				  <div class="col-lg-6 col-6">
 				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
 				    <p>
@@ -42,29 +42,26 @@
 				  </div>
   				<div class="col-lg-6 col-6">
           </div>
-				</div>
+				</div> -->
         <div class="row">
           <div class="col-lg-6 col-6">
-            The #14 tweet was from @nasa
+            <i class="icon-chevron-left rank-previous"></i> The #14 tweet was from @nasa
           </div>
-          <div class="col-lg-6 col-6">
-            The #12 top tweet was from @whitehouse
+          <div class="col-lg-6 col-6 rank-next">
+            The #12 top tweet was from @whitehouse <i class="icon-chevron-right"></i>
           </div>
+        </div>
+        <hr>
+        <div class="col-lg-6 mv-ad1">
+          <p>iFrame</p>
+        </div>
+        <div class="col-lg-6 mv-ad2">
+          <p>iFrame</p>
         </div>
       </div>
 		  <div class="col-lg-6">
 		    <!-- Twitter embed HTML goes here -->
 		    <%= yield %>
-		    
-		    <hr>
-    		<div class="row">
-    		  <div class="col-lg-6 mv-ad1">
-    		    <p>iFrame</p>
-    		  </div>
-    		  <div class="col-lg-6 mv-ad2">
-    		    <p>iFrame</p>
-    		  </div>
-    	  </div>
 		  </div>
 		</div>
 
