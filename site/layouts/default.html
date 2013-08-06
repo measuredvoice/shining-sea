@@ -54,7 +54,7 @@
 
 		    <h2>Medium</h3>
 		    <ol>
-		    <% @item[:medium][:tweets].first(10).each do |tweet| %>
+		    <% @item[:medium_sized][:tweets].first(10).each do |tweet| %>
 		      <li>
 		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
 		      </li>

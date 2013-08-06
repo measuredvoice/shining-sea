@@ -136,7 +136,7 @@ namespace :app do
     puts "Writing reports for #{index_file[:date]}"
     AccountSummary.buckets.map do |bucket|
       ranking = DailyRanking.from_ranking_file(target_date, bucket)
-      index_file[bucket.gsub(' ', '_').to_sym] = Boxer.ship(:daily_ranking, ranking)
+      index_file[bucket.gsub(/\W/, '_').to_sym] = Boxer.ship(:daily_ranking, ranking)
             
       # Write the summary for each tweet
       prev_ts = nil;

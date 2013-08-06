@@ -18,7 +18,7 @@ class AccountSummary < Model
       'extremely large',
       'very large',
       'large',
-      'medium',
+      'medium-sized',
       'small',
     ]
   end
@@ -37,7 +37,7 @@ class AccountSummary < Model
     when percentile >= 86
       'large'
     when percentile >= 34
-      'medium'
+      'medium-sized'
     when percentile >= 0
       'small'
     else
