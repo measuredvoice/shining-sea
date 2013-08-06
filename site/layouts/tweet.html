@@ -13,87 +13,114 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
-	<div class="container">
-		<div class="row">
-		  <div class="col-12">
-			  <h1>Great Gov Tweets</h1>
-			</div>
-      <div class="col-lg-6 col-12">
-        <div class="rank-score">
-          <div class="col-lg-3 col-3 rank-number">
-            <span class="superscript">#</span><%= @item[:daily_rank] %>
-          </div>
-          <div class="col-lg-9 col-9 rank-details">
-            <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <span id="mv-logo"><a href="http://measuredvoice.com">Measured Voice, the only social media management tool designed for government.</a></span>  
         </div>
       </div>
-     
-      <div class="col-lg-6 col-12 pull-right the-tweet">
-        <!-- Twitter embed HTML goes here -->
-        <%= yield %>
-      </div>
-      
-      <div class="col-lg-6 col-12">
-        <div class="tweet-stats">
-          <p>
-            Within its first 2 days, this tweet received<br>
-            </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= pretty_number(@item[:engagement]) %> <%= pluralize(@item[:engagement], 'retweet', 'retweets') %></span></span><br>
-            <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
-            and reached a potential<br>
-            <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
-          </p>
-        </div>
-      </div>
-
-      <div class="col-lg-6 col-12 pull-right mv-ads">
-        <div class="col-6 col-lg-6 col-sm-6">
-          <div class="mv-ad1">
-            <p>iFrame</p>
-          </div>
-        </div>
-        <div class="col-6 col-lg-6 col-sm-6">
-          <div class="mv-ad2">
-            <p>iFrame</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6 col-12 tweet-navigation">
-        <h5>Other top Tweets from <%= pretty_date(@item[:date]) %></h5>
-        <ul class="pager">
-          <% if @item[:daily_prev] %>
-          <li class="col-lg-6 col-6 previous">
-            <a href="<%= tweet_path(item[:daily_prev]) %>">
-              <i class="icon-chevron-left"></i> #<%= @item[:daily_prev][:daily_rank] %> tweet from @<%= @item[:daily_prev][:screen_name] %>
-            </a>
-          </li>
-          <% end %>
-          <% if @item[:daily_next] %>
-          <li class="next col-lg-6 col-6 next">
-            <a href="<%= tweet_path(item[:daily_next]) %>">
-              #<%= @item[:daily_next][:daily_rank] %> tweet from @<%= @item[:daily_next][:screen_name] %> <i class="icon-chevron-right"></i>
-            </a>
-          </li>
-          <% end %>
-        </ul>
-      </div>
-				<!-- <div class="row score-rank">
-				  <div class="col-lg-6 col-6">
-				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
-				    <p>
-              Calculated by ((retweets*1.5 + favorites)/followers)*100,000
-            </p>
-				  </div>
-  				<div class="col-lg-6 col-6">
-          </div>
-				</div> -->
     </div>
-    <footer>
-      &copy; 2013 Measured Voice
-    </footer>
+    <div class="jumbotron">
+      <div class="container">
+        <div class="row">
+          <div class="brand col-lg-8 col-12">
+            <h1>Great Gov Tweets</h1>
+            <h3 class="tagline">Using data to highlight great government communication. From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  	<div class="container">
+  		<div class="row">
+        <div class="col-lg-6 col-12">
+          <div class="rank-score">
+            <div class="col-lg-3 col-3 rank-number">
+              <span class="superscript">#</span><%= @item[:daily_rank] %>
+            </div>
+            <div class="col-lg-9 col-9 rank-details">
+              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
+            </div>
+          </div>
+        </div>
+       
+        <div class="col-lg-6 col-12 pull-right the-tweet">
+          <!-- Twitter embed HTML goes here -->
+          <%= yield %>
+        </div>
+        
+        <div class="col-lg-6 col-12">
+          <div class="tweet-stats">
+            <p>
+              Within its first 2 days, this tweet received<br>
+              </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= pretty_number(@item[:engagement]) %> <%= pluralize(@item[:engagement], 'retweet', 'retweets') %></span></span><br>
+              <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
+              and reached a potential<br>
+              <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
+            </p>
+          </div>
+        </div>
+
+        <!-- <div class="col-lg-6 col-12 pull-right mv-ads">
+          <div class="col-6 col-lg-6 col-sm-6">
+            <div class="mv-ad1">
+              <p>iFrame</p>
+            </div>
+          </div>
+          <div class="col-6 col-lg-6 col-sm-6">
+            <div class="mv-ad2">
+              <p>iFrame</p>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="col-lg-6 col-12">
+          <div class="tweet-navigation">
+            <p>Other top Tweets from similarly-sized U.S. government accounts on <%= pretty_date(@item[:date]) %>:</p>
+            <div class="row">
+              <% if @item[:daily_prev] %>
+              <a href="<%= tweet_path(item[:daily_prev]) %>" class="previous">
+                <div class="col-lg-6 col-6">
+                  <span class="navigation-number">
+                    &lsaquo; <%= @item[:daily_prev][:daily_rank] %>
+                  </span>
+                  <span class="navigation-name">
+                    by @<%= @item[:daily_prev][:screen_name] %>
+                  </span>
+                </div>
+              </a>
+              <% end %>
+              <% if @item[:daily_next] %>
+              <a href="<%= tweet_path(item[:daily_next]) %>" class="next">
+                <div class="col-lg-6 col-6">
+                  <span class="navigation-name">
+                    by @<%= @item[:daily_next][:screen_name] %>
+                  </span>
+                  <span class="navigation-number">
+                    <%= @item[:daily_next][:daily_rank] %> &rsaquo;
+                  </span>
+                </div>
+              </a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+  				<!-- <div class="row score-rank">
+  				  <div class="col-lg-6 col-6">
+  				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
+  				    <p>
+                Calculated by ((retweets*1.5 + favorites)/followers)*100,000
+              </p>
+  				  </div>
+    				<div class="col-lg-6 col-6">
+            </div>
+  				</div> -->
+      </div>
+      <hr>
+      <footer>
+        &copy; 2013 Measured Voice
+      </footer>
+    </div>
   </div>
-</div>
     <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

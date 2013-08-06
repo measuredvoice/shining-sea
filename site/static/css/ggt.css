@@ -3,23 +3,32 @@ html, body {
   font-size: 16px;
 }
 
-.tweet-stats {
+h1, h2, h3 {
+	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.jumbotron a {
+	color:#104469;
+}
+.tweet-stats, .tweet-navigation {
 	padding:0 .5em 0 .8em;
+	margin: 10px 0 1.5em 0;
 }
 
 .rank-score {
 	color: #104469;
 	border-radius: 5px;
 	border: 1px solid;
-	height:6em;
+	overflow: auto;
 	margin: 10px 0 1.5em 0;
+	box-shadow: rgba(0, 0, 0, 0.148438) 0px 1px 3px 0px;
 }
 
 .rank-number {
 	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 400%;
 	text-align: center;
-	margin-top: -.15em;
+	margin-top: -.2em;
 }
 
 .rank-number .superscript {
@@ -29,7 +38,6 @@ html, body {
 
 .rank-details {
 	border-left: 1px solid;
-	height:100%;
 }
 
 .rank-details p {
@@ -73,47 +81,55 @@ i.icon-bullhorn {
 	height:140px;
 }
 
+.tweet-navigation .previous, .tweet-navigation .next {
+	color: #104469;
+	line-height: 1.1;
+}
+
+.tweet-navigation a:hover, .jumbotron a:hover {
+	color: #0096D6;
+}
+
+.tweet-navigation .next {
+	text-align: right;
+}
+
+.navigation-number {
+	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 1.4em;
+	text-align: center;
+	display:inline-block;
+	width:1.4em;
+	height:1.4em;
+	border-radius: 3px;
+	border: solid 1px;
+}
+
 footer {
 	margin-bottom: 50px;
 }
 
-.icon-chevron-right, .icon-chevron-left {
-	font-size: 150%;
+#mv-logo a {
+	text-indent: -9000px;
 	display:block;
-	width:1.3px;
-	color:#AAA;
+	width:196px;
+	height:61px;
+	background-image: url('/assets/img/mv-logo-196x61.png');
 	position: absolute;
-	top:.5em;
-}
-
-.icon-chevron-right {
-	right:1.1em;
-}
-
-.icon-chevron-left {
-	left:0;
-}
-
-.rank-previous {
-	padding-left: 1em;
-}
-
-.rank-next {
-	padding-right: 1em;
-}
-
-ul.pager li.previous a,ul.pager li.next a {
-	height:3.5em;
-}
-
-ul.pager li.previous a{
-	padding-left:50px;
-}
-
-ul.pager li.next a{
-	padding-right:50px;
+	top:0;
+	right:15px;
 }
 
 iframe#twitter-widget-0 {
-	width: 100%;
+	width:100%;
 }
+
+.jumbotron {
+	padding-top:70px;
+}
+
+@media screen and (min-width: 768px) {
+  .jumbotron {
+    padding: 30px 60px;
+    border-radius: 0;
+  }
