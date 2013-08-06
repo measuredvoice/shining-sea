@@ -24,7 +24,7 @@
             <span class="superscript">#</span><%= @item[:daily_rank] %>
           </div>
           <div class="col-lg-9 col-9 rank-details">
-            <p>This was the #<%= @item[:daily_rank] %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= @item[:date] %></span>.</p>
+            <p>This was the <%= ordinalize(@item[:daily_rank]) %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
           </div>
         </div>
       </div>
@@ -38,10 +38,10 @@
         <div class="tweet-stats">
           <p>
             Within its first 2 days, this tweet received<br>
-            <span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= @item[:engagement] %> retweets</span></span><br>
+            </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= pretty_number(@item[:engagement]) %> <%= pluralize(@item[:engagement], 'retweet', 'retweets') %></span></span><br>
             <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
             and reached a potential<br>
-            <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
+            <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
           </p>
         </div>
       </div>
@@ -60,18 +60,18 @@
       </div>
 
       <div class="col-lg-6 col-12 tweet-navigation">
-        <h5>Other top Tweets from <%= @item[:date] %></h5>
+        <h5>Other top Tweets from <%= pretty_date(@item[:date]) %></h5>
         <ul class="pager">
           <% if @item[:daily_prev] %>
           <li class="col-lg-6 col-6 previous">
-            <a href="#">
+            <a href="<%= tweet_path(item[:daily_prev]) %>">
               <i class="icon-chevron-left"></i> #<%= @item[:daily_prev][:daily_rank] %> tweet from @<%= @item[:daily_prev][:screen_name] %>
             </a>
           </li>
           <% end %>
           <% if @item[:daily_next] %>
           <li class="next col-lg-6 col-6 next">
-            <a href="#">
+            <a href="<%= tweet_path(item[:daily_next]) %>">
               #<%= @item[:daily_next][:daily_rank] %> tweet from @<%= @item[:daily_next][:screen_name] %> <i class="icon-chevron-right"></i>
             </a>
           </li>
