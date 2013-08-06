@@ -84,6 +84,13 @@ i.icon-bullhorn {
 .tweet-navigation .previous, .tweet-navigation .next {
 	color: #104469;
 	line-height: 1.1;
+  	font-size: 80%;
+}
+
+@media screen and (min-width: 768px) {
+  .tweet-navigation .previous, .tweet-navigation .next {
+  	font-size: 100%;
+  }
 }
 
 .tweet-navigation a:hover, .jumbotron a:hover {
@@ -106,7 +113,8 @@ i.icon-bullhorn {
 }
 
 footer {
-	margin-bottom: 50px;
+	padding: 1em 0 5em;
+	background-color: #CFE39A;
 }
 
 #mv-logo a {
@@ -133,3 +141,4 @@ iframe#twitter-widget-0 {
     padding: 30px 60px;
     border-radius: 0;
   }
+}
