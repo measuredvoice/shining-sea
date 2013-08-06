@@ -192,6 +192,48 @@ namespace :app do
     puts "Wrote reports in #{elapsed} seconds."
   end
   
+  desc "Compile HTML for the current set of reports" 
+  task :compile_html do
+    puts "Compiling HTML..."
+    %x(cd site && nanoc compile)
+    puts "...done"
+  end
+  
+  desc "Deploy HTML changes to the site" 
+  task :deploy_html do
+    start_time = Time.zone.now
+    
+    s3_bucket = DailySummary.s3_bucket
+
+    Dir.chdir('site/output')
+    file_count = 0
+    files = []
+    # Write all the tweet summaries first
+    files += Dir.glob("*/status/*/index.html")
+    
+    # Then write the top-10 lists
+    files += Dir.glob("top10/*/index.html")
+    
+    # Then write the assets
+    files += Dir.glob("assets/**/*.*")
+    
+    # Finally, write the main index file
+    files << "index.html"
+
+    files.each do |filename|
+      puts "writing #{filename} to AWS..."
+      s3_bucket.objects[filename].write(:file => filename)
+      file_count += 1
+    end
+
+    Dir.chdir('../..')
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Done. Wrote #{file_count} files in #{elapsed} seconds."
+  end
+  
   desc "Build and deploy weekly HTML reports"
   task :weekly_reports do
   end
