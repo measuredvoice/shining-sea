@@ -17,14 +17,29 @@
 		<div class="row">
 		  <div class="col-12">
 			  <h1>Great Gov Tweets</h1>
-			  <hr>
 			</div>
-			<div class="col-lg-6 tweet-stats">
-			  <span class="tweet-rank"><i class="icon-trophy"></i> &#8470;<%= @item[:daily_rank] %></span>
-        <p>
-          Based on MV score among <%= @item[:daily_bucket] %> U.S. government Twitter accounts on <%= @item[:date] %>.
-        </p>
-        <hr>
+
+      <div class="col-lg-6 col-12 rank-score">
+        <div class="col-lg-3 col-3 rank-number">
+          <superscript>#</superscript><%= @item[:daily_rank] %>
+        </div>
+        <div class="col-lg-9 col-9 rank-details">
+          Based on MV score among <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= @item[:date] %></span>.
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-12 pull-right the-tweet">
+        <!-- Twitter embed HTML goes here -->
+        <%= yield %>
+        <div class="col-lg-6 mv-ad1">
+          <p>iFrame</p>
+        </div>
+        <div class="col-lg-6 mv-ad2">
+          <p>iFrame</p>
+        </div>
+      </div>
+      
+      <div class="col-lg-6 col-12">
 				<p>
 				  Within its first 2 days, this tweet received<br>
 				  </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= @item[:engagement] %> retweets</span></span><br>
@@ -32,7 +47,25 @@
 					and reached a potential<br>
 					<span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= @item[:reach] %> people</span></span>
 				</p>
-				<hr>
+        <div class="row">
+          <ul class="pager">
+            <% if @item[:daily_prev] %>
+            <li class="col-lg-6 col-6 previous">
+              <a href="#">
+                <i class="icon-chevron-left"></i> #<%= @item[:daily_prev][:daily_rank] %> tweet from @<%= @item[:daily_prev][:screen_name] %>
+              </a>
+            </li>
+            <% end %>
+            <% if @item[:daily_next] %>
+            <li class="next col-lg-6 col-6 next">
+              <a href="#">
+                #<%= @item[:daily_next][:daily_rank] %> tweet from @<%= @item[:daily_next][:screen_name] %> <i class="icon-chevron-right"></i>
+              </a>
+            </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
 				<!-- <div class="row score-rank">
 				  <div class="col-lg-6 col-6">
 				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
@@ -43,34 +76,13 @@
   				<div class="col-lg-6 col-6">
           </div>
 				</div> -->
-        <div class="row">
-          <div class="col-lg-6 col-6">
-            <i class="icon-chevron-left rank-previous"></i> <% if @item[:daily_prev] %>
-            The #<%= @item[:daily_prev][:daily_rank] %> top tweet was from @<%= @item[:daily_prev][:screen_name] %>
-            <% end %>
-          </div>
-          <div class="col-lg-6 col-6 rank-next">
-            <% if @item[:daily_next] %>
-            The #<%= @item[:daily_next][:daily_rank] %> tweet was from @<%= @item[:daily_next][:screen_name] %>
-            <% end %> <i class="icon-chevron-right"></i>
-          </div>
-        </div>
-        <hr>
-        <div class="col-lg-6 mv-ad1">
-          <p>iFrame</p>
-        </div>
-        <div class="col-lg-6 mv-ad2">
-          <p>iFrame</p>
-        </div>
       </div>
-		  <div class="col-lg-6">
-		    <!-- Twitter embed HTML goes here -->
-		    <%= yield %>
-		  </div>
-		</div>
-
-	  <footer>&copy; 2013 Measured Voice</footer>
-	</div>
+    </div>
+    <footer>
+      &copy; 2013 Measured Voice
+    </footer>
+  </div>
+</div>
     <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

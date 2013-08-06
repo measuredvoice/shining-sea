@@ -4,12 +4,35 @@ html, body {
 }
 
 .tweet-stats {
-	padding-top:16px;
+	padding-top:10px;
 }
 
-.tweet-rank {
-	font-size: 400%;
+.rank-score {
+	color: #104469;
+	border-radius: 5px;
+	border: 1px solid;
+	height:6em;
+	margin-bottom: 1em;
 }
+
+.rank-number {
+	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 400%;
+	text-align: center;
+	text-indent: -.5em;
+	margin-top: -.1em;
+}
+
+.rank-number superscript {
+	font-size:40%;
+}
+
+.rank-details {
+	border-left: 1px solid;
+	height:5.9em;
+	padding:.8em .5em 0 .8em;
+}
+
 .mv-score {
 	font-size: 200%;
 /*	padding:.2em;*/
@@ -53,20 +76,20 @@ footer {
 }
 
 .icon-chevron-right, .icon-chevron-left {
-	font-size: 200%;
+	font-size: 150%;
 	display:block;
 	width:1.3px;
 	color:#AAA;
 	position: absolute;
-	top:.4em;
+	top:.5em;
 }
 
 .icon-chevron-right {
-	right:.7em;
+	right:1.1em;
 }
 
 .icon-chevron-left {
-	left:.7em;
+	left:0;
 }
 
 .rank-previous {
@@ -75,4 +98,20 @@ footer {
 
 .rank-next {
 	padding-right: 1em;
+}
+
+ul.pager li.previous a,ul.pager li.next a {
+	height:3.5em;
+}
+
+ul.pager li.previous a{
+	padding-left:50px;
+}
+
+ul.pager li.next a{
+	padding-right:50px;
+}
+
+iframe#twitter-widget-0 {
+	width: 100%;
 }
