@@ -129,19 +129,15 @@ namespace :app do
       # This process will almost always run the day after collecting metrics
       target_date = 3.days.ago
     end
-    puts "Writing reports for #{target_date.strftime('%Y-%m-%d')}"
     
+    index_file = {
+      :date => target_date.strftime('%Y-%m-%d'),
+    }
+    puts "Writing reports for #{index_file[:date]}"
     AccountSummary.buckets.map do |bucket|
       ranking = DailyRanking.from_ranking_file(target_date, bucket)
-      
-      # Write the index file for this week
-      index_filename = "site/content/top10/#{ranking.bucket_path}.html"
-      puts "Writing top 10 (#{bucket}) rankings to #{index_filename}..."
-      File.open(index_filename, 'wb') do |file|
-        file.write(ranking.to_yaml)
-        file.write("\n---\n")
-      end
-      
+      index_file[bucket.gsub(' ', '_').to_sym] = Boxer.ship(:daily_ranking, ranking)
+            
       # Write the summary for each tweet
       prev_ts = nil;
       unless Dir.exists?('site/content/tweets')
@@ -177,6 +173,19 @@ namespace :app do
       end
     end    
     
+    # Write the index file for this week
+    index_filename = "site/content/index.html"
+    copy_filename = "site/content/top10/#{index_file[:date]}.html"
+    puts "Writing top 10 rankings to #{index_filename}..."
+    File.open(index_filename, 'wb') do |file|
+      file.write(YAML.dump(index_file))
+      file.write("\n---\n")
+    end
+    File.open(copy_filename, 'wb') do |file|
+      file.write(YAML.dump(index_file))
+      file.write("\n---\n")
+    end
+
     end_time = Time.zone.now
     
     elapsed = (end_time - start_time).to_i
