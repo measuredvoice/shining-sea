@@ -80,3 +80,12 @@ watcher:
   # When to send notifications (using Growl or notify-send).
   notify_on_compilation_success: true
   notify_on_compilation_failure: true
+
+# To deploy to AWS S3, uncomment and configure this section
+# deploy:
+#   default:
+#     kind: fog
+#     provider: aws
+#     bucket: ''
+#     aws_access_key_id: ''
+#     aws_secret_access_key: ''
