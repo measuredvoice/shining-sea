@@ -25,7 +25,7 @@
         <div class="row">
           <div class="brand col-lg-8 col-12">
             <h1>Great Gov Tweets</h1>
-            <h3 class="tagline">Using data to highlight great government communication. From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
           </div>
         </div>
       </div>
@@ -46,6 +46,18 @@
         <div class="col-lg-6 col-12 pull-right the-tweet">
           <!-- Twitter embed HTML goes here -->
           <%= yield %>
+          <!-- <div class="mv-ads">
+            <div class="col-6 col-lg-6 col-sm-6">
+              <div class="mv-ad1">
+                <p>iFrame</p>
+              </div>
+            </div>
+            <div class="col-6 col-lg-6 col-sm-6">
+              <div class="mv-ad2">
+                <p>iFrame</p>
+              </div>
+            </div>
+          </div> -->
         </div>
         
         <div class="col-lg-6 col-12">
@@ -58,22 +70,7 @@
               <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
             </p>
           </div>
-        </div>
-
-        <div class="col-lg-6 col-12 pull-right mv-ads">
-          <div class="col-6 col-lg-6 col-sm-6">
-            <div class="mv-ad1">
-              <p>iFrame</p>
-            </div>
-          </div>
-          <div class="col-6 col-lg-6 col-sm-6">
-            <div class="mv-ad2">
-              <p>iFrame</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-6 col-12">
+          <hr>
           <div class="tweet-navigation">
             <p>Other top Tweets from similarly-sized U.S. government accounts on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
@@ -104,6 +101,7 @@
             </div>
           </div>
         </div>
+
   				<!-- <div class="row score-rank">
   				  <div class="col-lg-6 col-6">
   				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>

@@ -3,6 +3,15 @@ html, body {
   font-size: 16px;
 }
 
+html {
+  background-color: #104469;
+}
+
+body {
+  background-color: #FFF;
+}
+
+
 h1, h2, h3 {
 	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -75,6 +84,10 @@ i.icon-bullhorn {
 	color:#0096D6;
 }
 
+.mv-ads {
+	margin:2em 0;
+}
+
 .mv-ad1, .mv-ad2 {
 	border-radius:5px;
 	background-color:#EFEFEF;
@@ -114,7 +127,9 @@ i.icon-bullhorn {
 
 footer {
 	padding: 1em 0 5em;
-	background-color: #CFE39A;
+	color:#FFF;
+	background-color: #104469;
+	overflow: auto;
 }
 
 #mv-logo a {
@@ -133,12 +148,12 @@ iframe#twitter-widget-0 {
 }
 
 .jumbotron {
-	padding-top:70px;
+	padding:70px 0 10px 0;
 }
 
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding: 30px 60px;
+    padding: 30px 0 10px 0;
     border-radius: 0;
   }
 }
