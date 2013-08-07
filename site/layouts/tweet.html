@@ -79,7 +79,7 @@
                 <div class="col-lg-6 col-6">
                   <span class="navigation-number">
                     &lsaquo; <%= @item[:daily_prev][:daily_rank] %>
-                  </span>
+                  </span><br>
                   <span class="navigation-name">
                     by @<%= @item[:daily_prev][:screen_name] %>
                   </span>
@@ -93,11 +93,11 @@
               <% if @item[:daily_next] %>
               <a href="<%= tweet_path(item[:daily_next]) %>" class="next">
                 <div class="col-lg-6 col-6">
-                  <span class="navigation-name">
-                    by @<%= @item[:daily_next][:screen_name] %>
-                  </span>
                   <span class="navigation-number">
                     <%= @item[:daily_next][:daily_rank] %> &rsaquo;
+                  </span><br>
+                  <span class="navigation-name pull-right">
+                    by @<%= @item[:daily_next][:screen_name] %>
                   </span>
                 </div>
               </a>
