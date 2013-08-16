@@ -18,8 +18,6 @@ class DailySummary < Model
       end
     end.flatten
     
-    summary.assign_account_buckets!
-    summary.assign_tweet_buckets!
     summary.rank_all_tweets!
     
     summary
@@ -49,59 +47,26 @@ class DailySummary < Model
   end
   
   def rank_all_tweets!
-    AccountSummary.buckets.each do |bucket|
-      # Assign a distinct rank (1st, 2nd, 3rd) to each tweet in the bucket,
-      # using audience as a tiebreaker
-      bucket_tweets = tweets_in_bucket(bucket)
-      bucket_tweets.sort do |a,b|
-        if a.mv_score == b.mv_score
-          a.audience <=> b.audience
-        else
-          b.mv_score <=> a.mv_score
-        end
-      end.each_with_index do |ts, index|
-        ts.daily_rank = index + 1
-        ts.daily_pct = ts.determine_pct(bucket_tweets)
+    # Assign a distinct rank (1st, 2nd, 3rd) to each tweet,
+    # using audience as a tiebreaker
+    tweet_summaries.sort do |a,b|
+      if a.mv_score == b.mv_score
+        a.audience <=> b.audience
+      else
+        b.mv_score <=> a.mv_score
       end
+    end.each_with_index do |ts, index|
+      ts.daily_rank = index + 1
+      ts.daily_pct = ts.determine_pct(tweet_summaries)
     end
   end
-  
-  def assign_account_buckets!
-    account_summaries.each do |as|
-      as.daily_bucket = as.determine_bucket(account_summaries)
-    end
-  end
-  
-  def accounts_in_bucket(bucket)
-    account_summaries.find_all do |as|
-      as.daily_bucket == bucket
-    end.sort {|a,b| b.followers <=> a.followers}
-  end
-  
-  def assign_tweet_buckets!
-    AccountSummary.buckets.each do |bucket|
-      accounts_in_bucket(bucket).each do |as|
-        tweet_summaries_for_account(as.screen_name).each do |tweet|
-          tweet.daily_bucket = bucket
-        end
-      end
-    end
-  end
-  
-  def tweets_in_bucket(bucket)
-    tweet_summaries.find_all do |tweet|
-      tweet.daily_bucket == bucket
-    end
-  end
-  
-  def ranked_tweets(bucket)
-    tweets_in_bucket(bucket).sort {|a,b| a.daily_rank <=> b.daily_rank}
+    
+  def ranked_tweets
+    tweet_summaries.sort {|a,b| a.daily_rank <=> b.daily_rank}
   end
   
   def rankings
-    AccountSummary.buckets.map do |bucket|
-      DailyRanking.from_summary(self, bucket)
-    end    
+    DailyRanking.from_summary(self)
   end
   
   def tweet_summaries_for_account(screen_name)

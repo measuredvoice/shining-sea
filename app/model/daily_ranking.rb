@@ -1,12 +1,11 @@
 class DailyRanking < Model
   include S3Storage
-  attr_accessor :date, :bucket, :ranked_tweets
+  attr_accessor :date, :ranked_tweets
   
-  def self.from_summary(summary, bucket)
+  def self.from_summary(summary)
     self.new(
       :date          => summary.date,
-      :bucket        => bucket,
-      :ranked_tweets => summary.ranked_tweets(bucket).first(50),
+      :ranked_tweets => summary.ranked_tweets.first(100),
     )
   end
   
@@ -15,13 +14,12 @@ class DailyRanking < Model
     data = MultiJson.load(text, :symbolize_keys => true)
     self.new(
       :date          => Time.zone.parse(data[:date]),
-      :bucket        => data[:bucket],
       :ranked_tweets => data[:tweets].map { |ts| TweetSummary.new(ts) },
     )
   end
   
-  def self.from_ranking_file(target_date, bucket)
-    s3_obj = s3_bucket.objects[filename(target_date, bucket)]
+  def self.from_ranking_file(target_date)
+    s3_obj = s3_bucket.objects[filename(target_date)]
     if s3_obj.exists?
       self.from_json(s3_obj.read)
     else
@@ -42,19 +40,11 @@ class DailyRanking < Model
   end
   
   def filename
-    self.class.filename(date, bucket)
+    self.class.filename(date)
   end
   
-  def bucket_path
-    self.class.bucket_path(bucket)
-  end
-  
-  def self.filename(date, bucket)
-    "#{date_path(date)}/#{bucket_path(bucket)}.json"
-  end
-  
-  def self.bucket_path(bucket)
-    bucket.gsub(/\W/, '_')
+  def self.filename(date)
+    "#{date_path(date)}/daily-top-100.json"
   end
   
   def self.date_path(date)

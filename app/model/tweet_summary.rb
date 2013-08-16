@@ -1,6 +1,6 @@
 class TweetSummary < Model
   include S3Storage
-  attr_accessor :date, :tweet_id, :screen_name, :account_name, :audience, :reach, :kudos, :engagement, :mv_score, :daily_rank, :daily_pct, :daily_bucket, :daily_prev, :daily_next, :weekly_rank, :weekly_pct, :weekly_bucket, :weekly_prev, :weekly_next
+  attr_accessor :date, :tweet_id, :screen_name, :account_name, :audience, :reach, :kudos, :engagement, :mv_score, :daily_rank, :daily_pct, :daily_prev, :daily_next, :weekly_rank, :weekly_pct, :weekly_prev, :weekly_next, :embed
 
   def self.from_tweet_metric(account, tweet_metric, date)
     self.new(

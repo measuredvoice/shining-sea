@@ -1,6 +1,6 @@
 class AccountSummary < Model
   include S3Storage
-  attr_accessor :date, :screen_name, :name, :agency_id, :agency_name, :daily_bucket, :weekly_bucket, :followers, :tweet_summaries
+  attr_accessor :date, :screen_name, :name, :agency_id, :agency_name, :followers, :tweet_summaries
 
   def self.from_account(account, target_date)
     self.new(
@@ -11,38 +11,6 @@ class AccountSummary < Model
       :agency_id   => account.agency_id,
       :agency_name => account.agency_name,
     )
-  end
-  
-  def self.buckets
-    [
-      'extremely large',
-      'very large',
-      'large',
-      'medium-sized',
-      'small',
-    ]
-  end
-    
-  def determine_bucket(accounts)
-    return 'none' if followers < 10
-    bucket_for_pct(Rank.percentile(self, accounts) {|a| a.followers})
-  end
-  
-  def bucket_for_pct(percentile)
-    case
-    when percentile >= 98
-      'extremely large'
-    when percentile >= 94
-      'very large'
-    when percentile >= 86
-      'large'
-    when percentile >= 34
-      'medium-sized'
-    when percentile >= 0
-      'small'
-    else
-      'none'
-    end 
   end
 
   def iso_date

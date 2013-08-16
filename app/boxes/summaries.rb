@@ -23,7 +23,6 @@ Boxer.box(:account_summary) do |box, as|
       :agency_id     => as.agency_id,
       :agency_name   => as.agency_name,
       :followers     => as.followers,
-      :daily_bucket  => as.daily_bucket,
     }
   end
   
@@ -45,7 +44,6 @@ Boxer.box(:tweet_summary) do |box, ts|
       :account_name => ts.account_name,
       :link         => ts.link,
       :daily_rank   => ts.daily_rank,
-      :daily_bucket => ts.daily_bucket,
     }
   end
   
@@ -58,6 +56,7 @@ Boxer.box(:tweet_summary) do |box, ts|
       :mv_score     => ts.mv_score,
       :daily_next   => ts.daily_next ? Boxer.ship(:tweet_summary, ts.daily_next) : nil,
       :daily_prev   => ts.daily_prev ? Boxer.ship(:tweet_summary, ts.daily_prev) : nil,
+      :embed        => ts.embed,
     }
   end
 end
@@ -66,7 +65,6 @@ Boxer.box(:daily_ranking) do |box, ranking|
   box.view(:base) do
     {
       :date        => ranking.iso_date,
-      :bucket      => ranking.bucket,
       :tweet_count => ranking.ranked_tweets.count,
       :tweets      => ranking.ranked_tweets.map do |ts| 
         Boxer.ship(:tweet_summary, ts, :view => :metrics)

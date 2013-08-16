@@ -104,10 +104,8 @@ namespace :app do
       as.save
     end
     
-    puts "Writing tweet ranking files..."
-    summary.rankings.each do |ranking|
-      ranking.save
-    end
+    puts "Writing tweet ranking file..."
+    summary.rankings.save
     
     end_time = Time.zone.now
     
@@ -152,52 +150,48 @@ namespace :app do
       target_date = 3.days.ago
     end
     
-    index_file = {
-      :date => target_date.strftime('%Y-%m-%d'),
-    }
-    puts "Writing reports for #{index_file[:date]}"
-    AccountSummary.buckets.map do |bucket|
-      ranking = DailyRanking.from_ranking_file(target_date, bucket)
-      index_file[bucket.gsub(/\W/, '_').to_sym] = Boxer.ship(:daily_ranking, ranking)
-            
-      # Write the summary for each tweet
-      prev_ts = nil;
-      unless Dir.exists?('site/content/tweets')
-        Dir.mkdir('site/content/tweets')
+    file_date = target_date.strftime('%Y-%m-%d')
+    puts "Writing reports for #{file_date}"
+    ranking = DailyRanking.from_ranking_file(target_date)
+    index_file = Boxer.ship(:daily_ranking, ranking)
+          
+    # Write the summary for each tweet
+    prev_ts = nil;
+    unless Dir.exists?('site/content/tweets')
+      Dir.mkdir('site/content/tweets')
+    end
+    ranking.ranked_tweets.each do |ts|
+      if prev_ts
+        ts.daily_prev = prev_ts
+        prev_ts.daily_next = ts
       end
-      ranking.ranked_tweets.each do |ts|
-        if prev_ts
-          ts.daily_prev = prev_ts
-          prev_ts.daily_next = ts
-        end
-        prev_ts = ts
-      end.each do |ts|
-        # Get the Twitter embed HTML for this tweet
-        begin
-          embed = Twitter.oembed(ts.tweet_id)
-          sleep 5.seconds
-        rescue Exception => e
-          # TODO: Catch common exceptions and retry
-          puts "Can't get embed from Twitter: #{e}"
-        end
-        
-        ts_filename = "site/content/tweets/#{ts.screen_name}/#{ts.tweet_id}.html"
-        unless Dir.exists?(File.dirname(ts_filename))
-          puts "Writing directory #{File.dirname(ts_filename)}"
-          Dir.mkdir(File.dirname(ts_filename))
-        end
-        puts "Writing tweet to #{ts_filename}..."
-        File.open(ts_filename, 'wb') do |file|
-          file.write(ts.to_yaml)
-          file.write("\n---\n")
-          file.write(embed.html) if embed
-        end
+      prev_ts = ts
+    end.each do |ts|
+      # Get the Twitter embed HTML for this tweet
+      begin
+        ts.embed = Twitter.oembed(ts.tweet_id)
+        sleep 5.seconds
+      rescue Exception => e
+        # TODO: Catch common exceptions and retry
+        puts "Can't get embed from Twitter: #{e}"
       end
-    end    
+      
+      ts_filename = "site/content/tweets/#{ts.screen_name}/#{ts.tweet_id}.html"
+      unless Dir.exists?(File.dirname(ts_filename))
+        puts "Writing directory #{File.dirname(ts_filename)}"
+        Dir.mkdir(File.dirname(ts_filename))
+      end
+      puts "Writing tweet to #{ts_filename}..."
+      File.open(ts_filename, 'wb') do |file|
+        file.write(ts.to_yaml)
+        file.write("\n---\n")
+        file.write(ts.embed.html) if ts.embed
+      end
+    end
     
     # Write the index file for this week
     index_filename = "site/content/index.html"
-    copy_filename = "site/content/top10/#{index_file[:date]}.html"
+    copy_filename = "site/content/top10/#{file_date}.html"
     puts "Writing top 10 rankings to #{index_filename}..."
     File.open(index_filename, 'wb') do |file|
       file.write(YAML.dump(index_file))
