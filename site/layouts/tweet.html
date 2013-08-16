@@ -65,7 +65,7 @@
             <p>
               Within its first 2 days, this tweet received<br>
               </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= pretty_number(@item[:engagement]) %> <%= pluralize(@item[:engagement], 'retweet', 'retweets') %></span></span><br>
-              <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= @item[:kudos] %> favorites</span></span><br>
+              <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= pretty_number(@item[:kudos]) %>  <%= pluralize(@item[:kudos], 'favorite', 'favorites') %></span></span><br>
               and reached a potential<br>
               <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
             </p>
