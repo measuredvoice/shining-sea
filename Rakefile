@@ -169,7 +169,7 @@ namespace :app do
     end.each do |ts|
       # Get the Twitter embed HTML for this tweet
       begin
-        ts.embed = Twitter.oembed(ts.tweet_id)
+        ts.embed_html = Twitter.oembed(ts.tweet_id).html
         sleep 5.seconds
       rescue Exception => e
         # TODO: Catch common exceptions and retry
@@ -185,7 +185,7 @@ namespace :app do
       File.open(ts_filename, 'wb') do |file|
         file.write(ts.to_yaml)
         file.write("\n---\n")
-        file.write(ts.embed.html) if ts.embed
+        file.write(ts.embed_html) if ts.embed_html
       end
     end
     

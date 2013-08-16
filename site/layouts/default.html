@@ -36,55 +36,14 @@
 		    <p>Most engaging tweets from <%= pretty_date(@item[:date]) %>. Categories based on size of audience.</p>
         <div class="row">
           <div class="top-tweet-column col-12">
-            <h3>Extremely Large</h3>
+            <h3>Everything!</h3>
     		    <ol>
-    		    <% @item[:extremely_large][:tweets].first(10).each do |tweet| %>
+    		    <% @item[:tweets].first(50).each do |tweet| %>
     		      <li>
     		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-    		      </li>
-    		    <% end %>
-    		    </ol>
-          </div>
-
-          <div class="top-tweet-column col-12">
-    		    <h3>Very Large</h3>
-    		    <ol>
-    		    <% @item[:very_large][:tweets].first(10).each do |tweet| %>
-    		      <li>
-    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-    		      </li>
-    		    <% end %>
-    		    </ol>
-          </div>
-
-          <div class="top-tweet-column col-12">
-    		    <h3>Large</h3>
-    		    <ol>
-    		    <% @item[:large][:tweets].first(10).each do |tweet| %>
-    		      <li>
-    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-    		      </li>
-    		    <% end %>
-    		    </ol>
-          </div>
-
-          <div class="top-tweet-column col-12">
-    		    <h3>Medium-sized</h3>
-    		    <ol>
-    		    <% @item[:medium_sized][:tweets].first(10).each do |tweet| %>
-    		      <li>
-    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-    		      </li>
-    		    <% end %>
-    		    </ol>
-          </div>
-
-          <div class="top-tweet-column col-12">
-    		    <h3>Small</h3>
-    		    <ol>
-    		    <% @item[:small][:tweets].first(10).each do |tweet| %>
-    		      <li>
-    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		        <div class="that-twitter-embed-thingy">
+    		        <%= tweet[:embed_html] %>
+    		        </div>
     		      </li>
     		    <% end %>
     		    </ol>

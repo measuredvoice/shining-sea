@@ -38,7 +38,7 @@
               <span class="superscript">#</span><%= @item[:daily_rank] %>
             </div>
             <div class="col-lg-9 col-9 rank-details">
-              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from <%= @item[:daily_bucket] %> U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
+              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from  U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
             </div>
           </div>
         </div>

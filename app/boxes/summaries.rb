@@ -56,7 +56,7 @@ Boxer.box(:tweet_summary) do |box, ts|
       :mv_score     => ts.mv_score,
       :daily_next   => ts.daily_next ? Boxer.ship(:tweet_summary, ts.daily_next) : nil,
       :daily_prev   => ts.daily_prev ? Boxer.ship(:tweet_summary, ts.daily_prev) : nil,
-      :embed        => ts.embed,
+      :embed_html   => ts.embed_html,
     }
   end
 end
