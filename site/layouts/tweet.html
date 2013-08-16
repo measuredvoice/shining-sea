@@ -4,7 +4,7 @@
     <script type="text/javascript" src="http://use.typekit.com/bvc1jkf.js"></script>
   	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   	
-    <title>Great Gov Tweets</title>
+    <title>Great Gov Tweets - #<%= @item[:daily_rank] %> on <%= pretty_date(@item[:date]) %> from @<%= @item[:screen_name] %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -24,8 +24,8 @@
       <div class="container">
         <div class="row">
           <div class="brand col-lg-8 col-12">
-            <h1>Great Gov Tweets</h1>
-            <h3 class="tagline">Using data to highlight great government communication. From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+            <h1><a href="/">Great Gov Tweets</a></h1>
+            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
           </div>
         </div>
       </div>
@@ -46,6 +46,18 @@
         <div class="col-lg-6 col-12 pull-right the-tweet">
           <!-- Twitter embed HTML goes here -->
           <%= yield %>
+          <!-- <div class="mv-ads">
+            <div class="col-6 col-lg-6 col-sm-6">
+              <div class="mv-ad1">
+                <p>iFrame</p>
+              </div>
+            </div>
+            <div class="col-6 col-lg-6 col-sm-6">
+              <div class="mv-ad2">
+                <p>iFrame</p>
+              </div>
+            </div>
+          </div> -->
         </div>
         
         <div class="col-lg-6 col-12">
@@ -58,22 +70,7 @@
               <span class="reach-total"><i class="icon-bullhorn"></i><span class="big-number"><%= pretty_number(@item[:reach]) %>  <%= pluralize(@item[:reach], 'person', 'people') %></span></span>
             </p>
           </div>
-        </div>
-
-        <!-- <div class="col-lg-6 col-12 pull-right mv-ads">
-          <div class="col-6 col-lg-6 col-sm-6">
-            <div class="mv-ad1">
-              <p>iFrame</p>
-            </div>
-          </div>
-          <div class="col-6 col-lg-6 col-sm-6">
-            <div class="mv-ad2">
-              <p>iFrame</p>
-            </div>
-          </div>
-        </div> -->
-
-        <div class="col-lg-6 col-12">
+          <hr>
           <div class="tweet-navigation">
             <p>Other top Tweets from similarly-sized U.S. government accounts on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
@@ -82,28 +79,37 @@
                 <div class="col-lg-6 col-6">
                   <span class="navigation-number">
                     &lsaquo; <%= @item[:daily_prev][:daily_rank] %>
-                  </span>
+                  </span><br>
                   <span class="navigation-name">
                     by @<%= @item[:daily_prev][:screen_name] %>
                   </span>
                 </div>
               </a>
+              <% else %>
+                <div class="col-lg-6 col-6">
+                  
+                </div>
               <% end %>
               <% if @item[:daily_next] %>
               <a href="<%= tweet_path(item[:daily_next]) %>" class="next">
                 <div class="col-lg-6 col-6">
-                  <span class="navigation-name">
-                    by @<%= @item[:daily_next][:screen_name] %>
-                  </span>
                   <span class="navigation-number">
                     <%= @item[:daily_next][:daily_rank] %> &rsaquo;
+                  </span><br>
+                  <span class="navigation-name pull-right">
+                    by @<%= @item[:daily_next][:screen_name] %>
                   </span>
                 </div>
               </a>
+              <% else %>
+                <div class="col-lg-6 col-6">
+                  
+                </div>
               <% end %>
             </div>
           </div>
         </div>
+
   				<!-- <div class="row score-rank">
   				  <div class="col-lg-6 col-6">
   				    <span class="mv-score">MV Score: <%= @item[:mv_score] %></span>
@@ -116,17 +122,44 @@
   				</div> -->
       </div>
       <hr>
-      <footer>
-        &copy; 2013 Measured Voice
-      </footer>
     </div>
   </div>
-    <!-- JavaScript plugins (requires jQuery) -->
-    <script src="http://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/assets/js/bootstrap.min.js"></script>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <p>&copy; 2013 Measured Voice</p>
+          <hr>
+          <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
+          <hr>
+          <div class="row">
+            <div class="col-lg-6 col-12">
+              <p><b>What is this?</b></p>
+              <p>Every day, we look at every tweet sent by official U.S. government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here. We use <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry API</a> to gather the accounts we look at.</p>
+              <p>This site is in early beta, so keep checking back for updates.</p>
+              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- JavaScript plugins (requires jQuery) -->
+  <script src="http://code.jquery.com/jquery.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/assets/js/bootstrap.min.js"></script>
 
-    <!-- Optionally enable responsive features in IE8 -->
-    <script src="/assets/js/respond.js"></script>
+  <!-- Optionally enable responsive features in IE8 -->
+  <script src="/assets/js/respond.js"></script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-12846866-10', 'measuredvoice.com');
+    ga('send', 'pageview');
+
+  </script>
   </body>
 </html>

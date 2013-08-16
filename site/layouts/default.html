@@ -4,7 +4,7 @@
     <script type="text/javascript" src="http://use.typekit.com/bvc1jkf.js"></script>
   	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
   	
-    <title>Great Gov Tweets</title>
+    <title>Great Gov Tweets from <%= pretty_date(@item[:date]) %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -13,67 +13,106 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
+  	<div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <span id="mv-logo"><a href="http://measuredvoice.com">Measured Voice, the only social media management tool designed for government.</a></span>  
+        </div>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="container">
+        <div class="row">
+          <div class="brand col-lg-8 col-12">
+            <h1>Great Gov Tweets</h1>
+            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
 	<div class="container">
-		<div class="row">
+		<div class="row tweet-lists">
 		  <div class="col-12">
-			  <h1>Great Gov Tweets</h1>
-			  <hr>
+		    <p>Most engaging tweets from <%= pretty_date(@item[:date]) %>. Categories based on size of audience.</p>
+        <div class="row">
+          <div class="top-tweet-column col-12">
+            <h3>Extremely Large</h3>
+    		    <ol>
+    		    <% @item[:extremely_large][:tweets].first(10).each do |tweet| %>
+    		      <li>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		      </li>
+    		    <% end %>
+    		    </ol>
+          </div>
+
+          <div class="top-tweet-column col-12">
+    		    <h3>Very Large</h3>
+    		    <ol>
+    		    <% @item[:very_large][:tweets].first(10).each do |tweet| %>
+    		      <li>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		      </li>
+    		    <% end %>
+    		    </ol>
+          </div>
+
+          <div class="top-tweet-column col-12">
+    		    <h3>Large</h3>
+    		    <ol>
+    		    <% @item[:large][:tweets].first(10).each do |tweet| %>
+    		      <li>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		      </li>
+    		    <% end %>
+    		    </ol>
+          </div>
+
+          <div class="top-tweet-column col-12">
+    		    <h3>Medium-sized</h3>
+    		    <ol>
+    		    <% @item[:medium_sized][:tweets].first(10).each do |tweet| %>
+    		      <li>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		      </li>
+    		    <% end %>
+    		    </ol>
+          </div>
+
+          <div class="top-tweet-column col-12">
+    		    <h3>Small</h3>
+    		    <ol>
+    		    <% @item[:small][:tweets].first(10).each do |tweet| %>
+    		      <li>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		      </li>
+    		    <% end %>
+    		    </ol>
+          </div>
+        </div>
 			</div>
 		</div>
-		
-		<div class="row">
-		  <div class="col-12">
-		    <p>Tweets from <%= pretty_date(@item[:date]) %></p>
-		    
-		    <h2>Extremely Large</h3>
-		    <ol>
-		    <% @item[:extremely_large][:tweets].first(10).each do |tweet| %>
-		      <li>
-		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-		      </li>
-		    <% end %>
-		    </ol>
-
-		    <h2>Very Large</h3>
-		    <ol>
-		    <% @item[:very_large][:tweets].first(10).each do |tweet| %>
-		      <li>
-		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-		      </li>
-		    <% end %>
-		    </ol>
-
-		    <h2>Large</h3>
-		    <ol>
-		    <% @item[:large][:tweets].first(10).each do |tweet| %>
-		      <li>
-		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-		      </li>
-		    <% end %>
-		    </ol>
-
-		    <h2>Medium</h3>
-		    <ol>
-		    <% @item[:medium_sized][:tweets].first(10).each do |tweet| %>
-		      <li>
-		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-		      </li>
-		    <% end %>
-		    </ol>
-
-		    <h2>Small</h3>
-		    <ol>
-		    <% @item[:small][:tweets].first(10).each do |tweet| %>
-		      <li>
-		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
-		      </li>
-		    <% end %>
-		    </ol>
-			</div>
-		</div>
-
-	  <footer>&copy; 2013 Measured Voice</footer>
 	</div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <p>&copy; 2013 Measured Voice</p>
+          <hr>
+          <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
+          <hr>
+          <div class="row">
+            <div class="col-lg-6 col-12">
+              <p><b>What is this?</b></p>
+              <p>Every day, we look at every tweet sent by official U.S. government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here. We use <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry API</a> to gather the accounts we look at.</p>
+              <p>This site is in early beta, so keep checking back for updates.</p>
+              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
     <!-- JavaScript plugins (requires jQuery) -->
     <script src="http://code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -81,5 +120,15 @@
 
     <!-- Optionally enable responsive features in IE8 -->
     <script src="/assets/js/respond.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-12846866-10', 'measuredvoice.com');
+      ga('send', 'pageview');
+
+    </script>
   </body>
 </html>

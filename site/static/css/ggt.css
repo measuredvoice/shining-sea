@@ -3,12 +3,25 @@ html, body {
   font-size: 16px;
 }
 
+html {
+  background-color: #104469;
+}
+
+body {
+  background-color: #FFF;
+}
+
+
 h1, h2, h3 {
 	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .jumbotron a {
 	color:#104469;
+}
+
+.brand h1 a {
+	color:#333;
 }
 .tweet-stats, .tweet-navigation {
 	padding:0 .5em 0 .8em;
@@ -26,9 +39,9 @@ h1, h2, h3 {
 
 .rank-number {
 	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 400%;
+	font-size: 290%;
 	text-align: center;
-	margin-top: -.2em;
+	vertical-align: middle;
 }
 
 .rank-number .superscript {
@@ -38,6 +51,7 @@ h1, h2, h3 {
 
 .rank-details {
 	border-left: 1px solid;
+	padding-top:.5em;
 }
 
 .rank-details p {
@@ -75,6 +89,10 @@ i.icon-bullhorn {
 	color:#0096D6;
 }
 
+.mv-ads {
+	margin:2em 0;
+}
+
 .mv-ad1, .mv-ad2 {
 	border-radius:5px;
 	background-color:#EFEFEF;
@@ -84,10 +102,18 @@ i.icon-bullhorn {
 .tweet-navigation .previous, .tweet-navigation .next {
 	color: #104469;
 	line-height: 1.1;
+  font-size: 80%;
+}
+
+@media screen and (min-width: 768px) {
+  .tweet-navigation .previous, .tweet-navigation .next {
+  	font-size: 100%;
+  }
 }
 
 .tweet-navigation a:hover, .jumbotron a:hover {
 	color: #0096D6;
+	text-decoration: none;
 }
 
 .tweet-navigation .next {
@@ -103,33 +129,87 @@ i.icon-bullhorn {
 	height:1.4em;
 	border-radius: 3px;
 	border: solid 1px;
+	margin-bottom: .3em;
 }
 
 footer {
-	margin-bottom: 50px;
+	padding: 1em 0 5em;
+	color:#FFF;
+	background-color: #104469;
+	overflow: auto;
+}
+
+footer a {
+	color:#FFFF77;
+}
+
+footer a:hover {
+	background-color: #FFFF77;
+	color:104469;
+	text-decoration: none;
 }
 
 #mv-logo a {
 	text-indent: -9000px;
 	display:block;
-	width:196px;
-	height:61px;
-	background-image: url('/assets/img/mv-logo-196x61.png');
-	position: absolute;
+	width:290px;
+	height:90px;
+	background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
+	background-size: 290px 90px;
+	position:absolute;
 	top:0;
-	right:15px;
 }
 
 iframe#twitter-widget-0 {
 	width:100%;
+	max-width: 100%;
 }
 
 .jumbotron {
-	padding-top:70px;
+	padding:90px 0 10px 0;
 }
 
 @media screen and (min-width: 768px) {
   .jumbotron {
-    padding: 30px 60px;
+    padding: 30px 0 10px 0;
     border-radius: 0;
   }
+  .rank-number {
+		font-size: 400%;
+		margin-top: -.2em;
+	}
+
+  .top-tweet-column {
+    float: left;
+   	width:20%;
+   	position: relative;
+  	min-height: 1px;
+  	padding-right: 15px;
+  	padding-left: 15px;
+  }
+  #mv-logo a {
+		text-indent: -9000px;
+		display:block;
+		width:200px;
+		height:62px;
+		background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
+		background-size: 200px 62px;
+		position:absolute;
+		top:0;
+		right:20px;
+	}
+}
+
+.top-tweet-column ol {
+	margin-left: 0;
+	padding-left: 1.5em;
+}
+
+.top-tweet-column h3 {
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.tweet-lists {
+	margin-bottom: 5em;
+}
