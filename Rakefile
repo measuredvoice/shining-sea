@@ -116,7 +116,29 @@ namespace :app do
   end
   
   desc "Generate weekly metrics summary data"
-  task :weekly_metrics do
+  task :weekly_metrics, [:end_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:end_date].present?
+      end_date = Time.zone.parse(params[:end_date])
+    else
+      # The end date should be the most recent date with metrics
+      end_date = 3.days.ago
+    end
+    puts "Summarizing weekly metrics ending #{end_date.strftime('%Y-%m-%d')}"
+            
+    summary = WeeklySummary.from_metrics(end_date)
+    
+    puts "screen name,audience,engagement,kudos,link"
+    summary.tweet_summaries.each do |ts|
+      row = [ts.screen_name, ts.audience, ts.engagement, ts.kudos, ts.link]
+      puts row.join(',')
+    end
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
   
   desc "Build and deploy daily HTML reports"
