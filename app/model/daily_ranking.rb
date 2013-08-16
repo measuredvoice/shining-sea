@@ -58,7 +58,8 @@ class DailyRanking < Model
   end
   
   def self.date_path(date)
-    "rankings/#{date.strftime('%Y/%m/%d')}"
+    # NOTE: remove the tmp/ after testing
+    "tmp/rankings/#{date.strftime('%Y/%m/%d')}"
   end  
 end
   

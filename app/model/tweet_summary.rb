@@ -30,7 +30,7 @@ class TweetSummary < Model
   
   def self.calculate_mv_score(tweet_metric)
     return 0 if tweet_metric.audience == 0
-    ((tweet_metric.kudos * 1.5 + tweet_metric.engagement) * 100000 / tweet_metric.audience).to_i
+    ((4.84 + tweet_metric.kudos * 1.5 + tweet_metric.engagement) * 100000 / (44000 + tweet_metric.audience)).to_i
   end
   
   def link
@@ -62,7 +62,8 @@ class TweetSummary < Model
   end
   
   def self.date_path(date)
-    "summaries/#{date.strftime('%Y/%m/%d')}"
+    # NOTE: remove the tmp/ after testing
+    "tmp/summaries/#{date.strftime('%Y/%m/%d')}"
   end
   
 end
