@@ -153,7 +153,6 @@ namespace :app do
     file_date = target_date.strftime('%Y-%m-%d')
     puts "Writing reports for #{file_date}"
     ranking = DailyRanking.from_ranking_file(target_date)
-    index_file = Boxer.ship(:daily_ranking, ranking)
           
     # Write the summary for each tweet
     prev_ts = nil;
@@ -194,11 +193,11 @@ namespace :app do
     copy_filename = "site/content/top10/#{file_date}.html"
     puts "Writing top 10 rankings to #{index_filename}..."
     File.open(index_filename, 'wb') do |file|
-      file.write(YAML.dump(index_file))
+      file.write(ranking.to_yaml)
       file.write("\n---\n")
     end
     File.open(copy_filename, 'wb') do |file|
-      file.write(YAML.dump(index_file))
+      file.write(ranking.to_yaml)
       file.write("\n---\n")
     end
 
