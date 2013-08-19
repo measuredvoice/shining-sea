@@ -1,7 +1,7 @@
 require './shining-sea'
 
 namespace :app do
-  desc "Gather recent metrics from the Twitter API"
+  desc "1 - Gather metrics from the Twitter API"
   task :collect_metrics, [:target_date] do |t, params|
     start_time = Time.zone.now
     
@@ -76,7 +76,7 @@ namespace :app do
       
   end
   
-  desc "Generate daily metrics summary data"
+  desc "2 - Generate daily metrics summary data"
   task :daily_metrics, [:target_date] do |t, params|
     start_time = Time.zone.now
     
@@ -139,7 +139,7 @@ namespace :app do
     puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
   
-  desc "Build and deploy daily HTML reports"
+  desc "3 - Build daily HTML content files (tweets and rankings)"
   task :daily_reports, [:target_date] do |t, params|
     start_time = Time.zone.now
     
@@ -151,10 +151,15 @@ namespace :app do
     end
     
     file_date = target_date.strftime('%Y-%m-%d')
-    puts "Writing reports for #{file_date}"
     ranking = DailyRanking.from_ranking_file(target_date)
+
+    puts "Clearing out old content files..."
+    puts %x(rm -r site/content/top10/*)
+    puts %x(rm -r site/content/top50/*)
+    puts %x(rm -r site/content/tweets/*)
           
     # Write the summary for each tweet
+    puts "Writing reports for #{file_date}"
     prev_ts = nil;
     unless Dir.exists?('site/content/tweets')
       Dir.mkdir('site/content/tweets')
@@ -190,11 +195,15 @@ namespace :app do
     
     # Write the index file for this week
     index_filename = "site/content/index.html"
-    copy_filename = "site/content/top10/#{file_date}.html"
-    puts "Writing top 10 rankings to #{index_filename}..."
+    copy_filename = "site/content/top50/#{file_date}.html"
+    puts "Writing top-50 rankings to #{index_filename}..."
     File.open(index_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
       file.write("\n---\n")
+    end
+    puts "Writing dated top-50 rankings to #{copy_filename}..."
+    unless Dir.exists?('site/content/top50')
+      Dir.mkdir('site/content/top50')
     end
     File.open(copy_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
@@ -207,7 +216,7 @@ namespace :app do
     puts "Wrote reports in #{elapsed} seconds."
   end
   
-  desc "Compile HTML for the current set of reports" 
+  desc "4 - Compile HTML for the current set of reports" 
   task :compile_html do
     start_time = Time.zone.now
     
@@ -220,7 +229,7 @@ namespace :app do
     puts "Done. Compiled in #{elapsed} seconds."
   end
   
-  desc "Deploy HTML changes to the site" 
+  desc "5 - Deploy HTML changes to the site" 
   task :deploy_html do
     start_time = Time.zone.now
     
@@ -233,7 +242,7 @@ namespace :app do
     files += Dir.glob("*/status/*/index.html")
     
     # Then write the top-10 lists
-    files += Dir.glob("top10/*/index.html")
+    files += Dir.glob("top50/*/index.html")
     
     # Then write the assets
     files += Dir.glob("assets/**/*.*")
