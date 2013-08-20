@@ -5,7 +5,7 @@ class DailyRanking < Model
   def self.from_summary(summary)
     self.new(
       :date          => summary.date,
-      :ranked_tweets => summary.ranked_tweets.first(100),
+      :ranked_tweets => summary.ranked_tweets.first(250),
     )
   end
   
