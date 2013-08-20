@@ -62,8 +62,7 @@ class TweetSummary < Model
   end
   
   def self.date_path(date)
-    # NOTE: remove the tmp/ after testing
-    "tmp/summaries/#{date.strftime('%Y/%m/%d')}"
+    "summaries/#{date.strftime('%Y/%m/%d')}"
   end
   
 end
