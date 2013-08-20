@@ -189,9 +189,11 @@ footer a:hover {
 
 .top-tweet-column ol > li a.details-link {
   color: #104469;
+  min-width:300px;
+  max-width:474px;
+  width:100%;
   position:absolute;
   display:inline-block;
-  width:100%;
   padding-right: .2em;
   text-align: right;
   font-size: 160%;
@@ -254,7 +256,8 @@ footer a:hover {
   .top-tweet-column ol > li a.details-link {
     color: #104469;
     position:absolute;
-    width:4em;
+    min-width:4em;
+    max-width:4em;
     display:inline-block;
     text-align:center;
     top:0;
