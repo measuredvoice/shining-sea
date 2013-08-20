@@ -72,7 +72,7 @@
           </div>
           <hr>
           <div class="tweet-navigation">
-            <p>Other top Tweets from similarly-sized U.S. government accounts on <%= pretty_date(@item[:date]) %>:</p>
+            <p>Other top Tweets from U.S. government Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
               <% if @item[:daily_prev] %>
               <a href="<%= tweet_path(item[:daily_prev]) %>" class="previous">

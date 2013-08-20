@@ -160,19 +160,51 @@ footer a:hover {
 	top:0;
 }
 
-iframe#twitter-widget-0 {
-	width:100%;
-	max-width: 100%;
-}
-
 .jumbotron {
 	padding:90px 0 10px 0;
+}
+
+.top-tweet-column ol {
+  counter-reset: li;
+  padding-left:0;
+  margin:4em 0 0 0;
+}
+
+.top-tweet-column ol > li {
+  position:relative;
+  margin: 2em 0 4em 0;
+  list-style: none; 
+}
+
+.top-tweet-column ol > li:before {
+  content:"#" counter(li); 
+  counter-increment:li;
+  color: #104469;
+  position:absolute;
+  top:-1.5em;
+  left:.2em;
+  font-size: 160%;
+  font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.top-tweet-column ol > li a.details-link {
+  color: #104469;
+  font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  position:absolute;
+  display:inline-block;
+  width:100%;
+  padding-right: .2em;
+  text-align: right;
+  font-size: 160%;
+  top:-1.5em;
+  text-decoration: underline;
 }
 
 @media screen and (min-width: 768px) {
   .jumbotron {
     padding: 30px 0 10px 0;
     border-radius: 0;
+    margin-bottom: 0px;
   }
   .rank-number {
 		font-size: 400%;
@@ -180,9 +212,6 @@ iframe#twitter-widget-0 {
 	}
 
   .top-tweet-column {
-    float: left;
-   	width:20%;
-   	position: relative;
   	min-height: 1px;
   	padding-right: 15px;
   	padding-left: 15px;
@@ -198,18 +227,48 @@ iframe#twitter-widget-0 {
 		top:0;
 		right:20px;
 	}
-}
+  
+  .top-tweet-column ol {
+    margin:2em 0 0 0;
+  }  
 
-.top-tweet-column ol {
-	margin-left: 0;
-	padding-left: 1.5em;
-}
+  .top-tweet-column ol > li {
+    margin: 0 0 4em 6em;
+  }  
 
-.top-tweet-column h3 {
-	font-size: 100%;
-	font-weight: bold;
-}
+  .top-tweet-column ol > li:before {
+    content:"#" counter(li); 
+    counter-increment:li;
+    color: #104469;
+    position:absolute;
+    top:0;
+    left:-2em;
+    margin-right:8px;
+    font-size: 300%;
+    font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-align:center;
+    border-radius: 5px;
+    border: 1px solid;
+    width:1.7em;
+  }  
 
-.tweet-lists {
-	margin-bottom: 5em;
+  .top-tweet-column ol > li a.details-link {
+    color: #104469;
+    font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    position:absolute;
+    width:4em;
+    display:inline-block;
+    text-align:center;
+    top:0;
+    left:-4.9em;
+    padding:4em 0 4em 0;
+    font-size: 1.2em;
+    text-decoration: underline;
+  }  
+
+  .top-tweet-column ol > li a.details-link:hover {
+    color:#0096D6;
+    text-decoration: none;
+  }
+
 }

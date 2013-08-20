@@ -33,20 +33,25 @@
 	<div class="container">
 		<div class="row tweet-lists">
 		  <div class="col-12">
-		    <p>Most engaging tweets from <%= pretty_date(@item[:date]) %>. Categories based on size of audience.</p>
-        <div class="row">
-          <div class="top-tweet-column col-12">
-            <h3>Everything!</h3>
-    		    <ol>
+		    <div class="row">
+          <div class="top-tweet-column col-12 col-lg-6">
+            <h3>Top U.S. government tweets from <%= pretty_date(@item[:date]) %></h3>
+            <ol>
     		    <% @item[:tweets].first(50).each do |tweet| %>
     		      <li>
-    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/"><%= tweet[:screen_name] %></a>
+    		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/" class="details-link">More details</a>
     		        <div class="that-twitter-embed-thingy">
     		        <%= tweet[:embed_html] %>
     		        </div>
     		      </li>
     		    <% end %>
     		    </ol>
+          </div>
+          <div class="col-12 col-offset-1 col-lg-5">
+            <h3>What is this?</h3>
+            <p>Every day, we look at every tweet sent by official U.S. government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here. We use <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry API</a> to gather the accounts we look at.</p>
+            <p>This site is in early beta, so keep checking back for updates.</p>
+            <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
           </div>
         </div>
 			</div>
@@ -60,14 +65,6 @@
           <hr>
           <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
           <hr>
-          <div class="row">
-            <div class="col-lg-6 col-12">
-              <p><b>What is this?</b></p>
-              <p>Every day, we look at every tweet sent by official U.S. government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here. We use <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry API</a> to gather the accounts we look at.</p>
-              <p>This site is in early beta, so keep checking back for updates.</p>
-              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
