@@ -44,7 +44,7 @@ class DailyRanking < Model
   end
   
   def self.filename(date)
-    "#{date_path(date)}/daily-top-250.json"
+    "#{date_path(date)}/daily-top-ranked.json"
   end
   
   def self.date_path(date)
