@@ -189,7 +189,6 @@ footer a:hover {
 
 .top-tweet-column ol > li a.details-link {
   color: #104469;
-  font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
   position:absolute;
   display:inline-block;
   width:100%;
@@ -254,7 +253,6 @@ footer a:hover {
 
   .top-tweet-column ol > li a.details-link {
     color: #104469;
-    font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
     position:absolute;
     width:4em;
     display:inline-block;
