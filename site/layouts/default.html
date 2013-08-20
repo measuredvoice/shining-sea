@@ -36,6 +36,19 @@
 		    <div class="row">
           <div class="top-tweet-column col-12 col-lg-6">
             <h3>Top U.S. government tweets from <%= pretty_date(@item[:date]) %></h3>
+            
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                &lsaquo; <%= date_link(@item[:date], :previous) %>
+              </div>
+            
+              <div class="col-lg-6 col-6">
+                <% if @item.identifier != '/' %>
+                <span class="pull-right"><%= date_link(@item[:date], :next) %> &rsaquo;</span>
+                <% end %>
+              </div>
+            </div>
+            
             <ol>
     		    <% @item[:tweets].first(50).each do |tweet| %>
     		      <li>
