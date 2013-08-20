@@ -220,6 +220,9 @@ namespace :app do
   task :compile_html do
     start_time = Time.zone.now
     
+    puts "Clearing out old output files..."
+    puts %x(rm -r site/output/*)
+          
     puts "Compiling HTML..."
     puts %x(cd site && nanoc compile)
     
