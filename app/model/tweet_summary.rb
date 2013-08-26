@@ -37,6 +37,10 @@ class TweetSummary < Model
     "https://twitter.com/#{screen_name}" + "/status/#{tweet_id}"  
   end
     
+  def our_link
+    "http://#{ENV['AWS_BUCKET']}/#{screen_name}/status/#{tweet_id}"  
+  end
+    
   def determine_pct(tweet_summaries)
     Rank.percentile(self, tweet_summaries) {|ts| ts.mv_score}
   end

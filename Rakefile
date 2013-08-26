@@ -270,6 +270,70 @@ namespace :app do
   desc "Build and deploy weekly HTML reports"
   task :weekly_reports do
   end
+  
+  desc "Retweet and congratulate the day's top tweets"
+  task :retweet_top_tweets do
+    retweeter = Twitter::Client.new(
+      :oauth_token => ENV['TWITTER_RETWEETER_KEY'],
+      :oauth_token_secret => ENV['TWITTER_RETWEETER_SECRET']
+    )
+
+    start_time = Time.zone.now
+    
+    ranking = DailyRanking.from_ranking_file(3.days.ago)
+    retweet_count = 0
+    retweet_limit = 50
+    congrats_count = 0
+    congrats_limit = 10
+    congratulated = {}
+    ranking.ranked_tweets.first(retweet_limit).each do |ts|
+      puts "Retweeting #{ts.tweet_id}..."
+      begin
+        rt = retweeter.retweet(ts.tweet_id)
+      rescue Exception => e
+        puts "  Can't retweet: #{e}"
+      end
+      
+      if rt.nil? || rt.empty?
+        puts "...no retweet."
+      else
+        retweet_count += 1
+        puts "...done."
+        sleep 5.minutes
+      end
+      
+      if congratulated[ts.screen_name]
+        puts "Already congratulated #{ts.screen_name}. Skipping..."
+      elsif congrats_count >= congrats_limit
+        puts "Already congratulated #{congrats_limit} accounts. Skipping..."
+      else
+        puts "Congratulating #{ts.screen_name}..."
+        if ENV['THIS_IS_PRODUCTION']
+          screen_name = ts.screen_name
+          tweet_id = ts.tweet_id
+        else
+          puts "  using test data..."
+          screen_name = 'jedsundwall'
+          tweet_id = '370782242488188928'
+        end
+        
+        tweet_text = "@#{screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} on #{ts.date.strftime('%b %-d')}.)"
+        puts "  " + tweet_text
+        
+        retweeter.update(tweet_text, {:in_reply_to_status_id => tweet_id})
+        
+        congratulated[ts.screen_name] = true
+        congrats_count += 1
+        puts "...done."
+        sleep 5.minutes
+      end
+    end    
+
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Done. Retweeted #{retweet_count} and congratulated #{congrats_count} in #{elapsed} seconds."
+  end
 end
 
 namespace :test do
