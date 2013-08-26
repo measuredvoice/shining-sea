@@ -317,10 +317,14 @@ namespace :app do
           tweet_id = '370782242488188928'
         end
         
-        tweet_text = "@#{screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} on #{ts.date.strftime('%b %-d')}.)"
+        tweet_text = "@#{screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} for #{ts.date.strftime('%b %-d')}.)"
         puts "  " + tweet_text
         
-        retweeter.update(tweet_text, {:in_reply_to_status_id => tweet_id})
+        begin
+          retweeter.update(tweet_text, {:in_reply_to_status_id => tweet_id})
+        rescue Exception => e
+          puts "  Can't reply: #{e}"
+        end
         
         congratulated[ts.screen_name] = true
         congrats_count += 1

@@ -13,7 +13,7 @@ ENV['TWITTER_CLIENT_SECRET'] = "your twitter oauth client secret"
 # ENV['TWITTER_RETWEETER_SECRET'] = ""
 
 # Turn on retweeting/congratulating only in production
-# ENV['THIS_IS_PRODUCTION'] = true
+# ENV['THIS_IS_PRODUCTION'] = "true"
 
 ENV['AWS_ACCESS_KEY'] = "your AWS S3 access key"
 ENV['AWS_SECRET_ACCESS_KEY'] = "your AWS S3 access secret"
