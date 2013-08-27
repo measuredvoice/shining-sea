@@ -284,7 +284,7 @@ namespace :app do
     retweet_count = 0
     retweet_limit = 50
     congrats_count = 0
-    congrats_limit = 10
+    congrats_limit = 20
     congratulated = {}
     ranking.ranked_tweets.first(retweet_limit).each do |ts|
       puts "Retweeting #{ts.tweet_id}..."
