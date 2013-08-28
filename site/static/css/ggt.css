@@ -11,6 +11,8 @@ body {
   background-color: #FFF;
 }
 
+a{color:#003366;text-decoration:none;}
+a:hover{color:#00adda;text-decoration:underline;}
 
 h1, h2, h3 {
 	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -19,6 +21,7 @@ h1, h2, h3 {
 .jumbotron a {
 	color:#104469;
 }
+
 
 .brand h1 a {
 	color:#333;
@@ -89,7 +92,7 @@ i.icon-bullhorn {
 	color:#0096D6;
 }
 
-.mv-ads {
+/*.mv-ads {
 	margin:2em 0;
 }
 
@@ -97,6 +100,20 @@ i.icon-bullhorn {
 	border-radius:5px;
 	background-color:#EFEFEF;
 	height:140px;
+}
+*/
+
+iframe {
+  width:100%;
+}
+
+iframe.mv-ad {
+  border:none;
+  height: 160px;
+}
+
+.home-intro iframe.mv-ad {
+  margin-left: -15px;
 }
 
 .tweet-navigation .previous, .tweet-navigation .next {
@@ -133,6 +150,7 @@ i.icon-bullhorn {
 }
 
 footer {
+  margin-top:15px;
 	padding: 1em 0 5em;
 	color:#FFF;
 	background-color: #104469;
@@ -191,12 +209,12 @@ footer a:hover {
   color: #104469;
   min-width:300px;
   max-width:474px;
-  width:100%;
+  width:98%;
   position:absolute;
   display:inline-block;
   padding-right: .2em;
   text-align: right;
-  font-size: 160%;
+  font-size: 120%;
   top:-1.5em;
   text-decoration: underline;
 }
@@ -205,7 +223,7 @@ footer a:hover {
   .jumbotron {
     padding: 30px 0 10px 0;
     border-radius: 0;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
   }
   .rank-number {
 		font-size: 400%;
@@ -262,7 +280,7 @@ footer a:hover {
     text-align:center;
     top:0;
     left:-4.9em;
-    padding:4em 0 4em 0;
+    padding:4em 0 4em 10px;
     font-size: 1.2em;
     text-decoration: underline;
   }  
