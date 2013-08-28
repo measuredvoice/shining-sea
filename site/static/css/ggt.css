@@ -76,7 +76,7 @@ h1, h2, h3 {
 }
 
 .retweet-count i.icon-retweet, .favorite-count i.icon-star, .reach-total i.icon-bullhorn {
-	display:inline-block;
+	display:inline-block
 	width: 1.3em;
 }
 
