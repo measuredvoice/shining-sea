@@ -25,6 +25,11 @@ compile '/top10/*' do
   layout 'default'
 end
 
+compile '/iframes/*' do
+  filter :erb
+  layout 'iframe'
+end
+
 compile '*' do
   if item.binary?
     # don’t filter binary items
