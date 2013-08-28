@@ -247,6 +247,9 @@ namespace :app do
     # Then write the top-10 lists
     files += Dir.glob("top50/*/index.html")
     
+    # Then write the iframe files
+    files += Dir.glob("iframes/*/index.html")
+    
     # Then write the assets
     files += Dir.glob("assets/**/*.*")
     
