@@ -212,7 +212,7 @@ footer a:hover {
   width:98%;
   position:absolute;
   display:inline-block;
-  padding-right: .2em;
+  padding-right: .5em;
   text-align: right;
   font-size: 120%;
   top:-1.5em;
@@ -279,7 +279,7 @@ footer a:hover {
     display:inline-block;
     text-align:center;
     top:0;
-    left:-4.9em;
+    left:-5.1em;
     padding:4em 0 4em 10px;
     font-size: 1.2em;
     text-decoration: underline;
