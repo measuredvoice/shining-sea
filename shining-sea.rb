@@ -7,6 +7,7 @@ require 'aws-sdk'
 require 'multi_json'
 require 'boxer'
 require 'active_support/all'
+require 'csv'
 
 require_relative './config/too_many_secrets'
 

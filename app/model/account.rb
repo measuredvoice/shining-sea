@@ -2,25 +2,39 @@ class Account < Model
   attr_accessor :screen_name, :user_id, :name, :agency_id, :agency_name, :organization, :agencies, :followers
   
   def self.all
-    options = {:service_id => :twitter}
-    response = MultiJson.load(RestClient.get(endpoint, {:params => options}))
-    accounts = response['accounts']
-    if response['page_count'] > 1
-      (2..response['page_count']).each do |page_number|
-        accounts += MultiJson.load(RestClient.get(endpoint, {:params => options.merge(:page_number => page_number)}))['accounts']
+    if json_registry?
+      options = {:service_id => :twitter}
+      response = MultiJson.load(RestClient.get(endpoint, {:params => options}))
+      accounts = response['accounts']
+      if response['page_count'] > 1
+        (2..response['page_count']).each do |page_number|
+          accounts += MultiJson.load(RestClient.get(endpoint, {:params => options.merge(:page_number => page_number)}))['accounts']
+        end
       end
-    end
-    accounts.map do |a|
-      Account.from_registry(a)
+      accounts.map do |a|
+        Account.from_registry(a)
+      end
+    elsif csv_registry?
+      CSV.parse(RestClient.get(endpoint)).map do |row|
+        next unless row.first.present?
+        Account.new(:screen_name => row.first)
+      end      
+    else
+      puts "ERROR: No social-media registry found."      
+      []
     end
   end
   
   # TODO: Implement self.each with a yield block
     
   def self.first
-    options = {:service_id => :twitter}
-    response = MultiJson.load(RestClient.get(endpoint, {:params => options}))
-    Account.from_registry(response['accounts'].first)
+    if json_registry?
+      options = {:service_id => :twitter}
+      response = MultiJson.load(RestClient.get(endpoint, {:params => options}))
+      Account.from_registry(response['accounts'].first)
+    else
+      all.first
+    end
   end
   
   def self.from_registry(a)
@@ -74,6 +88,21 @@ class Account < Model
   end
   
   def self.endpoint
-    ENV['REGISTRY_API_HOST'] + '/accounts.json'
+    if json_registry?
+      ENV['REGISTRY_API_HOST'] + '/accounts.json'
+    elsif csv_registry?
+      ENV['REGISTRY_CSV_URL']
+    else
+      puts "ERROR: No social-media registry found."
+      nil
+    end
+  end
+  
+  def self.json_registry?
+    ENV['REGISTRY_API_HOST'].present?
+  end
+  
+  def self.csv_registry?
+    ENV['REGISTRY_CSV_URL'].present?
   end
 end
