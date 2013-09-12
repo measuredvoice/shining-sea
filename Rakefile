@@ -173,8 +173,8 @@ namespace :app do
       file.write("\n---\n")
     end
     puts "Writing dated top-#{top_n} rankings to #{copy_filename}..."
-    unless Dir.exists?('site/content/top#{top_n}')
-      Dir.mkdir('site/content/top#{top_n}')
+    unless Dir.exists?("site/content/top#{top_n}")
+      Dir.mkdir("site/content/top#{top_n}")
     end
     File.open(copy_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
