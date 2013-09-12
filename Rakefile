@@ -46,36 +46,6 @@ namespace :app do
     puts "Wrote #{files_written} files in #{elapsed} seconds."
   end
   
-  desc "Rank accounts by audience size"
-  task :rank_account_audience do
-    files = MetricsFile.where(:date => 2.days.ago)
-    
-    # Fix the followers count if needed
-    files.each do |metrics_file|
-      account = metrics_file.account
-      unless account.followers.present?
-        puts "Updating followers count for #{account.screen_name}..."
-        if metrics_file.tweets.count > 0
-          puts "  ...from tweet..."
-          account.followers = metrics_file.tweets.first.audience
-        else
-          puts "  ...from the Twitter API..."
-          account.get_twitter_details!
-          sleep 15.seconds
-        end
-        puts "...new count: #{account.followers}"
-      end
-    end
-    
-    puts "screen_name,followers"
-    files.sort {|a,b| b.account.followers <=> a.account.followers}.each do |f|
-      puts "#{f.account.screen_name},#{f.account.followers}"
-    end
-    
-    puts "...done."
-      
-  end
-  
   desc "2 - Generate daily metrics summary data"
   task :daily_metrics, [:target_date] do |t, params|
     start_time = Time.zone.now
@@ -340,6 +310,78 @@ namespace :app do
     
     elapsed = (end_time - start_time).to_i
     puts "Done. Retweeted #{retweet_count} and congratulated #{congrats_count} in #{elapsed} seconds."
+  end
+end
+
+namespace :setup do
+  desc "Rank accounts by audience size"
+  task :rank_account_audience do
+    files = MetricsFile.where(:date => 2.days.ago)
+    
+    # Fix the followers count if needed
+    files.each do |metrics_file|
+      account = metrics_file.account
+      unless account.followers.present?
+        puts "Updating followers count for #{account.screen_name}..."
+        if metrics_file.tweets.count > 0
+          puts "  ...from tweet..."
+          account.followers = metrics_file.tweets.first.audience
+        else
+          puts "  ...from the Twitter API..."
+          account.get_twitter_details!
+          sleep 15.seconds
+        end
+        puts "...new count: #{account.followers}"
+      end
+    end
+    
+    puts "screen_name,followers"
+    files.sort {|a,b| b.account.followers <=> a.account.followers}.each do |f|
+      puts "#{f.account.screen_name},#{f.account.followers}"
+    end
+    
+    puts "...done."
+      
+  end
+  
+  desc "Calculate the key values needed for the tweet MV score"
+  task :find_mv_score_values, [:end_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:end_date].present?
+      end_date = Time.zone.parse(params[:end_date])
+    else
+      # The end date should be the most recent date with metrics
+      end_date = 3.days.ago
+    end
+    puts "Summarizing weekly metrics ending #{end_date.strftime('%Y-%m-%d')}"
+            
+    summary = WeeklySummary.from_metrics(end_date)
+    
+    puts "Finding median score and standard deviation..."
+    scores = summary.tweet_summaries.map do |ts|
+      unscaled_score = ts.kudos * 1.5 + ts.engagement
+      scaled_score = ts.audience > 0 ? unscaled_score / ts.audience : 0
+      puts "{\"screen_name\": \"#{ts.screen_name}\", \"audience\": #{ts.audience}, \"kudos\": #{ts.kudos}, \"engagement\": #{ts.engagement}, \"unscaled_score\": #{unscaled_score}, \"scaled_score\": #{ts.mv_score}},"
+      scaled_score
+    end
+    
+    median = scores.sort.reverse[(scores.count / 2).to_i]
+    std_dev = (median - scores.sort.reverse[(0 - scores.count / 50).to_i]) / 2
+    
+    puts "Median: #{median}"
+    puts "Std dev: #{std_dev}"
+    
+    key_alpha = median ** 2 / std_dev ** 2
+    key_beta = median / std_dev ** 2 * 10 ** 5
+    
+    puts "ENV['SHINING_SEA_ALPHA'] = '#{key_alpha}'"
+    puts "ENV['SHINING_SEA_BETA']  = '#{key_beta}'"
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
 end
 

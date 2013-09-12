@@ -30,7 +30,7 @@ class TweetSummary < Model
   
   def self.calculate_mv_score(tweet_metric)
     return 0 if tweet_metric.audience == 0
-    ((4.84 + tweet_metric.kudos * 1.5 + tweet_metric.engagement) * 100000 / (44000 + tweet_metric.audience)).to_i
+    ((bayes_alpha + tweet_metric.kudos * 1.5 + tweet_metric.engagement) * 100000 / (bayes_beta + tweet_metric.audience)).to_i
   end
   
   def link
@@ -69,4 +69,11 @@ class TweetSummary < Model
     "summaries/#{date.strftime('%Y/%m/%d')}"
   end
   
+  def self.bayes_alpha
+    ENV['SHINING_SEA_ALPHA'].to_f
+  end
+  
+  def self.bayes_beta
+    ENV['SHINING_SEA_BETA'].to_f
+  end
 end
