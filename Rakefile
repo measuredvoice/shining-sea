@@ -120,12 +120,13 @@ namespace :app do
       target_date = 3.days.ago
     end
     
+    top_n = ENV['SHINING_SEA_TOP_N'] || 50
+    
     file_date = target_date.strftime('%Y-%m-%d')
     ranking = DailyRanking.from_ranking_file(target_date)
 
     puts "Clearing out old content files..."
-    puts %x(rm -r site/content/top10/*)
-    puts %x(rm -r site/content/top50/*)
+    puts %x(rm -r site/content/top#{top_n}/*)
     puts %x(rm -r site/content/tweets/*)
           
     # Write the summary for each tweet
@@ -165,15 +166,15 @@ namespace :app do
     
     # Write the index file for this week
     index_filename = "site/content/index.html"
-    copy_filename = "site/content/top50/#{file_date}.html"
-    puts "Writing top-50 rankings to #{index_filename}..."
+    copy_filename = "site/content/top#{top_n}/#{file_date}.html"
+    puts "Writing top-#{top_n} rankings to #{index_filename}..."
     File.open(index_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
       file.write("\n---\n")
     end
-    puts "Writing dated top-50 rankings to #{copy_filename}..."
-    unless Dir.exists?('site/content/top50')
-      Dir.mkdir('site/content/top50')
+    puts "Writing dated top-#{top_n} rankings to #{copy_filename}..."
+    unless Dir.exists?('site/content/top#{top_n}')
+      Dir.mkdir('site/content/top#{top_n}')
     end
     File.open(copy_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
@@ -207,6 +208,7 @@ namespace :app do
     start_time = Time.zone.now
     
     s3_bucket = DailySummary.s3_bucket
+    top_n = ENV['SHINING_SEA_TOP_N'] || 50
 
     Dir.chdir('site/output')
     file_count = 0
@@ -214,8 +216,8 @@ namespace :app do
     # Write all the tweet summaries first
     files += Dir.glob("*/status/*/index.html")
     
-    # Then write the top-10 lists
-    files += Dir.glob("top50/*/index.html")
+    # Then write the top-N lists
+    files += Dir.glob("top#{top_n}/*/index.html")
     
     # Then write the iframe files
     files += Dir.glob("iframes/*/index.html")
@@ -253,11 +255,13 @@ namespace :app do
 
     start_time = Time.zone.now
     
+    top_n = ENV['SHINING_SEA_TOP_N'] || 50
+    
     ranking = DailyRanking.from_ranking_file(3.days.ago)
     retweet_count = 0
-    retweet_limit = 50
+    retweet_limit = top_n
     congrats_count = 0
-    congrats_limit = 50
+    congrats_limit = top_n
     congratulated = {}
     ranking.ranked_tweets.first(retweet_limit).each do |ts|
       puts "Retweeting #{ts.tweet_id}..."
