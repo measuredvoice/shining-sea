@@ -8,7 +8,8 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      target_date = 2.days.ago
+      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      target_date = default_offset.days.ago
     end
     puts "Collecting metrics from #{target_date.strftime('%Y-%m-%d')}"
     
@@ -53,8 +54,8 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      # This process will almost always run the day after collecting metrics
-      target_date = 3.days.ago
+      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      target_date = default_offset.days.ago
     end
     puts "Summarizing metrics from #{target_date.strftime('%Y-%m-%d')}"
             
@@ -90,8 +91,8 @@ namespace :app do
     if params[:end_date].present?
       end_date = Time.zone.parse(params[:end_date])
     else
-      # The end date should be the most recent date with metrics
-      end_date = 3.days.ago
+      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      target_date = default_offset.days.ago
     end
     puts "Summarizing weekly metrics ending #{end_date.strftime('%Y-%m-%d')}"
             
@@ -116,8 +117,8 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      # This process will almost always run the day after collecting metrics
-      target_date = 3.days.ago
+      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      target_date = default_offset.days.ago
     end
     
     top_n = ENV['SHINING_SEA_TOP_N'] || 50
