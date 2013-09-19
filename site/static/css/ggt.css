@@ -109,7 +109,7 @@ iframe {
 
 iframe.mv-ad {
   border:none;
-  height: 160px;
+  height: 450px;
 }
 
 .home-intro iframe.mv-ad {
@@ -151,7 +151,7 @@ iframe.mv-ad {
 
 footer {
   margin-top:15px;
-	padding: 1em 0 5em;
+	padding: 2em 0 5em;
 	color:#FFF;
 	background-color: #104469;
 	overflow: auto;

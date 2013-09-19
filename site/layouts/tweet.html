@@ -24,7 +24,7 @@
         <div class="row">
           <div class="brand col-lg-8 col-12">
             <h1><a href="/">Great NAGW Tweets</a></h1>
-            <h3 class="tagline">Using data to highlight great local government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+            <h3 class="tagline">Using data to highlight great Tweets from <a href="http://beta.nagw.org">NAGW 2013</a> atendees.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
               <span class="superscript">#</span><%= @item[:daily_rank] %>
             </div>
             <div class="col-lg-9 col-9 rank-details">
-              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from  local government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
+              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from NAGW 2013 attendees <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
             </div>
           </div>
         </div>
@@ -45,12 +45,11 @@
         <div class="col-lg-6 col-12 pull-right the-tweet">
           <!-- Twitter embed HTML goes here -->
           <%= yield %>
-          <iframe src="/iframes/1" class="mv-ad" id="iframe1"></iframe>
         </div>  
         <div class="col-lg-6 col-12">
           <div class="tweet-stats">
             <p>
-              Within its first 2 days, this tweet received<br>
+              Within about a day of being posted, this Tweet received<br>
               </i><span class="retweet-count"><i class="icon-retweet"></i> <span class="big-number"><%= pretty_number(@item[:engagement]) %> <%= pluralize(@item[:engagement], 'retweet', 'retweets') %></span></span><br>
               <span class="favorite-count"><i class="icon-star"></i> <span class="big-number"><%= pretty_number(@item[:kudos]) %>  <%= pluralize(@item[:kudos], 'favorite', 'favorites') %></span></span><br>
               and reached a potential<br>
@@ -59,7 +58,7 @@
           </div>
           <hr>
           <div class="tweet-navigation">
-            <p>Other top Tweets from local government Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
+            <p>Other Tweets from NAGW attendee Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
               <% if @item[:daily_prev] %>
               <a href="<%= tweet_path(item[:daily_prev]) %>" class="previous">
@@ -96,6 +95,10 @@
             </div>
           </div>
         </div>
+        <div class="col-lg-6 col-12 pull-right">
+          <hr>
+          <iframe src="/iframes/1" class="mv-ad" id="iframe1"></iframe>
+        </div>
       </div>
     </div>
   </div>
@@ -103,18 +106,16 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12 col-12">
-          <p>&copy; 2013 Measured Voice</p>
-          <hr>
           <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
           <hr>
           <div class="row">
             <div class="col-lg-6 col-12">
               <p><b>What is this?</b></p>
-              <p>Every day, we look at every tweet sent by local government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here.</p>
-              <p>This site is in early beta, so keep checking back for updates.</p>
-              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
+              <p>Every day, we look at every tweet sent by Twitter accounts from the organizations that will attend the <a href="http://beta.nagw.com/">2013 Conference of the National Association of Government Web Professionals</a> (NAGW). We score them all based on retweets, favorites, and the size of their audience and present the results here.</p>
+              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com.</p>
             </div>
           </div>
+          <p>&copy; 2013 Measured Voice</p>
         </div>
       </div>
     </div>

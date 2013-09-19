@@ -10,10 +10,14 @@ html {
 body {
   background-color: #FFF;
 }
+.nagwiframe h5 {
+  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+}
 
-
-h1, h2, h3 {
-	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+.nagwiframe img {
+  width:100%;
 }
 
 #mc_embed_signup form {
