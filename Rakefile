@@ -121,7 +121,7 @@ namespace :app do
       target_date = default_offset.days.ago
     end
     
-    top_n = ENV['SHINING_SEA_TOP_N'] || 50
+    top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
     
     file_date = target_date.strftime('%Y-%m-%d')
     ranking = DailyRanking.from_ranking_file(target_date)
@@ -209,7 +209,7 @@ namespace :app do
     start_time = Time.zone.now
     
     s3_bucket = DailySummary.s3_bucket
-    top_n = ENV['SHINING_SEA_TOP_N'] || 50
+    top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
 
     Dir.chdir('site/output')
     file_count = 0
@@ -256,9 +256,10 @@ namespace :app do
 
     start_time = Time.zone.now
     
-    top_n = ENV['SHINING_SEA_TOP_N'] || 50
+    top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
     
-    ranking = DailyRanking.from_ranking_file(3.days.ago)
+    default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+    ranking = DailyRanking.from_ranking_file(default_offset.days.ago)
     retweet_count = 0
     retweet_limit = top_n
     congrats_count = 0
