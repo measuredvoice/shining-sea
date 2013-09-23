@@ -120,14 +120,12 @@ namespace :app do
       default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
       target_date = default_offset.days.ago
     end
-    
-    top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
-    
+        
     file_date = target_date.strftime('%Y-%m-%d')
     ranking = DailyRanking.from_ranking_file(target_date)
 
     puts "Clearing out old content files..."
-    puts %x(rm -r site/content/top#{top_n}/*)
+    puts %x(rm -r site/content/top/*)
     puts %x(rm -r site/content/tweets/*)
           
     # Write the summary for each tweet
@@ -167,15 +165,15 @@ namespace :app do
     
     # Write the index file for this week
     index_filename = "site/content/index.html"
-    copy_filename = "site/content/top#{top_n}/#{file_date}.html"
-    puts "Writing top-#{top_n} rankings to #{index_filename}..."
+    copy_filename = "site/content/top/#{file_date}.html"
+    puts "Writing top rankings to #{index_filename}..."
     File.open(index_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
       file.write("\n---\n")
     end
-    puts "Writing dated top-#{top_n} rankings to #{copy_filename}..."
-    unless Dir.exists?("site/content/top#{top_n}")
-      Dir.mkdir("site/content/top#{top_n}")
+    puts "Writing dated top rankings to #{copy_filename}..."
+    unless Dir.exists?("site/content/top")
+      Dir.mkdir("site/content/top")
     end
     File.open(copy_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
@@ -209,7 +207,6 @@ namespace :app do
     start_time = Time.zone.now
     
     s3_bucket = DailySummary.s3_bucket
-    top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
 
     Dir.chdir('site/output')
     file_count = 0
@@ -218,7 +215,7 @@ namespace :app do
     files += Dir.glob("*/status/*/index.html")
     
     # Then write the top-N lists
-    files += Dir.glob("top#{top_n}/*/index.html")
+    files += Dir.glob("top/*/index.html")
     
     # Then write the iframe files
     files += Dir.glob("iframes/*/index.html")
@@ -287,20 +284,12 @@ namespace :app do
         puts "Already congratulated #{congrats_limit} accounts. Skipping..."
       else
         puts "Congratulating #{ts.screen_name}..."
-        if ENV['THIS_IS_PRODUCTION']
-          screen_name = ts.screen_name
-          tweet_id = ts.tweet_id
-        else
-          puts "  using test data..."
-          screen_name = 'jedsundwall'
-          tweet_id = '370782242488188928'
-        end
         
-        tweet_text = "@#{screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} for #{ts.date.strftime('%b %-d')}.)"
+        tweet_text = "@#{ts.screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} for #{ts.date.strftime('%b %-d')}.)"
         puts "  " + tweet_text
         
         begin
-          retweeter.update(tweet_text, {:in_reply_to_status_id => tweet_id})
+          retweeter.update(tweet_text, {:in_reply_to_status_id => ts.tweet_id})
         rescue Exception => e
           puts "  Can't reply: #{e}"
         end
