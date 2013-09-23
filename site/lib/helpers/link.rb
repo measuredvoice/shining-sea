@@ -13,6 +13,6 @@ module LinkHelper
       link_date = start_date + 1.day
     end
     
-    "<a href=\"/top50/#{link_date.strftime('%Y-%m-%d')}\">#{link_date.strftime('%B %-d, %Y')}</a>"
+    "<a href=\"/top/#{link_date.strftime('%Y-%m-%d')}\">#{link_date.strftime('%B %-d, %Y')}</a>"
   end
 end
