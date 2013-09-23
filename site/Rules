@@ -20,7 +20,7 @@ compile '/tweets/*' do
   layout 'tweet'
 end
 
-compile '/top10/*' do
+compile '/top/*' do
   filter :erb
   layout 'default'
 end
