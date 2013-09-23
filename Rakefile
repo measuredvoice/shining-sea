@@ -285,7 +285,7 @@ namespace :app do
       else
         puts "Congratulating #{ts.screen_name}..."
         
-        tweet_text = "@#{ts.screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} for #{ts.date.strftime('%b %-d')}.)"
+        tweet_text = "@#{ts.screen_name} Congrats on writing a great government tweet! #{ts.our_link} (Ranked #{ts.daily_rank.ordinalize} for #{ts.date.strftime('%b %-d')}.) #NAGW2013"
         puts "  " + tweet_text
         
         begin
