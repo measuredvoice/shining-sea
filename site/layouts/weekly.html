@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="http://use.typekit.com/bvc1jkf.js"></script>
+  	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+  	
+    <title>Great Gov Tweets from the week ending <%= pretty_date(@item[:date]) %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/assets/css/ggt.css" rel="stylesheet" media="screen">
+    <link href="/assets/css/ggt-scatterplot.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+  	<div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <span id="mv-logo"><a href="http://measuredvoice.com">Measured Voice, the only social media management tool designed for government.</a></span>  
+        </div>
+      </div>
+    </div>
+    <div class="jumbotron">
+      <div class="container">
+        <div class="row">
+          <div class="brand col-lg-8 col-12">
+            <h1><a href="/">Great Gov Tweets</a></h1>
+            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+	<div class="container">
+		<div class="row tweet-lists">
+		  <div class="col-12">
+		    <div class="row">
+          <div class="top-tweet-column col-12 col-lg-6">
+            <h3>U.S. government tweets from the week ending <%= pretty_date(@item[:date]) %></h3>
+            
+            <div class="row">
+              <div class="col-lg-6 col-6">
+                &lsaquo; <%= date_link(@item[:date], :previous_week) %>
+              </div>
+            
+              <div class="col-lg-6 col-6">
+                <% if @item.identifier != '/weekly/' %>
+                <span class="pull-right"><%= date_link(@item[:date], :next_week) %> &rsaquo;</span>
+                <% end %>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-lg-12 col-12">
+                <svg id="scatterplot" data-source="http://shiningsea.measuredvoice.com/summaries/<%= linky_date(@item[:date]) %>/weekly_summary.json"></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-offset-1 col-lg-5 home-intro">
+            <div class="rank-score">
+              <div class="col-lg-3 col-3 rank-number">
+                <span class="superscript">#</span><span id="daily-rank">1</span>
+              </div>
+              <div class="col-lg-9 col-9 rank-details">
+                <p>Ranked #<span id="ordinal-rank">1</span> among U.S. government Twitter accounts <span class="tweet-date">on <span id="tweet-date">the day it was posted</span></span>.</p>
+              </div>
+            </div>
+
+            <div class="row" id="tweet-summary">
+              <div class="col-4">
+               <i class="icon-retweet"></i> <span id="engagement-count">12</span>
+              </div>
+              <div class="col-4">
+                <i class="icon-star"></i> <span id="kudos-count">5</span>
+              </div>
+              <div class="col-4">
+                <i class="icon-bullhorn"></i> <span id="reach-count">1743</span>
+              </div>
+            </div>
+            
+            <div id="tweet-display">
+            </div>
+            
+            <h3>What is this?</h3>
+            <p>
+              Every day, we look at every tweet sent by U.S. federal government Twitter accounts and rank them based on an algorithm that looks at audience size, retweets, and favorites. Great Gov Tweets highlights the amazing work Government communicators do every day.
+            </p>
+            <p>
+              <b>Are you tracking my Twitter account?</b>
+            </p>
+            <p>
+              We look at all Twitter accounts in <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry</a>. If you manage a U.S. federal government Twitter account, <a href="http://www.howto.gov/social-media/social-media-registry/accounts/find">look it up</a> in the registry on HowTo.gov. If it&rsquo;s not there, <a href="http://www.howto.gov/social-media/social-media-registry/accounts/find"><b>add it</b></a>.
+            </p>
+            <p>
+              <b>Who&rsquo;s Behind This?</b>
+            </p>
+            <p>
+              We&rsquo;re the creators of <a href="http://measuredvoice.com">Measured Voice</a>, the only social media management tool designed with government in mind. We aspire to help government agencies develop professional, mission-driven, social media operations.
+            </p>
+            <p>
+              Sign up for a <a href="http://measuredvoice.com/signup/"><b>30-day free trial</b></a> of Measured Voice.
+            </p>
+            <p>
+              If you have any questions, comments, or suggestions for Great Gov Tweets, please send an email to jed [at] measuredvoice.com.
+            </p>
+            <hr>
+            <iframe src="/iframes/1" class="mv-ad" id="iframe1"></iframe>
+          </div>
+        </div>
+			</div>
+		</div>
+	</div>
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <p>&copy; 2013 Measured Voice</p>
+          <hr>
+          <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </footer>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="/assets/js/scatterplot.js"></script>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-12846866-10', 'measuredvoice.com');
+      ga('send', 'pageview');
+
+    </script>
+  </body>
+</html>

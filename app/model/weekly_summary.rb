@@ -21,5 +21,23 @@ class WeeklySummary < Model
     summary
   end
   
+  def to_json
+    JSON.pretty_generate(Boxer.ship(:weekly_summary, self))
+  end
+
+  def iso_date
+    end_date.strftime('%Y-%m-%d')
+  end
   
+  def filename
+    self.class.filename(end_date)
+  end
+  
+  def self.filename(end_date)
+    "#{date_path(end_date)}/weekly_summary.json"
+  end
+  
+  def self.date_path(date)
+    "summaries/#{date.strftime('%Y/%m/%d')}"
+  end
 end

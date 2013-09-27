@@ -11,6 +11,11 @@ module TextHelper
     Time.zone.parse(date_str).strftime('%B %-d, %Y')
   end
   
+  # Turn '2013-09-28' into '2013/09/28'
+  def linky_date(date_str)
+    date_str.gsub(/-/,'/')
+  end
+  
   def pluralize(number, singular, plural)
     if number == 1
       singular

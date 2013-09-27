@@ -98,11 +98,7 @@ namespace :app do
             
     summary = WeeklySummary.from_metrics(end_date)
     
-    puts "screen name,audience,engagement,kudos,link"
-    summary.tweet_summaries.each do |ts|
-      row = [ts.screen_name, ts.audience, ts.engagement, ts.kudos, ts.link]
-      puts row.join(',')
-    end
+    summary.save
     
     end_time = Time.zone.now
     

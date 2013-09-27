@@ -25,6 +25,11 @@ compile '/top/*' do
   layout 'default'
 end
 
+compile '/weekly/*' do
+  filter :erb
+  layout 'weekly'
+end
+
 compile '/iframes/*' do
   filter :erb
   layout 'iframe'

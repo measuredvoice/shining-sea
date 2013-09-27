@@ -1,0 +1,41 @@
+svg {
+
+}
+  #scatterplot rect {
+    fill: transparent;
+    shape-rendering: crispEdges;
+  }
+  #scatterplot circle.selected {
+    stroke: #000;
+    stroke-width: 5px;
+  }
+  .active {
+    z-index:5;
+    position:relative;
+  }
+  .inactive polygon {
+    fill:#aaa;
+    opacity:0.1;
+  }
+  .axis {
+  }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: rgba(0,0,0,0.1);
+      shape-rendering: crispEdges;
+    }
+    .axis text {
+      font-size: 11px;
+      fill: #666;
+    }
+  .label {
+    font-size:14px;
+    fill:rgba(0,0,0,0.5);
+    shape-rendering:auto;
+  }
+
+#tweet-summary {
+  text-align: center;
+  font-size: 150%;
+}
