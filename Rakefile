@@ -124,9 +124,12 @@ namespace :app do
     file_date = target_date.strftime('%Y-%m-%d')
     ranking = DailyRanking.from_ranking_file(target_date)
 
-    puts "Clearing out old content files..."
-    puts %x(rm -r site/content/top/*)
-    puts %x(rm -r site/content/tweets/*)
+    # Clear out old files only if this is the regular daily run
+    if params[:target_date].nil?
+      puts "Clearing out old content files..."
+      puts %x(rm -r site/content/top/*)
+      puts %x(rm -r site/content/tweets/*)
+    end
           
     # Write the summary for each tweet
     puts "Writing reports for #{file_date}"
@@ -163,14 +166,17 @@ namespace :app do
       end
     end
     
-    # Write the index file for this week
-    index_filename = "site/content/index.html"
-    copy_filename = "site/content/top/#{file_date}.html"
-    puts "Writing top rankings to #{index_filename}..."
-    File.open(index_filename, 'wb') do |file|
-      file.write(ranking.to_yaml)
-      file.write("\n---\n")
+    # Write the index file if this is for today
+    if params[:target_date].nil?
+      index_filename = "site/content/index.html"
+      puts "Writing top rankings to #{index_filename}..."
+      File.open(index_filename, 'wb') do |file|
+        file.write(ranking.to_yaml)
+        file.write("\n---\n")
+      end
     end
+    
+    copy_filename = "site/content/top/#{file_date}.html"
     puts "Writing dated top rankings to #{copy_filename}..."
     unless Dir.exists?("site/content/top")
       Dir.mkdir("site/content/top")
