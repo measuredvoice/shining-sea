@@ -24,7 +24,11 @@
       <div class="container">
         <div class="row">
           <div class="brand col-lg-8 col-12">
+            <% if @item.identifier == '/' %>
             <h1>Great Gov Tweets</h1>
+            <% else %>
+            <h1><a href="/">Great Gov Tweets</a></h1>
+            <% end %>
             <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
           </div>
         </div>

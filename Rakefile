@@ -8,7 +8,7 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
       target_date = default_offset.days.ago
     end
     puts "Collecting metrics from #{target_date.strftime('%Y-%m-%d')}"
@@ -54,7 +54,7 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
       target_date = default_offset.days.ago
     end
     puts "Summarizing metrics from #{target_date.strftime('%Y-%m-%d')}"
@@ -84,15 +84,15 @@ namespace :app do
     puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
   
-  desc "Generate weekly metrics summary data"
+  desc "3a - Generate weekly metrics summary data"
   task :weekly_metrics, [:end_date] do |t, params|
     start_time = Time.zone.now
     
     if params[:end_date].present?
       end_date = Time.zone.parse(params[:end_date])
     else
-      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
-      target_date = default_offset.days.ago
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
+      end_date = default_offset.days.ago
     end
     puts "Summarizing weekly metrics ending #{end_date.strftime('%Y-%m-%d')}"
             
@@ -113,7 +113,7 @@ namespace :app do
     if params[:target_date].present?
       target_date = Time.zone.parse(params[:target_date])
     else
-      default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
       target_date = default_offset.days.ago
     end
         
@@ -125,6 +125,7 @@ namespace :app do
       puts "Clearing out old content files..."
       puts %x(rm -r site/content/top/*)
       puts %x(rm -r site/content/tweets/*)
+      puts %x(rm -r site/content/weekly/*)
     end
           
     # Write the summary for each tweet
@@ -170,6 +171,14 @@ namespace :app do
         file.write(ranking.to_yaml)
         file.write("\n---\n")
       end
+      
+      weekly_index_filename = "site/content/weekly/index.html"
+      puts "Writing weekly rankings to #{weekly_index_filename}..."
+      File.open(weekly_index_filename, 'wb') do |file|
+        file.write("\n---\n")
+        file.write(":date: '#{file_date}'")
+        file.write("\n---\n")
+      end
     end
     
     copy_filename = "site/content/top/#{file_date}.html"
@@ -180,6 +189,18 @@ namespace :app do
     File.open(copy_filename, 'wb') do |file|
       file.write(ranking.to_yaml)
       file.write("\n---\n")
+    end
+    
+    # Write a weekly summary ending on this date
+    weekly_filename = "site/content/weekly/#{file_date}.html"
+    puts "Writing dated weekly rankings to #{weekly_filename}..."
+    unless Dir.exists?("site/content/weekly")
+      Dir.mkdir("site/content/weekly")
+    end
+    File.open(weekly_filename, 'wb') do |file|
+      file.write("---\n")
+      file.write(":date: '#{file_date}'\n")
+      file.write("---\n")
     end
 
     end_time = Time.zone.now
@@ -219,13 +240,17 @@ namespace :app do
     # Then write the top-N lists
     files += Dir.glob("top/*/index.html")
     
+    # Then write the weekly lists
+    files += Dir.glob("weekly/*/index.html")
+    
     # Then write the iframe files
     files += Dir.glob("iframes/*/index.html")
     
     # Then write the assets
     files += Dir.glob("assets/**/*.*")
     
-    # Finally, write the main index file
+    # Finally, write the main index files
+    files << "weekly/index.html"
     files << "index.html"
 
     files.each do |filename|
@@ -241,11 +266,7 @@ namespace :app do
     elapsed = (end_time - start_time).to_i
     puts "Done. Wrote #{file_count} files in #{elapsed} seconds."
   end
-  
-  desc "Build and deploy weekly HTML reports"
-  task :weekly_reports do
-  end
-  
+    
   desc "Retweet and congratulate the day's top tweets"
   task :retweet_top_tweets do
     retweeter = Twitter::Client.new(
@@ -257,7 +278,7 @@ namespace :app do
     
     top_n = ENV['SHINING_SEA_TOP_N'].to_i || 50
     
-    default_offset = ENV['SHINING_SEA_OFFSET'].to_i || 2
+    default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
     ranking = DailyRanking.from_ranking_file(default_offset.days.ago)
     retweet_count = 0
     retweet_limit = top_n
