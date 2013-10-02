@@ -6,10 +6,10 @@ $(function(){
     $("#tweet-display").html('<blockquote class="twitter-tweet" data-dnt="true">(@someone) <a href="' + data[0].link + '">details</a></blockquote>');
     $("#daily-rank").html(data[0].daily_rank);
     $("#ordinal-rank").html(data[0].daily_rank);
-    $("#tweet-date").html(data[0].date);
-    $("#engagement-count").html(data[0].engagement);
-    $("#kudos-count").html(data[0].kudos);
-    $("#reach-count").html(data[0].reach);
+    $("#tweet-date").html(moment(data[0].date, 'YYYY-MM-DD').format('MMMM Do, YYYY'));
+    $("#engagement-count").number(data[0].engagement);
+    $("#kudos-count").number(data[0].kudos);
+    $("#reach-count").number(data[0].reach);
     twttr.widgets.load($("#tweet-display")[0]);
 
 		var margin = {top: 30, right: 10, bottom: 50, left: 60},
@@ -116,10 +116,10 @@ $(function(){
         $("#tweet-display iframe").replaceWith('<blockquote class="twitter-tweet" data-dnt="true">(@someone) <a href="' + d.link + '">details</a></blockquote>');
         $("#daily-rank").html(d.daily_rank);
         $("#ordinal-rank").html(d.daily_rank);
-        $("#tweet-date").html(d.date);
-        $("#engagement-count").html(d.engagement);
-        $("#kudos-count").html(d.kudos);
-        $("#reach-count").html(d.reach);
+        $("#tweet-date").html(moment(d.date, 'YYYY-MM-DD').format('MMMM Do, YYYY'));
+        $("#engagement-count").number(d.engagement);
+        $("#kudos-count").number(d.kudos);
+        $("#reach-count").number(d.reach);
         twttr.widgets.load($("#tweet-display")[0]);
 			});
 
