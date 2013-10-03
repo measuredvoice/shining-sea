@@ -163,6 +163,28 @@ namespace :app do
       end
     end
     
+    top_filename = "site/content/top/#{file_date}.html"
+    puts "Writing dated top rankings to #{top_filename}..."
+    unless Dir.exists?("site/content/top")
+      Dir.mkdir("site/content/top")
+    end
+    File.open(top_filename, 'wb') do |file|
+      file.write(ranking.to_yaml)
+      file.write("\n---\n")
+    end
+    
+    # Write a weekly summary ending on this date
+    weekly_filename = "site/content/weekly/#{file_date}.html"
+    puts "Writing dated weekly rankings to #{weekly_filename}..."
+    unless Dir.exists?("site/content/weekly")
+      Dir.mkdir("site/content/weekly")
+    end
+    File.open(weekly_filename, 'wb') do |file|
+      file.write("---\n")
+      file.write(":date: '#{file_date}'\n")
+      file.write("---\n")
+    end
+
     # Write the index file if this is for today
     if params[:target_date].nil?
       index_filename = "site/content/index.html"
@@ -181,28 +203,6 @@ namespace :app do
       end
     end
     
-    copy_filename = "site/content/top/#{file_date}.html"
-    puts "Writing dated top rankings to #{copy_filename}..."
-    unless Dir.exists?("site/content/top")
-      Dir.mkdir("site/content/top")
-    end
-    File.open(copy_filename, 'wb') do |file|
-      file.write(ranking.to_yaml)
-      file.write("\n---\n")
-    end
-    
-    # Write a weekly summary ending on this date
-    weekly_filename = "site/content/weekly/#{file_date}.html"
-    puts "Writing dated weekly rankings to #{weekly_filename}..."
-    unless Dir.exists?("site/content/weekly")
-      Dir.mkdir("site/content/weekly")
-    end
-    File.open(weekly_filename, 'wb') do |file|
-      file.write("---\n")
-      file.write(":date: '#{file_date}'\n")
-      file.write("---\n")
-    end
-
     end_time = Time.zone.now
     
     elapsed = (end_time - start_time).to_i
