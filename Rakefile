@@ -197,9 +197,9 @@ namespace :app do
       weekly_index_filename = "site/content/weekly/index.html"
       puts "Writing weekly rankings to #{weekly_index_filename}..."
       File.open(weekly_index_filename, 'wb') do |file|
-        file.write("\n---\n")
-        file.write(":date: '#{file_date}'")
-        file.write("\n---\n")
+        file.write("---\n")
+        file.write(":date: '#{file_date}'\n")
+        file.write("---\n")
       end
     end
     
