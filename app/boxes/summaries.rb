@@ -88,3 +88,32 @@ Boxer.box(:weekly_summary) do |box, summary|
     }
   end
 end
+
+Boxer.box(:monthly_summary) do |box, summary|
+  box.view(:base) do
+    {
+      :month => summary.iso_date,
+      :accounts_count => summary.account_summaries.count,
+      :accounts => summary.account_summaries.map do |as| 
+        Boxer.ship(:account_summary, as)
+      end,
+      :total_tweet_count => summary.tweet_summaries.count,
+      :tweets => summary.tweet_summaries.map do |ts| 
+        Boxer.ship(:tweet_summary, ts, :view => :metrics)
+      end,
+      :tweet_counts => summary.tweet_counts.map do |tc| 
+        Boxer.ship(:tweet_count, tc)
+      end,
+    }
+  end
+end
+
+Boxer.box(:tweet_count) do |box, tc|
+  box.view(:base) do
+    {
+      :date        => tc[:date].strftime('%Y-%m-%d'),
+      :count       => tc[:count],
+    }
+  end
+end
+

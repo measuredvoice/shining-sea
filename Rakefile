@@ -28,7 +28,7 @@ namespace :app do
       metrics_file.tweets = account.tweets_on(metrics_file.date).map do |tweet|
         puts "  extracting metrics for tweet #{tweet.id}..."
         metric = TweetMetric.from_tweet(tweet)
-        metric.count_reach!
+        # metric.count_reach!
         metric
       end
             
@@ -329,6 +329,33 @@ namespace :app do
     elapsed = (end_time - start_time).to_i
     puts "Done. Retweeted #{retweet_count} and congratulated #{congrats_count} in #{elapsed} seconds."
   end
+
+  desc "Generate monthly metrics summary data. [Month in YYYY-MM]"
+  task :monthly_metrics, [:month] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:month].present?
+      target_month = params[:month]
+    else
+      day_in_last_month = Time.zone.now.beginning_of_month - 1.day
+      target_month = day_in_last_month.strftime('%Y-%m')
+    end
+    puts "Summarizing monthly metrics for #{target_month}"
+            
+    summary = MonthlySummary.from_metrics(target_month)
+    
+    summary.save
+    
+    # TEMPORARY: Spit out a CSV, too
+    summary.tweet_counts.each do |tc|
+      puts "#{tc[:date].strftime('%Y-%m-%d')},#{tc[:count]}"
+    end
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
+  end
 end
 
 namespace :setup do
@@ -411,5 +438,39 @@ namespace :test do
     puts "  first file: #{file.filename}"
     
     puts "Looks good from here."
+  end
+
+
+  desc "Count tweets for a particular day"
+  task :count_tweets, [:target_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:target_date].present?
+      target_date = Time.zone.parse(params[:target_date])
+    else
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
+      target_date = default_offset.days.ago
+    end
+    puts "Counting tweets from #{target_date.strftime('%Y-%m-%d')}"
+    
+    total_count = 0
+    Account.all.each do |account|
+      puts "Account: #{account.screen_name}"      
+
+      account.get_twitter_details! || next
+      
+      if tweets = account.tweets_on(target_date)
+        puts "  count: #{tweets.count}"
+        total_count += tweets.count
+      else
+        puts "  No tweets for #{account.screen_name}"
+      end
+      
+      sleep 12
+    end
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Counted #{total_count} tweets in #{elapsed} seconds."
   end
 end
