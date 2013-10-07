@@ -473,4 +473,101 @@ namespace :test do
     elapsed = (end_time - start_time).to_i
     puts "Counted #{total_count} tweets in #{elapsed} seconds."
   end
+  
+  desc "Count tweets and accounts by agency"
+  task :count_tweets_by_agency do
+    start_time = Time.zone.now
+    
+    # First, process the summaries for these dates
+    # to find a superset of accounts and agencies
+    # and build counts of tweets and accounts each day
+    dates = [
+      '2013-08-25','2013-08-26','2013-08-27','2013-08-28',
+      '2013-08-29','2013-08-30','2013-08-31',
+      '2013-09-29','2013-09-30','2013-10-01','2013-10-02',
+      '2013-10-03','2013-10-04','2013-10-05',
+    ]
+    # tweets_on_date[date][agency_id] = number or
+    # tweets_on_date[date]['total'] = number
+    tweets_on_date = {}
+
+    # accounts_on_date[date][agency_id] = ['foof', 'bar', 'foof', 'baz']
+    accounts_on_date = {}
+    
+    # lookup for agencies
+    # agency_for[account_id] = agency_id
+    # name_of_agency[agency_id] = agency_name
+    agency_for = {}
+    name_of_agency = {}
+
+    dates.each do |target_date|
+      puts "Collecting data from #{target_date}..."
+      tweets_on_date[target_date] = {}
+      accounts_on_date[target_date] = {}
+      accounts_on_date[target_date]['total'] = []
+      
+      if ds = DailySummary.from_summary_file(Time.zone.parse(target_date))
+        tweets_on_date[target_date]['total'] = ds.tweet_summaries.count
+        ds.account_summaries.each do |as|
+          agency_for[as.screen_name] = as.agency_id
+          name_of_agency[as.agency_id] = as.agency_name
+          tweets_on_date[target_date][as.agency_id] ||= 0
+          accounts_on_date[target_date][as.agency_id] ||= []
+        end
+        ds.tweet_summaries.each do |ts|
+          agency_id = agency_for[ts.screen_name]
+          
+          tweets_on_date[target_date][agency_id] += 1
+          accounts_on_date[target_date][agency_id] << ts.screen_name
+          accounts_on_date[target_date]['total'] << ts.screen_name
+        end
+      else
+        puts "WARNING: No summary file for #{target_date}"
+      end
+    end
+    
+    puts "TWEETS"
+    puts tweets_on_date.inspect
+    puts "ACCOUNTS"
+    puts accounts_on_date.inspect
+    
+    agencies = name_of_agency.keys.sort
+    puts "AGENCIES"
+    puts agencies.inspect
+    puts agencies.count
+    puts name_of_agency.inspect
+    
+    headers = ['date', 'total'] + agencies
+      
+    CSV.open("govexec-tweets.csv", "wb") do |csv|
+      csv << headers
+      csv << headers.map {|a| name_of_agency[a]}
+      
+      dates.each do |date|
+        row = [date, tweets_on_date[date]['total']]
+        agencies.each do |agency_id|
+          row << tweets_on_date[date][agency_id] || 0
+        end
+        csv << row
+      end
+    end
+    
+    CSV.open("govexec-accounts.csv", "wb") do |csv|
+      csv << headers
+      csv << headers.map {|a| name_of_agency[a]}
+      
+      dates.each do |date|
+        row = [date, accounts_on_date[date]['total'].uniq.count]
+        agencies.each do |agency_id|
+          row << (accounts_on_date[date][agency_id] || []).uniq.count
+        end
+        csv << row
+      end
+    end
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Counted tweets in #{elapsed} seconds."
+  end
 end
