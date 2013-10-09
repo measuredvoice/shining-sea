@@ -42,11 +42,19 @@
             <h3>Top U.S. government tweets from <%= pretty_date(@item[:date]) %></h3>
             
             <div class="row">
-              <div class="col-lg-6 col-6">
+              <div class="col-lg-5 col-5">
                 &lsaquo; <%= date_link(@item[:date], :previous) %>
               </div>
             
-              <div class="col-lg-6 col-6">
+              <div class="col-lg-2 col-2" style="text-align:center">
+                <% if @item.identifier == '/' %>
+                  <a class="button" href="/weekly/" title="Metrics for the week ending <%= pretty_date(@item[:date]) %>"><i class="icon-bar-chart"></i></a>
+                <% else %>
+                  <a class="button" href="/weekly/<%= @item[:date] %>" title="Metrics for the week ending <%= pretty_date(@item[:date]) %>"><i class="icon-bar-chart"></i></a>
+                <% end %>
+              </div>
+            
+              <div class="col-lg-5 col-5">
                 <% if @item.identifier != '/' %>
                 <span class="pull-right"><%= date_link(@item[:date], :next) %> &rsaquo;</span>
                 <% end %>
