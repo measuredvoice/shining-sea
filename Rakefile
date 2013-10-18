@@ -28,7 +28,7 @@ namespace :app do
       metrics_file.tweets = account.tweets_on(metrics_file.date).map do |tweet|
         puts "  extracting metrics for tweet #{tweet.id}..."
         metric = TweetMetric.from_tweet(tweet)
-        # metric.count_reach!
+        metric.count_reach!
         metric
       end
             
