@@ -430,6 +430,176 @@ namespace :setup do
   end
 end
 
+namespace :export do
+  desc "Export weekly metrics summary data as CSV"
+  task :weekly_metrics_csv, [:end_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:end_date].present?
+      end_date = Time.zone.parse(params[:end_date])
+    else
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
+      end_date = default_offset.days.ago
+    end
+    puts "Loading weekly metrics ending #{end_date.strftime('%Y-%m-%d')}"
+            
+    summary = WeeklySummary.from_summary_file(end_date)
+    
+    CSV.open("weekly-tweets.csv", "wb") do |csv|
+      csv << ['Tweet URL', 'Retweets', 'Favorites', 'Followers', 'Date', 'MV Score']
+      
+      summary.tweet_summaries.each do |ts|
+        csv << [ts.link, ts.engagement, ts.kudos, ts.audience, ts.iso_date, ts.mv_score]
+      end
+    end    
+        
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
+  end
+  
+  desc "Count tweets and accounts by agency"
+  task :count_tweets_by_agency do
+    start_time = Time.zone.now
+    
+    # Look back 90 days for now
+    dates = (1..90).map {|d| d.days.ago.strftime('%Y-%m-%d')}.reverse
+
+    # tweets_on_date[date][agency_id] = number or
+    # tweets_on_date[date]['total'] = number
+    tweets_on_date = {}
+    acct_tweets_on_date = {}
+
+    # accounts_on_date[date][agency_id] = ['foof', 'bar', 'foof', 'baz']
+    accounts_on_date = {}
+    active_accounts_on_date = {}
+    
+    accounts = []
+    
+    # lookup for agencies
+    # agency_for[account_id] = agency_id
+    # name_of_agency[agency_id] = agency_name
+    agency_for = {}
+    name_of_agency = {}
+
+    # First, process the summaries for these dates
+    # to find a superset of accounts and agencies
+    # and build counts of tweets and accounts each day
+    
+    dates.each do |target_date|
+      puts "Collecting data from #{target_date}..."
+      tweets_on_date[target_date] = {}
+      tweets_on_date[target_date]['total'] = 0
+      acct_tweets_on_date[target_date] = {}
+      acct_tweets_on_date[target_date]['total'] = 0
+      accounts_on_date[target_date] = {}
+      accounts_on_date[target_date]['total'] = []
+      active_accounts_on_date[target_date] = {}
+      active_accounts_on_date[target_date]['total'] = []
+      
+      if ds = DailySummary.from_summary_file(Time.zone.parse(target_date))
+        tweets_on_date[target_date]['total'] = ds.tweet_summaries.count
+        acct_tweets_on_date[target_date]['total'] = ds.tweet_summaries.count
+        ds.account_summaries.each do |as|
+          accounts << as.screen_name
+          agency_for[as.screen_name] = as.agency_id
+          name_of_agency[as.agency_id] = as.agency_name
+          tweets_on_date[target_date][as.agency_id] ||= 0
+          acct_tweets_on_date[target_date][as.screen_name] ||= 0
+          accounts_on_date[target_date][as.agency_id] ||= []
+          accounts_on_date[target_date][as.agency_id] << as.screen_name
+          accounts_on_date[target_date]['total'] << as.screen_name
+          active_accounts_on_date[target_date][as.agency_id] ||= []
+        end
+        ds.tweet_summaries.each do |ts|
+          agency_id = agency_for[ts.screen_name]
+          
+          tweets_on_date[target_date][agency_id] += 1
+          acct_tweets_on_date[target_date][ts.screen_name] += 1
+          active_accounts_on_date[target_date][agency_id] << ts.screen_name
+          active_accounts_on_date[target_date]['total'] << ts.screen_name
+        end
+      else
+        puts "WARNING: No summary file for #{target_date}"
+      end
+    end
+    
+    puts "TWEETS"
+    puts tweets_on_date.inspect
+    puts "ACCOUNT TWEETS"
+    puts acct_tweets_on_date.inspect
+    puts "ACCOUNTS"
+    puts accounts_on_date.inspect
+    puts "ACTIVE ACCOUNTS"
+    puts active_accounts_on_date.inspect
+    
+    agencies = name_of_agency.keys.sort
+    puts "AGENCIES"
+    puts agencies.inspect
+    puts agencies.count
+    puts name_of_agency.inspect
+
+    accounts = accounts.uniq.sort
+    puts "ACCOUNTS"
+    puts accounts.inspect
+    puts accounts.count
+          
+    CSV.open("daily-tweets-per-account.csv", "wb") do |csv|
+      csv << ['account'] + dates
+      csv << ['total'] + dates.map {|d| acct_tweets_on_date[d]['total'] || 0}
+      
+      accounts.each do |acct|
+        csv << [acct] + dates.map {|d| acct_tweets_on_date[d][acct] || 0 }
+      end
+    end
+    
+    CSV.open("daily-tweets-per-agency.csv", "wb") do |csv|
+      csv << ['agency', 'name'] + dates
+      csv << ['total', ''] + dates.map {|d| tweets_on_date[d]['total'] || 0}
+      
+      agencies.each do |agency_id|
+        row = [agency_id, name_of_agency[agency_id]]
+        row += dates.map do |d|
+          tweets_on_date[d][agency_id] || 0
+        end
+        csv << row
+      end
+    end
+    
+    CSV.open("daily-accounts-per-agency.csv", "wb") do |csv|
+      csv << ['agency', 'name'] + dates
+      csv << ['total', ''] + dates.map {|d| (accounts_on_date[d]['total'] || []).uniq.count}
+      
+      agencies.each do |agency_id|
+        row = [agency_id, name_of_agency[agency_id]]
+        row += dates.map do |d|
+          (accounts_on_date[d][agency_id] || []).uniq.count
+        end
+        csv << row
+      end
+    end
+    
+    CSV.open("daily-active-accounts-per-agency.csv", "wb") do |csv|
+      csv << ['agency', 'name'] + dates
+      csv << ['total', ''] + dates.map {|d| (active_accounts_on_date[d]['total'] || []).uniq.count}
+      
+      agencies.each do |agency_id|
+        row = [agency_id, name_of_agency[agency_id]]
+        row += dates.map do |d|
+          (active_accounts_on_date[d][agency_id] || []).uniq.count
+        end
+        csv << row
+      end
+    end
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Counted tweets in #{elapsed} seconds."
+  end
+end
+
 namespace :test do
   desc "Test the basic functions of the app (without altering data)"
   task :basic do
@@ -472,102 +642,5 @@ namespace :test do
     
     elapsed = (end_time - start_time).to_i
     puts "Counted #{total_count} tweets in #{elapsed} seconds."
-  end
-  
-  desc "Count tweets and accounts by agency"
-  task :count_tweets_by_agency do
-    start_time = Time.zone.now
-    
-    # First, process the summaries for these dates
-    # to find a superset of accounts and agencies
-    # and build counts of tweets and accounts each day
-    dates = [
-      '2013-08-25','2013-08-26','2013-08-27','2013-08-28',
-      '2013-08-29','2013-08-30','2013-08-31',
-      '2013-09-29','2013-09-30','2013-10-01','2013-10-02',
-      '2013-10-03','2013-10-04','2013-10-05',
-    ]
-    # tweets_on_date[date][agency_id] = number or
-    # tweets_on_date[date]['total'] = number
-    tweets_on_date = {}
-
-    # accounts_on_date[date][agency_id] = ['foof', 'bar', 'foof', 'baz']
-    accounts_on_date = {}
-    
-    # lookup for agencies
-    # agency_for[account_id] = agency_id
-    # name_of_agency[agency_id] = agency_name
-    agency_for = {}
-    name_of_agency = {}
-
-    dates.each do |target_date|
-      puts "Collecting data from #{target_date}..."
-      tweets_on_date[target_date] = {}
-      accounts_on_date[target_date] = {}
-      accounts_on_date[target_date]['total'] = []
-      
-      if ds = DailySummary.from_summary_file(Time.zone.parse(target_date))
-        tweets_on_date[target_date]['total'] = ds.tweet_summaries.count
-        ds.account_summaries.each do |as|
-          agency_for[as.screen_name] = as.agency_id
-          name_of_agency[as.agency_id] = as.agency_name
-          tweets_on_date[target_date][as.agency_id] ||= 0
-          accounts_on_date[target_date][as.agency_id] ||= []
-        end
-        ds.tweet_summaries.each do |ts|
-          agency_id = agency_for[ts.screen_name]
-          
-          tweets_on_date[target_date][agency_id] += 1
-          accounts_on_date[target_date][agency_id] << ts.screen_name
-          accounts_on_date[target_date]['total'] << ts.screen_name
-        end
-      else
-        puts "WARNING: No summary file for #{target_date}"
-      end
-    end
-    
-    puts "TWEETS"
-    puts tweets_on_date.inspect
-    puts "ACCOUNTS"
-    puts accounts_on_date.inspect
-    
-    agencies = name_of_agency.keys.sort
-    puts "AGENCIES"
-    puts agencies.inspect
-    puts agencies.count
-    puts name_of_agency.inspect
-    
-    headers = ['date', 'total'] + agencies
-      
-    CSV.open("govexec-tweets.csv", "wb") do |csv|
-      csv << headers
-      csv << headers.map {|a| name_of_agency[a]}
-      
-      dates.each do |date|
-        row = [date, tweets_on_date[date]['total']]
-        agencies.each do |agency_id|
-          row << tweets_on_date[date][agency_id] || 0
-        end
-        csv << row
-      end
-    end
-    
-    CSV.open("govexec-accounts.csv", "wb") do |csv|
-      csv << headers
-      csv << headers.map {|a| name_of_agency[a]}
-      
-      dates.each do |date|
-        row = [date, accounts_on_date[date]['total'].uniq.count]
-        agencies.each do |agency_id|
-          row << (accounts_on_date[date][agency_id] || []).uniq.count
-        end
-        csv << row
-      end
-    end
-    
-    end_time = Time.zone.now
-    
-    elapsed = (end_time - start_time).to_i
-    puts "Counted tweets in #{elapsed} seconds."
   end
 end
