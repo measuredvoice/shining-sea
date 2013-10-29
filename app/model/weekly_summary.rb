@@ -21,6 +21,25 @@ class WeeklySummary < Model
     summary
   end
   
+  def self.from_json(text)
+    puts "Loading weekly summary file from JSON..."
+    data = MultiJson.load(text, :symbolize_keys => true)
+    self.new(
+      :end_date => Time.zone.parse(data[:end_date]),
+      :tweet_summaries => data[:tweets].map { |ts| TweetSummary.new(ts) },
+      :account_summaries => data[:accounts].map { |as| AccountSummary.new(as) },      
+    )
+  end
+  
+  def self.from_summary_file(target_date)
+    s3_obj = s3_bucket.objects[filename(target_date)]
+    if s3_obj.exists?
+      self.from_json(s3_obj.read)
+    else
+      nil
+    end
+  end
+  
   def to_json
     JSON.pretty_generate(Boxer.ship(:weekly_summary, self))
   end
