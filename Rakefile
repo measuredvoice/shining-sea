@@ -446,10 +446,10 @@ namespace :export do
     summary = WeeklySummary.from_summary_file(end_date)
     
     CSV.open("weekly-tweets.csv", "wb") do |csv|
-      csv << ['Tweet URL', 'Retweets', 'Favorites', 'Followers', 'Date', 'MV Score']
+      csv << ['Tweet URL', 'Retweets', 'Favorites', 'Followers', 'Date', 'MV Score', 'Daily Rank', 'Reach']
       
       summary.tweet_summaries.each do |ts|
-        csv << [ts.link, ts.engagement, ts.kudos, ts.audience, ts.iso_date, ts.mv_score]
+        csv << [ts.link, ts.engagement, ts.kudos, ts.audience, ts.iso_date, ts.mv_score, ts.daily_rank, ts.reach]
       end
     end    
         
