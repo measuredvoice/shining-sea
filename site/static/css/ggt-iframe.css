@@ -25,7 +25,30 @@ h1, h2, h3 {
   margin:10px 0 10px 0;
 }
 
-#mc_embed_signup input.button,#mc_embed_signup input.button:hover{color:#003366;text-shadow:0 1px 0 rgba(255, 255, 255, 0.7);}
+#mc_embed_signup input.button,#mc_embed_signup input.button:hover,a.button{color:#003366;text-shadow:0 1px 0 rgba(255, 255, 255, 0.7);}
+
+a.button {
+  position:relative;
+  top:48px;
+  font-size:110%;
+  font-weight: bold;
+  margin:20px 0 0 0;
+  height:3em;
+  padding:.5em .7em;
+  border-radius:4px;
+  background-color:#00bede;
+  background-image:-moz-linear-gradient(top, #00adda, #00d7e4);
+  background-image:-ms-linear-gradient(top, #00adda, #00d7e4);
+  background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#00adda), to(#00d7e4));
+  background-image:-webkit-linear-gradient(top, #00adda, #00d7e4);
+  background-image:-o-linear-gradient(top, #00adda, #00d7e4);
+  background-image:linear-gradient(top, #00adda, #00d7e4);
+  background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adda', endColorstr='#00d7e4', GradientType=0);
+  border:1px solid #cccccc;
+  border-color:#00d7e4 #00d7e4 #008f98;
+  border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  *background-color:#00d7e4;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
 
 #mc_embed_signup input.button {
   width:100%;
@@ -43,12 +66,12 @@ h1, h2, h3 {
   *background-color:#00d7e4;filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 
-#mc_embed_signup input.button:hover ,#mc_embed_signup input.button:active{
+#mc_embed_signup input.button:hover ,#mc_embed_signup input.button:active,a.button:active{
   background-color:#00d7e4;
   *background-color:#00bfcb;
 }
 
-#mc_embed_signup input.button:hover{
+#mc_embed_signup input.button:hover,a.button:hover{
   background-color:#00c6e0;
   background-image:-moz-linear-gradient(top, #00d7e4, #00adda);
   background-image:-ms-linear-gradient(top, #00d7e4, #00adda);
@@ -62,6 +85,7 @@ h1, h2, h3 {
   border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
   *background-color:#00adda;
   filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  text-decoration: none;
 }
 
-#mc_embed_signup input.button:hover:active{background-color:#0085a7 \9;}
+#mc_embed_signup input.button:hover:active,a.button:hover:active{background-color:#0085a7 \9;}
