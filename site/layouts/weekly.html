@@ -51,8 +51,9 @@
             </div>
             
             <div class="row">
-              <div class="col-lg-12 col-12">
-                <svg id="scatterplot" data-source="http://shiningsea.measuredvoice.com/summaries/<%= linky_date(@item[:date]) %>/weekly_summary.json"></svg>
+              <div class="col-lg-12 col-12" id="plot-container">
+              <svg id="scatterplot" data-source="http://shiningsea.measuredvoice.com/summaries/<%= linky_date(@item[:date]) %>/weekly_summary.json"></svg>
+                <div id="plot-loader"><span class="loading-text">Loading data<span>&hellip;</span></span></div>
               </div>
             </div>
           </div>
@@ -80,6 +81,7 @@
             </div>
             
             <div id="tweet-display">
+              <blockquote>Loading tweet&hellip;</blockquote>
             </div>
             
             <h3>What is this?</h3>
