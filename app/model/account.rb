@@ -16,9 +16,11 @@ class Account < Model
       end
     elsif csv_registry?
       CSV.parse(RestClient.get(endpoint)).map do |row|
-        next unless row.first.present?
-        Account.new(:screen_name => row.first)
-      end      
+        screen_name = row.first
+        next unless screen_name.present?
+        screen_name.gsub!(/@/,'')
+        Account.new(:screen_name => screen_name)
+      end.find_all {|a| a.present?}  
     else
       puts "ERROR: No social-media registry found."      
       []

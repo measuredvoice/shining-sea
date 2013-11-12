@@ -643,4 +643,29 @@ namespace :test do
     elapsed = (end_time - start_time).to_i
     puts "Counted #{total_count} tweets in #{elapsed} seconds."
   end
+
+  desc "Check the configuration of the accounts list"
+  task :accounts do
+    start_time = Time.zone.now
+
+    puts "Testing account list..."
+    
+    accounts_found = 0
+    Account.all.each do |account|
+      puts "Account: #{account.screen_name}"
+      accounts_found += 1
+      
+      if accounts_found % 10 == 0
+        # Check every 10th account for validity
+        account.get_twitter_details! || next
+        puts " ... found account ID #{account.user_id} (#{account.name})"
+        sleep 15.seconds
+      end
+    end
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Found #{accounts_found} accounts in #{elapsed} seconds."
+  end
 end
