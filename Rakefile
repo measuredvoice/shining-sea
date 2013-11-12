@@ -607,6 +607,8 @@ namespace :test do
     file = MetricsFile.where(:date => 3.days.ago).first
     puts "  first file: #{file.filename}"
     
+    puts "Current time zone is: #{Time.zone}"
+    
     puts "Looks good from here."
   end
 

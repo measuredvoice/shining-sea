@@ -4,9 +4,14 @@ module S3Storage
       # TODO: Validate these values
       key    = ENV['AWS_ACCESS_KEY']
       secret = ENV['AWS_SECRET_ACCESS_KEY']
+      region = ENV['AWS_REGION'] || 'us-east-1'
       b      = ENV['AWS_BUCKET']
     
-      AWS::S3.new(:access_key_id => key, :secret_access_key => secret).buckets[b]
+      AWS::S3.new(
+        :access_key_id => key, 
+        :secret_access_key => secret, 
+        :region => region
+      ).buckets[b]
     end
   end
   

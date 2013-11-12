@@ -33,4 +33,4 @@ Twitter.configure do |config|
   config.bearer_token    = Twitter.token
 end
 
-Time.zone = "Eastern Time (US & Canada)"
+Time.zone = ENV['TIME_ZONE'] || "Eastern Time (US & Canada)"
