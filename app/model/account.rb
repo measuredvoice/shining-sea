@@ -18,7 +18,7 @@ class Account < Model
       CSV.parse(RestClient.get(endpoint)).map do |row|
         screen_name = row.first
         next unless screen_name.present?
-        screen_name.gsub!(/@/,'')
+        screen_name.gsub!(/[^a-zA-Z0-9_]/,'')
         Account.new(:screen_name => screen_name)
       end.find_all {|a| a.present?}  
     else
