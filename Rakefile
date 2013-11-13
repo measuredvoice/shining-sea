@@ -250,8 +250,8 @@ namespace :app do
     files += Dir.glob("assets/**/*.*")
     
     # Finally, write the main index files
-    files << "weekly/index.html"
-    files << "index.html"
+    files += Dir.glob("weekly/index.html")
+    files += Dir.glob("index.html")
 
     files.each do |filename|
       puts "writing #{filename} to AWS..."
