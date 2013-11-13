@@ -3,7 +3,7 @@
   <head>
     <script type="text/javascript" src="http://use.typekit.com/bvc1jkf.js"></script>
   	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-    <title>Great Gov Tweets - #<%= @item[:daily_rank] %> on <%= pretty_date(@item[:date]) %> from @<%= @item[:screen_name] %></title>
+    <title>Great Oz Gov Tweets - #<%= @item[:daily_rank] %> on <%= pretty_date(@item[:date]) %> from @<%= @item[:screen_name] %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -23,7 +23,7 @@
       <div class="container">
         <div class="row">
           <div class="brand col-lg-8 col-12">
-            <h1><a href="/">Great Gov Tweets</a></h1>
+            <h1><a href="/">Great Oz Gov Tweets</a></h1>
             <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
           </div>
         </div>
@@ -37,7 +37,7 @@
               <span class="superscript">#</span><%= @item[:daily_rank] %>
             </div>
             <div class="col-lg-9 col-9 rank-details">
-              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from  U.S. government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
+              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from  Australian government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@
           </div>
           <hr>
           <div class="tweet-navigation">
-            <p>Other top Tweets from U.S. government Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
+            <p>Other top Tweets from Australian government Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
               <% if @item[:daily_prev] %>
               <a href="<%= tweet_path(item[:daily_prev]) %>" class="previous">
@@ -110,7 +110,7 @@
           <div class="row">
             <div class="col-lg-6 col-12">
               <p><b>What is this?</b></p>
-              <p>Every day, we look at every tweet sent by official U.S. government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here. We use <a href="http://registry.usa.gov">USA.gov&rsquo;s Social Media Registry API</a> to gather the accounts we look at.</p>
+              <p>Every day, we look at every tweet sent by Australian government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here.</p>
               <p>This site is in early beta, so keep checking back for updates.</p>
               <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
             </div>
