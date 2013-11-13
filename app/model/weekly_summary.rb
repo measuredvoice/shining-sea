@@ -13,9 +13,9 @@ class WeeklySummary < Model
       target_date = end_date - n.days
       
       puts "Getting daily summary from #{target_date.strftime('%Y-%m-%d')}..."
-      ds = DailySummary.from_summary_file(target_date)
-    
-      summary.tweet_summaries += ds.tweet_summaries
+      if ds = DailySummary.from_summary_file(target_date)
+        summary.tweet_summaries += ds.tweet_summaries
+      end
     end
     
     summary
