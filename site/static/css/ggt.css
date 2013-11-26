@@ -234,8 +234,19 @@ footer a:hover {
 	top:0;
 }
 
+#delib-logo a {
+  text-indent: -9000px;
+  display:block;
+  width:268px;
+  height:68px;
+  background: transparent url('/assets/img/delib-social-554x156.png') no-repeat top right;
+  background-size: 240px 68px;
+  position:absolute;
+  top:110px;
+}
+
 .jumbotron {
-	padding:90px 0 10px 0;
+	padding:180px 0 10px 0;
 }
 
 .top-tweet-column ol {
@@ -302,7 +313,18 @@ footer a:hover {
 		top:0;
 		right:20px;
 	}
-  
+  #delib-logo a {
+    text-indent: -9000px;
+    display:block;
+    width:170px;
+    height:48px;
+    background: transparent url('/assets/img/delib-social-554x156.png') no-repeat top left;
+    background-size: 170px 48px;
+    position:absolute;
+    top:90px;
+    right:32px;
+}
+
   .top-tweet-column ol {
     margin:2em 0 0 0;
   }  

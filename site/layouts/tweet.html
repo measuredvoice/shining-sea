@@ -15,7 +15,12 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-12 col-12">
-          <span id="mv-logo"><a href="http://measuredvoice.com">Measured Voice, the only social media management tool designed for government.</a></span>  
+          <span id="mv-logo"><a href="http://measuredvoice.com">Measured Voice, the only social media management tool designed for government.</a></span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <span id="delib-logo"><a href="http://delib.net/australia">Delib Australia.</a></span>
         </div>
       </div>
     </div>
@@ -23,8 +28,12 @@
       <div class="container">
         <div class="row">
           <div class="brand col-lg-8 col-12">
+            <% if @item.identifier == '/' %>
+            <h1>Great Oz Gov Tweets</h1>
+            <% else %>
             <h1><a href="/">Great Oz Gov Tweets</a></h1>
-            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice.</a></h3>
+            <% end %>
+            <h3 class="tagline">Using data to highlight great government communication.<br> From <a href="http://measuredvoice.com">Measured Voice</a> and <a href="http://www.delib.net/australia/">Delib Australia</a>.</h3>
           </div>
         </div>
       </div>
@@ -37,7 +46,7 @@
               <span class="superscript">#</span><%= @item[:daily_rank] %>
             </div>
             <div class="col-lg-9 col-9 rank-details">
-              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from  Australian government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
+              <p>This was the <%= @item[:daily_rank] > 1 ? ordinalize(@item[:daily_rank]) : '' %> most engaging Tweet from Australian government Twitter accounts <span class="tweet-date">on <%= pretty_date(@item[:date]) %></span>.</p>
             </div>
           </div>
         </div>
@@ -59,7 +68,7 @@
           </div>
           <hr>
           <div class="tweet-navigation">
-            <p>Other top Tweets from Australian government Twitter accounts on <%= pretty_date(@item[:date]) %>:</p>
+            <p>Other top Tweets from Australian governments and councils on <%= pretty_date(@item[:date]) %>:</p>
             <div class="row">
               <% if @item[:daily_prev] %>
               <a href="<%= tweet_path(item[:daily_prev]) %>" class="previous">
@@ -105,14 +114,13 @@
         <div class="col-lg-12 col-12">
           <p>&copy; 2013 Measured Voice</p>
           <hr>
-          <p><a href="http://measuredvoice.com">Measured Voice</a> is the only social media tool designed for government. <strong><a href="http://measuredvoice.com">Start your free 30-day trial today</a>.</strong></p>
+          <p>Measured Voice is the only social media tool designed for government. <strong><a href="https://app.measuredvoice.com/signup?partner=delib">Start your free 30-day trial today</a>.</strong></p>
           <hr>
           <div class="row">
             <div class="col-lg-6 col-12">
-              <p><b>What is this?</b></p>
-              <p>Every day, we look at every tweet sent by Australian government Twitter accounts two days previously. We score them all based on retweets, favorites, and the size of their audience and present the results here.</p>
-              <p>This site is in early beta, so keep checking back for updates.</p>
-              <p>If you have any questions about what you see here, or have suggestions, please send an email to jed@measuredvoice.com</p>
+              <p><b>What&rsquo;s this about?</b></p>
+              <p>Each day, we analyse every tweet sent by government and council Twitter accounts in Australia as listed in the <a href="http://egovau.blogspot.com.au/p/australian-government-twitter-accounts.html">eGovAU Twitter list</a> and rank them using an algorithm based on audience size, retweets, and favourites.</p>
+              <p>If you have any questions, comments, or suggestions for Great Oz Gov Tweets, please send an email to Australia@delib.net.</p>
             </div>
           </div>
         </div>
