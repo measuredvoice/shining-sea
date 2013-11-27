@@ -459,6 +459,136 @@ namespace :export do
     puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
   end
   
+  desc "Export daily metrics summary data as CSV"
+  task :daily_metrics_csv, [:target_date] do |t, params|
+    start_time = Time.zone.now
+    
+    if params[:target_date].present?
+      target_date = Time.zone.parse(params[:target_date])
+    else
+      default_offset = (ENV['SHINING_SEA_OFFSET'] || 2).to_i
+      target_date = default_offset.days.ago
+    end
+    iso_date = target_date.strftime('%Y-%m-%d')
+    puts "Loading daily metrics for #{iso_date}"
+            
+    summary = DailySummary.from_summary_file(target_date)
+    
+    summary_filename = "summaries/#{iso_date}/#{iso_date}-tweets.csv"
+    summary_csv = CSV.generate do |csv|
+      csv << ['Tweet URL', 'Retweets', 'Favorites', 'Followers', 'MV Score', 'Daily Rank']
+      
+      summary.tweet_summaries.each do |ts|
+        csv << [ts.link, ts.engagement, ts.kudos, ts.audience, ts.iso_date, ts.mv_score, ts.daily_rank, ts.reach]
+      end
+    end
+    puts "Writing #{summary_filename} CSV file to AWS..."
+    summary.s3_bucket.objects[summary_filename].write(summary_csv)
+    
+    # lookup for agencies
+    # agency_for[account_id] = agency_id
+    # name_of_agency[agency_id] = agency_name
+    agency_for = {}
+    name_of_agency = {}
+    accounts = []
+
+    tweet_count = {}
+    tweet_count['total'] = summary.tweet_summaries.count
+    acct_tweets = {}
+    acct_tweets['total'] = summary.tweet_summaries.count
+    accounts_by_agency = {}
+    accounts_by_agency['total'] = []
+    active_accounts = {}
+    active_accounts['total'] = []
+    
+    summary.account_summaries.each do |as|
+      accounts << as.screen_name
+      agency_for[as.screen_name] = as.agency_id
+      name_of_agency[as.agency_id] = as.agency_name
+      tweet_count[as.agency_id] ||= 0
+      acct_tweets[as.screen_name] ||= 0
+      accounts_by_agency[as.agency_id] ||= []
+      accounts_by_agency[as.agency_id] << as.screen_name
+      accounts_by_agency['total'] << as.screen_name
+      active_accounts[as.agency_id] ||= []
+    end
+    summary.tweet_summaries.each do |ts|
+      agency_id = agency_for[ts.screen_name]
+      
+      tweet_count[agency_id] += 1
+      acct_tweets[ts.screen_name] += 1
+      active_accounts[agency_id] << ts.screen_name
+      active_accounts['total'] << ts.screen_name
+    end
+
+    agencies = name_of_agency.keys.sort
+
+    tweets_per_account_filename = "summaries/#{iso_date}/#{iso_date}-tweets-per-account.csv"
+    tweets_per_account_csv = CSV.generate do |csv|
+      csv << ['account','tweet_count']
+      csv << ['total', acct_tweets['total'] || 0]
+      
+      accounts.each do |acct|
+        csv << [acct, acct_tweets[acct] || 0 ]
+      end
+    end
+    puts "Writing #{tweets_per_account_filename} CSV file to AWS..."
+    summary.s3_bucket.objects[tweets_per_account_filename].write(tweets_per_account_csv)
+
+    tweets_per_agency_filename = "summaries/#{iso_date}/#{iso_date}-tweets-per-agency.csv"
+    tweets_per_agency_csv = CSV.generate do |csv|
+      csv << ['agency', 'name', 'tweet_count']
+      csv << ['total', '', tweet_count['total'] || 0]
+      
+      agencies.each do |agency_id|
+        csv << [
+          agency_id, 
+          name_of_agency[agency_id], 
+          tweet_count[agency_id] || 0
+        ]
+      end
+    end
+    puts "Writing #{tweets_per_agency_filename} CSV file to AWS..."
+    summary.s3_bucket.objects[tweets_per_agency_filename].write(tweets_per_agency_csv)
+
+    accounts_per_agency_filename = "summaries/#{iso_date}/#{iso_date}-accounts-per-agency.csv"
+    accounts_per_agency_csv = CSV.generate do |csv|
+      csv << ['agency', 'name', 'accounts']
+      csv << ['total', '', accounts_by_agency['total'].uniq.count]
+      
+      agencies.each do |agency_id|
+        csv << [
+          agency_id, 
+          name_of_agency[agency_id],   
+          accounts_by_agency[agency_id].uniq.count || 0
+        ]
+      end
+    end
+    puts "Writing #{accounts_per_agency_filename} CSV file to AWS..."
+    summary.s3_bucket.objects[accounts_per_agency_filename].write(accounts_per_agency_csv)
+    
+    active_accounts_filename = "summaries/#{iso_date}/#{iso_date}-active-accounts-by-agency.csv"
+    active_accounts_csv = CSV.generate do |csv|
+      csv << ['agency', 'name', 'accounts']
+      csv << ['total', '', active_accounts['total'].uniq.count]
+      
+      agencies.each do |agency_id|
+        csv << [
+          agency_id, 
+          name_of_agency[agency_id],   
+          active_accounts[agency_id].uniq.count || 0
+        ]
+      end
+    end
+    puts "Writing #{active_accounts_filename} CSV file to AWS..."
+    summary.s3_bucket.objects[active_accounts_filename].write(active_accounts_csv)
+    
+    end_time = Time.zone.now
+    
+    elapsed = (end_time - start_time).to_i
+    puts "Summarized #{summary.tweet_summaries.count} tweets from #{summary.account_summaries.count} accounts in #{elapsed} seconds."
+  end
+  
   desc "Count tweets and accounts by agency"
   task :count_tweets_by_agency do
     start_time = Time.zone.now
@@ -598,6 +728,7 @@ namespace :export do
     elapsed = (end_time - start_time).to_i
     puts "Counted tweets in #{elapsed} seconds."
   end
+
 end
 
 namespace :test do
