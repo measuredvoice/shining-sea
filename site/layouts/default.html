@@ -10,9 +10,35 @@
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="/assets/css/ggt.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#new_person").submit(function(){
+        var email = $("#person_email").val();
+        var password = $("#person_password").val();
+        var url = "/"
+        return $.ajax({
+          type: "POST",
+          url: "http://lvh.me:3000/api_login",
+          data: "email=" + email+ "&password=" +  password,
+          dataType: "json",
+          success: function(msg) {
+            UseReturnedData(msg);
+          },
+          error: function(err) {
+              alert(err.toString());
+            if (err.status == 200) {
+              ParseResult(err);
+            }
+            else { alert('Error:' + err.responseText + '  Status: ' + err.status); }
+          }
+      });
+      })
+    })
+  </script>
   	<div class="container">
       <div class="row">
         <div class="col-lg-12 col-12">
@@ -62,17 +88,76 @@
             </div>
             
             <ol>
+            <%count = 50%>
     		    <% @item[:tweets].first(50).each do |tweet| %>
     		      <li>
     		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/" class="details-link">More details</a>
-    		        <div class="that-twitter-embed-thingy">
+    		        <div class="that-twitter-embed-thingy" id="tweet_id_<%=count%>">
     		        <%= tweet[:embed_html] %>
+                <div class="hover-content" id="tweet_<%=count%>"> helper</div>
     		        </div>
     		      </li>
+              <%count -= 1%>
     		    <% end %>
     		    </ol>
           </div>
+          <div class="col-12 col-offset-1 col-lg-5 home-intro">
+            <h1>Measured Voice Connection</h1>
+            <p> Log in to Measured Voice to import tweets to ideas</p>
+            <button>Log In</button>
+            <div id="content" class="container">
 
+                    <h1 class="text-center">Log in to Measured Voice</h1>
+
+              <div class="row registration">
+                <div class="span6 offset3">
+                  <div class="well">
+                    <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
+                      <!-- <h3>Login to Measured Voice</h3> -->
+                      
+
+                      <fieldset>
+                        <div class="control-group">
+                          <label class="control-label" for="person_email">Email Address</label>
+                          <div class="controls">
+                            <input class="input-xlarge" id="person_email" name="person[email]" placeholder="example@gmail.com" size="30" type="email">
+                          </div>
+                        </div>
+                      </fieldset>
+
+                      <fieldset>
+                        <div class="control-group multi-line">
+                          <label class="control-label" for="person_password">Password</label>
+                          <div class="controls">
+                            <input class="input-xlarge" id="person_password" name="person[password]" placeholder="Your password" size="30" type="password">
+                          </div>
+                        </div>
+                      </fieldset>
+
+                      <fieldset>
+                        <div class="control-group">
+                          <label class="control-label" for="optionsCheckboxList">&nbsp;</label>
+                          <div class="controls">
+                            <label class="checkbox">
+                              <input name="person[remember_me]" type="hidden" value="0"><input id="person_remember_me" name="person[remember_me]" type="checkbox" value="1">
+                              Remember me
+                            </label>
+                          </div>
+                        </div>
+                      </fieldset>
+
+
+                      <div class="form-actions">
+                        <input class="btn btn-info btn-large" name="commit" type="submit" value="Login">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+
+          </div>
+          </div>
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
             <h3>What is this?</h3>
             <p>
@@ -97,7 +182,7 @@
             </p>
             <hr>
             <iframe src="/iframes/1" class="mv-ad" id="iframe1"></iframe>
-          </div>
+                                                                                                    </div>
         </div>
 			</div>
 		</div>
