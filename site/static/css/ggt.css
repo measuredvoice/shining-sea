@@ -347,3 +347,17 @@ footer a:hover {
   }
 
 }
+
+.hover-content{
+  border: thin solid #ccc;
+  display: none;
+  position: absolute;
+  right: -115px;
+  top: 0;
+  width: 120px;
+  z-index: 9999;
+}
+
+.that-twitter-embed-thingy:hover .hover-content{
+  display: block;
+}

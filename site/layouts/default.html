@@ -16,24 +16,43 @@
   <body>
   <script type="text/javascript">
     $(document).ready(function(){
-      $("#new_person").submit(function(){
+      if (document.cookie.indexOf("account_data") > -1){
+        function getCookie(cname) {
+          var name = cname + "=";
+          var ca = document.cookie.split(';');
+          for(var i=0; i<ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1);
+            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+          }
+          return "";
+        }
+        var account_data_cookie = getCookie("account_data").split(",");
+        var x = document.getElementsByClassName("hover-content");
+        var i;
+        for (i = 0; i < x.length; i++) {
+          var hover_content = "Send to MV";
+          for (var j = account_data_cookie.length - 1; j > 0; j--) {
+            hover_content += "<button>"+account_data_cookie[j]+"</button>" + "<br>";
+          };
+          x[i].innerHTML = hover_content;
+        }
+      };
+      $("#new_person").submit(function(e){
+        e.preventDefault();
         var email = $("#person_email").val();
         var password = $("#person_password").val();
-        var url = "/"
-        return $.ajax({
+        var url = "/";
+        $.ajax({
           type: "POST",
-          url: "http://lvh.me:3000/api_login",
-          data: "email=" + email+ "&password=" +  password,
-          dataType: "json",
-          success: function(msg) {
-            UseReturnedData(msg);
+          url: "http://localhost:3000/api_login"+".json",
+          data: {"email": email, "password" : password },
+          dataType: "html",
+          success: function(data) {
+            var account_data = JSON.parse(data)
+            document.cookie='account_data='+account_data;
           },
           error: function(err) {
-              alert(err.toString());
-            if (err.status == 200) {
-              ParseResult(err);
-            }
-            else { alert('Error:' + err.responseText + '  Status: ' + err.status); }
           }
       });
       })
