@@ -33,10 +33,28 @@
         for (i = 0; i < x.length; i++) {
           var hover_content = "Send to MV";
           for (var j = account_data_cookie.length - 1; j > 0; j--) {
-            hover_content += "<button>"+account_data_cookie[j]+"</button>" + "<br>";
+            hover_content += "<button class='channel_name'>"+account_data_cookie[j]+"</button>" + "<br>";
           };
           x[i].innerHTML = hover_content;
         }
+        $('.channel_name').click(function(e) {
+          e.preventDefault();
+          var tweet_id = this.parentNode.id;
+          var person_id = account_data_cookie[0];
+          var channel_name = this.innerHTML;
+          var url = "/";
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:3000/api_idea"+".json",
+            data: {"tweet_id": tweet_id, "person_id": person_id, "channel_name": channel_name },
+            dataType: "html",
+            success: function(data) {
+              
+            },
+            error: function(err) {
+            }
+          });
+        });
       };
       $("#new_person").submit(function(e){
         e.preventDefault();
@@ -113,7 +131,7 @@
     		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/" class="details-link">More details</a>
     		        <div class="that-twitter-embed-thingy" id="tweet_id_<%=count%>">
     		        <%= tweet[:embed_html] %>
-                <div class="hover-content" id="tweet_<%=count%>"> helper</div>
+                <div class="hover-content" id="<%=tweet[:tweet_id]%>"> helper</div>
     		        </div>
     		      </li>
               <%count -= 1%>
