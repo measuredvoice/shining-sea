@@ -16,6 +16,12 @@
   <body>
   <script type="text/javascript">
     $(document).ready(function(){
+      $('#content-registration').hide();
+      $('#after_login').hide();
+      $('.log-form').click(function(){
+        $('#content-registration').toggle();
+      })
+
       if (document.cookie.indexOf("account_data") > -1){
         function getCookie(cname) {
           var name = cname + "=";
@@ -31,9 +37,9 @@
         var x = document.getElementsByClassName("hover-content");
         var i;
         for (i = 0; i < x.length; i++) {
-          var hover_content = "Send to MV";
+          var hover_content = "<div class='send_to_mv'>Send to MV</div>";
           for (var j = account_data_cookie.length - 1; j > 0; j--) {
-            hover_content += "<button class='channel_name'>"+account_data_cookie[j]+"</button>" + "<br>";
+            hover_content += "<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br>";
           };
           x[i].innerHTML = hover_content;
         }
@@ -49,7 +55,6 @@
             data: {"tweet_id": tweet_id, "person_id": person_id, "channel_name": channel_name },
             dataType: "html",
             success: function(data) {
-              
             },
             error: function(err) {
             }
@@ -69,6 +74,8 @@
           success: function(data) {
             var account_data = JSON.parse(data)
             document.cookie='account_data='+account_data;
+            $('#before_login').hide();
+            $('#after_login').show();
           },
           error: function(err) {
           }
@@ -131,7 +138,7 @@
     		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/" class="details-link">More details</a>
     		        <div class="that-twitter-embed-thingy" id="tweet_id_<%=count%>">
     		        <%= tweet[:embed_html] %>
-                <div class="hover-content" id="<%=tweet[:tweet_id]%>"> helper</div>
+                <div class="hover-content" id="<%=tweet[:tweet_id]%>"></div>
     		        </div>
     		      </li>
               <%count -= 1%>
@@ -139,59 +146,55 @@
     		    </ol>
           </div>
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
-            <h1>Measured Voice Connection</h1>
+            <h3>Measured Voice Connection</h3>
+            <div id="before_login">
             <p> Log in to Measured Voice to import tweets to ideas</p>
-            <button>Log In</button>
-            <div id="content" class="container">
-
-                    <h1 class="text-center">Log in to Measured Voice</h1>
-
-              <div class="row registration">
-                <div class="span6 offset3">
-                  <div class="well">
-                    <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
-                      <!-- <h3>Login to Measured Voice</h3> -->
-                      
-
-                      <fieldset>
-                        <div class="control-group">
-                          <label class="control-label" for="person_email">Email Address</label>
-                          <div class="controls">
-                            <input class="input-xlarge" id="person_email" name="person[email]" placeholder="example@gmail.com" size="30" type="email">
+            <button class="btn btn-primary log-form">Log In</button>
+            </div>
+            <p id="after_login"><b>Hover and click 'Send to MV' to send tweets to the ideas section of your Measured Voice channels</b></p>
+            <div id="content-registration" class="container">
+              <h3 class="text-left">Log in to Measured Voice</h3>
+              <div class="registration">
+                    <div class="well ">
+                      <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
+                        <!-- <h3>Login to Measured Voice</h3> -->                      
+                        <fieldset>
+                          <div class="control-group">
+                            <label class="control-label" for="person_email">Email Address</label>
+                            <div class="controls">
+                              <input class="input-xlarge" id="person_email" name="person[email]" placeholder="example@gmail.com" size="30" type="email">
+                            </div>
                           </div>
-                        </div>
-                      </fieldset>
+                        </fieldset>
 
-                      <fieldset>
-                        <div class="control-group multi-line">
-                          <label class="control-label" for="person_password">Password</label>
-                          <div class="controls">
-                            <input class="input-xlarge" id="person_password" name="person[password]" placeholder="Your password" size="30" type="password">
+                        <fieldset>
+                          <div class="control-group multi-line">
+                            <label class="control-label" for="person_password">Password</label>
+                            <div class="controls">
+                              <input class="input-xlarge" id="person_password" name="person[password]" placeholder="Your password" size="30" type="password">
+                            </div>
                           </div>
-                        </div>
-                      </fieldset>
+                        </fieldset>
 
-                      <fieldset>
-                        <div class="control-group">
-                          <label class="control-label" for="optionsCheckboxList">&nbsp;</label>
-                          <div class="controls">
-                            <label class="checkbox">
-                              <input name="person[remember_me]" type="hidden" value="0"><input id="person_remember_me" name="person[remember_me]" type="checkbox" value="1">
-                              Remember me
-                            </label>
+                        <fieldset>
+                          <div class="control-group">
+                            <label class="control-label" for="optionsCheckboxList">&nbsp;</label>
+                            <div class="controls">
+                              <label class="checkbox">
+                                <input name="person[remember_me]" type="hidden" value="0"><input id="person_remember_me" name="person[remember_me]" type="checkbox" value="1">
+                                Remember me
+                              </label>
+                            </div>
                           </div>
+                        </fieldset>
+
+
+                        <div class="form-actions">
+                          <input class="btn btn-primary log-form" name="commit" type="submit" value="Login">
                         </div>
-                      </fieldset>
-
-
-                      <div class="form-actions">
-                        <input class="btn btn-info btn-large" name="commit" type="submit" value="Login">
-                      </div>
-                    </form>
-                  </div>
-                </div>
+                      </form>
+                    </div>
               </div>
-
 
           </div>
           </div>

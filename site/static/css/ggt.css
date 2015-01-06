@@ -349,15 +349,34 @@ footer a:hover {
 }
 
 .hover-content{
-  border: thin solid #ccc;
   display: none;
   position: absolute;
   right: -115px;
   top: 0;
   width: 120px;
   z-index: 9999;
+  padding-left: 5px;
 }
 
 .that-twitter-embed-thingy:hover .hover-content{
   display: block;
+ 
+}
+.form-horizontal .controls{
+  margin-left: 120px;
+}
+.form-horizontal .control-label{
+  float: left;
+}
+.person-form label{
+  font-weight: normal;
+}
+.channel_name{
+  margin-bottom: 5px;
+  width: 100%;
+  font-weight: bold;
+}
+
+.send_to_mv{
+  font-size: 18px;
 }
