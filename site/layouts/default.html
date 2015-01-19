@@ -22,45 +22,48 @@
         $('#content-registration').toggle();
       })
 
-      if (document.cookie.indexOf("account_data") > -1){
-        function getCookie(cname) {
-          var name = cname + "=";
-          var ca = document.cookie.split(';');
-          for(var i=0; i<ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0)==' ') c = c.substring(1);
-            if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-          }
-          return "";
-        }
-        var account_data_cookie = getCookie("account_data").split(",");
-        var x = document.getElementsByClassName("hover-content");
-        var i;
-        for (i = 0; i < x.length; i++) {
-          var hover_content = "<div class='send_to_mv'>Send to MV</div>";
-          for (var j = account_data_cookie.length - 1; j > 0; j--) {
-            hover_content += "<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br>";
-          };
-          x[i].innerHTML = hover_content;
-        }
-        $('.channel_name').click(function(e) {
-          e.preventDefault();
-          var tweet_id = this.parentNode.id;
-          var person_id = account_data_cookie[0];
-          var channel_name = this.innerHTML;
-          var url = "/";
-          $.ajax({
-            type: "POST",
-            url: "http://localhost:3000/api_idea"+".json",
-            data: {"tweet_id": tweet_id, "person_id": person_id, "channel_name": channel_name },
-            dataType: "html",
-            success: function(data) {
-            },
-            error: function(err) {
+      function logged_in(){
+        if (document.cookie.indexOf("account_data") > -1){
+          function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1);
+              if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
             }
+            return "";
+          }
+          var account_data_cookie = getCookie("account_data").split(",");
+          var x = document.getElementsByClassName("hover-content");
+          var i;
+          for (i = 0; i < x.length; i++) {
+            var hover_content = "<div class='send_to_mv'>Send to MV</div>";
+            for (var j = account_data_cookie.length - 1; j > 0; j--) {
+              hover_content += "<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br>";
+            };
+            x[i].innerHTML = hover_content;
+          }
+          $('.channel_name').click(function(e) {
+            e.preventDefault();
+            var tweet_id = this.parentNode.id;
+            var person_id = account_data_cookie[0];
+            var channel_name = this.innerHTML;
+            var url = "/";
+            $.ajax({
+              type: "POST",
+              url: "https://omnia.measuredvoice.com/api_idea"+".json",
+              data: {"tweet_id": tweet_id, "person_id": person_id, "channel_name": channel_name },
+              dataType: "html",
+              success: function(data) {
+              },
+              error: function(err) {
+              }
+            });
           });
-        });
+        };
       };
+      logged_in();
       $("#new_person").submit(function(e){
         e.preventDefault();
         var email = $("#person_email").val();
@@ -68,14 +71,18 @@
         var url = "/";
         $.ajax({
           type: "POST",
-          url: "http://localhost:3000/api_login"+".json",
+          url: "https://omnia.measuredvoice.com/api_login"+".json",
           data: {"email": email, "password" : password },
           dataType: "html",
           success: function(data) {
             var account_data = JSON.parse(data)
-            document.cookie='account_data='+account_data;
+            var d = new Date();
+            d.setTime(d.getTime() + (24*60*60*1000));
+            var expires = "expires="+d.toUTCString();
+            document.cookie='account_data='+account_data + "; " + expires;
             $('#before_login').hide();
             $('#after_login').show();
+            logged_in();
           },
           error: function(err) {
           }
