@@ -34,9 +34,29 @@
             }
             return "";
           }
-          var account_data_cookie = getCookie("account_data").split(",");
+
+          $('.logout-form').click(function(){
+            document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });
+            $('#before_login').show();
+            $('#after_login').hide();
+            var x = document.getElementsByClassName("hover-content");
+            var i;
+            for (i = 0; i < x.length; i++) {
+              var hover_content = "";
+              x[i].innerHTML = hover_content;
+            }
+          })
+
+          if (getCookie("account_data").indexOf(",") > -1) {
+            var account_data_cookie = getCookie("account_data").split(",");
+          }
+          else if (getCookie("account_data").indexOf("%2c") > -1) {
+            var account_data_cookie = getCookie("account_data").split("%2c");
+          }
           var x = document.getElementsByClassName("hover-content");
           var i;
+          $('#before_login').hide();
+          $('#after_login').show();
           for (i = 0; i < x.length; i++) {
             var hover_content = "<div class='send_to_mv'>Send to MV</div>";
             for (var j = account_data_cookie.length - 1; j > 0; j--) {
@@ -82,9 +102,12 @@
             document.cookie='account_data='+account_data + "; " + expires;
             $('#before_login').hide();
             $('#after_login').show();
+            $('#content-registration').hide();
             logged_in();
           },
           error: function(err) {
+            var x = document.getElementsByClassName("error-message");
+            x[0].innerHTML = "Invalid Email address or password!";
           }
       });
       })
@@ -155,16 +178,21 @@
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
             <h3>Measured Voice Connection</h3>
             <div id="before_login">
-            <p> Log in to Measured Voice to import tweets to ideas</p>
-            <button class="btn btn-primary log-form">Log In</button>
+              <p> Log in to Measured Voice to import tweets to ideas</p>
+              <button class="btn btn-primary log-form">Log In</button>
             </div>
-            <p id="after_login"><b>Hover and click 'Send to MV' to send tweets to the ideas section of your Measured Voice channels</b></p>
+            <div id="after_login">
+              <p><b>Hover and click 'Send to MV' to send tweets to the ideas section of your Measured Voice channels</b></p>
+              <button class="btn btn-primary logout-form">Log Out</button>
+            </div>
             <div id="content-registration" class="container">
               <h3 class="text-left">Log in to Measured Voice</h3>
               <div class="registration">
                     <div class="well ">
                       <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
-                        <!-- <h3>Login to Measured Voice</h3> -->                      
+                        <!-- <h3>Login to Measured Voice</h3> -->     
+
+                        <div class="error-message"></div>                 
                         <fieldset>
                           <div class="control-group">
                             <label class="control-label" for="person_email">Email Address</label>
@@ -197,7 +225,7 @@
 
 
                         <div class="form-actions">
-                          <input class="btn btn-primary log-form" name="commit" type="submit" value="Login">
+                          <input class="btn btn-primary" name="commit" type="submit" value="Login">
                         </div>
                       </form>
                     </div>
