@@ -46,13 +46,8 @@
               x[i].innerHTML = hover_content;
             }
           })
-
-          if (getCookie("account_data").indexOf(",") > -1) {
-            var account_data_cookie = getCookie("account_data").split(",");
-          }
-          else if (getCookie("account_data").indexOf("%2c") > -1) {
-            var account_data_cookie = getCookie("account_data").split("%2c");
-          }
+          var account_cookie = unescape(getCookie("account_data"));
+          var account_data_cookie = account_cookie.split(",");
           var x = document.getElementsByClassName("hover-content");
           var i;
           $('#before_login').hide();
