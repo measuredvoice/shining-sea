@@ -11,16 +11,34 @@
     <link href="/assets/css/ggt.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
   <body>
   <script type="text/javascript">
     $(document).ready(function(){
-      $('#content-registration').hide();
-      $('#after_login').hide();
-      $('.log-form').click(function(){
-        $('#content-registration').toggle();
-      })
+      // $('#content-registration').hide();
+      // $('#after_login').hide();
+      // $('.log-form').click(function(){
+      //   $('#content-registration').toggle();
+      // })
+
+//      $('.to_channel').hide()
+      function toggle_login_form(){
+        $('.send_to_mv').click(function(){
+          if (document.cookie.indexOf("account_data") > -1){
+            $(this).find('.to_channel').show();
+            $(this).hide();
+
+          }
+          else{
+            $('#myModal').modal('toggle');
+            $('.hover-content').css('z-index',1);
+          }
+        });
+      }
+
+      toggle_login_form();
 
       function logged_in(){
         if (document.cookie.indexOf("account_data") > -1){
@@ -53,11 +71,13 @@
           $('#before_login').hide();
           $('#after_login').show();
           for (i = 0; i < x.length; i++) {
-            var hover_content = "<div class='send_to_mv'>Send to MV</div>";
+            var hover_content = "<div class='send_to_mv'><button class='channel_name btn-primary btn send_to_mv'>Send To MV</button></div>";
             for (var j = account_data_cookie.length - 1; j > 0; j--) {
-              hover_content += "<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br>";
+              hover_content += "<div class='to_channel'><div>To Channel</div>"+"<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br></div>";
             };
             x[i].innerHTML = hover_content;
+            $('.to_channel').hide();
+            toggle_login_form();
           }
           $('.channel_name').click(function(e) {
             e.preventDefault();
@@ -163,7 +183,9 @@
     		        <a href="/<%= tweet[:screen_name] %>/status/<%= tweet[:tweet_id] %>/" class="details-link">More details</a>
     		        <div class="that-twitter-embed-thingy" id="tweet_id_<%=count%>">
     		        <%= tweet[:embed_html] %>
-                <div class="hover-content" id="<%=tweet[:tweet_id]%>"></div>
+                <div class="hover-content" id="<%=tweet[:tweet_id]%>">
+                  <button class='channel_name btn-primary btn send_to_mv'>Send To MV</button>
+                </div>
     		        </div>
     		      </li>
               <%count -= 1%>
@@ -172,61 +194,15 @@
           </div>
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
             <h3>Measured Voice Connection</h3>
-            <div id="before_login">
+            <!-- <div id="before_login">
               <p> Log in to Measured Voice to import tweets to ideas</p>
               <button class="btn btn-primary log-form">Log In</button>
             </div>
             <div id="after_login">
               <p><b>Hover and click 'Send to MV' to send tweets to the ideas section of your Measured Voice channels</b></p>
               <button class="btn btn-primary logout-form">Log Out</button>
-            </div>
-            <div id="content-registration" class="container">
-              <h3 class="text-left">Log in to Measured Voice</h3>
-              <div class="registration">
-                    <div class="well ">
-                      <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
-                        <!-- <h3>Login to Measured Voice</h3> -->     
-
-                        <div class="error-message"></div>                 
-                        <fieldset>
-                          <div class="control-group">
-                            <label class="control-label" for="person_email">Email Address</label>
-                            <div class="controls">
-                              <input class="input-xlarge" id="person_email" name="person[email]" placeholder="example@gmail.com" size="30" type="email">
-                            </div>
-                          </div>
-                        </fieldset>
-
-                        <fieldset>
-                          <div class="control-group multi-line">
-                            <label class="control-label" for="person_password">Password</label>
-                            <div class="controls">
-                              <input class="input-xlarge" id="person_password" name="person[password]" placeholder="Your password" size="30" type="password">
-                            </div>
-                          </div>
-                        </fieldset>
-
-                        <fieldset>
-                          <div class="control-group">
-                            <label class="control-label" for="optionsCheckboxList">&nbsp;</label>
-                            <div class="controls">
-                              <label class="checkbox">
-                                <input name="person[remember_me]" type="hidden" value="0"><input id="person_remember_me" name="person[remember_me]" type="checkbox" value="1">
-                                Remember me
-                              </label>
-                            </div>
-                          </div>
-                        </fieldset>
-
-
-                        <div class="form-actions">
-                          <input class="btn btn-primary" name="commit" type="submit" value="Login">
-                        </div>
-                      </form>
-                    </div>
-              </div>
-
-          </div>
+            </div> -->
+            
           </div>
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
             <h3>What is this?</h3>
@@ -257,6 +233,61 @@
 			</div>
 		</div>
 	</div>
+  <div id="content-registration" class="container">
+    <div class="registration modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:block">
+        <div class="modal-backdrop fade in" style="height: 984px;" data-dismiss="modal">
+        </div>
+          <div class="modal-dialog">
+            <div class="well ">
+            <h1 class="text-left">Log in to Measured Voice</h1>
+              <form accept-charset="UTF-8" class="form-horizontal person-form" id="new_person" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xrxe6etdiDEnBEsbfaEkIxjJ8BWRHJFAsGDfHPwS7s8="></div>
+                <!-- <h3>Login to Measured Voice</h3> -->     
+
+                <div class="error-message"></div>                 
+                <fieldset>
+                  <div class="control-group">
+                    <label for="person_email">Your Email</label>
+                    <div class="controls">
+                      <input class="input-xlarge" id="person_email" name="person[email]" size="30" type="email">
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <div class="control-group multi-line">
+                    <label for="person_password">Your Password</label>
+                    <div class="controls">
+                      <input class="input-xlarge" id="person_password" name="person[password]" size="30" type="password">
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <div class="control-group">
+                    <label class="control-label" for="optionsCheckboxList">&nbsp;</label>
+                    <div class="controls">
+                      <label class="checkbox">
+                        <input name="person[remember_me]" type="hidden" value="0"><input id="person_remember_me" name="person[remember_me]" type="checkbox" value="1">
+                        Keep me signed in
+                      </label>
+                    </div>
+                  </div>
+                </fieldset>
+
+
+                <div class="form-actions">
+                  <input class="btn btn-primary btn-lg btn-block" name="commit" type="submit" value="Login">
+                </div>
+                <p class="devise-links">
+                  Don't have an account yet? <a href="/signup">Sign Up here</a>.<br>
+                  <a href="/reset_password">Forgot your password?</a><br>
+                </p>
+              </form>
+            </div>
+          </div>
+    </div>
+
+</div>
   <footer>
     <div class="container">
       <div class="row">

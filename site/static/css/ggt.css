@@ -1,6 +1,6 @@
 html, body {
-  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
+  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html {
@@ -15,7 +15,7 @@ a{color:#003366;text-decoration:none;}
 a:hover{color:#00adda;text-decoration:underline;}
 
 h1, h2, h3 {
-	font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "proxima-nova", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 @-webkit-keyframes rotate {
@@ -76,86 +76,86 @@ h1, h2, h3 {
 }
 
 .jumbotron a {
-	color:#104469;
+  color:#104469;
 }
 
 .brand h1 a {
-	color:#333;
+  color:#333;
 }
 .tweet-stats, .tweet-navigation {
-	padding:0 .5em 0 .8em;
-	margin: 10px 0 1.5em 0;
+  padding:0 .5em 0 .8em;
+  margin: 10px 0 1.5em 0;
 }
 
 .rank-score {
-	color: #104469;
-	border-radius: 5px;
-	border: 1px solid;
-	overflow: auto;
-	margin: 10px 0 1.5em 0;
-	box-shadow: rgba(0, 0, 0, 0.148438) 0px 1px 3px 0px;
+  color: #104469;
+  border-radius: 5px;
+  border: 1px solid;
+  overflow: auto;
+  margin: 10px 0 1.5em 0;
+  box-shadow: rgba(0, 0, 0, 0.148438) 0px 1px 3px 0px;
 }
 
 .rank-number {
-	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 290%;
-	text-align: center;
-	vertical-align: middle;
+  font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 290%;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .rank-number .superscript {
-	font-size:40%;
-	vertical-align: middle;
+  font-size:40%;
+  vertical-align: middle;
 }
 
 .rank-details {
-	border-left: 1px solid;
-	padding-top:.5em;
+  border-left: 1px solid;
+  padding-top:.5em;
 }
 
 .rank-details p {
-	vertical-align: middle;
-	padding: .5em 0;
+  vertical-align: middle;
+  padding: .5em 0;
 }
 
 .mv-score {
-	font-size: 200%;
-/*	padding:.2em;*/
-/*	background-color: #006692;*/
-/*	color:#FFF;*/
-/*	border-radius:5px;*/
-	margin-bottom: .5em;
+  font-size: 200%;
+/*  padding:.2em;*/
+/*  background-color: #006692;*/
+/*  color:#FFF;*/
+/*  border-radius:5px;*/
+  margin-bottom: .5em;
 }
 
 .retweet-count i.icon-retweet, .favorite-count i.icon-star, .reach-total i.icon-bullhorn, .big-number  {
-	font-size: 200%;
+  font-size: 200%;
 }
 
 .retweet-count i.icon-retweet, .favorite-count i.icon-star, .reach-total i.icon-bullhorn {
-	display:inline-block;
-	width: 1.3em;
+  display:inline-block;
+  width: 1.3em;
 }
 
 i.icon-retweet {
-	color:#568934;
+  color:#568934;
 }
 
 i.icon-star {
-	color:#ff8b00;
+  color:#ff8b00;
 }
 
 i.icon-bullhorn {
-	color:#0096D6;
+  color:#0096D6;
 }
 
 /*.mv-ads {
-	margin:2em 0;
+  margin:2em 0;
 }
 
 .mv-ad1, .mv-ad2 {
-	border-radius:5px;
-	background-color:#EFEFEF;
-	height:140px;
+  border-radius:5px;
+  background-color:#EFEFEF;
+  height:140px;
 }
 */
 
@@ -173,69 +173,69 @@ iframe.mv-ad {
 }
 
 .tweet-navigation .previous, .tweet-navigation .next {
-	color: #104469;
-	line-height: 1.1;
+  color: #104469;
+  line-height: 1.1;
   font-size: 80%;
 }
 
 @media screen and (min-width: 768px) {
   .tweet-navigation .previous, .tweet-navigation .next {
-  	font-size: 100%;
+    font-size: 100%;
   }
 }
 
 .tweet-navigation a:hover, .jumbotron a:hover {
-	color: #0096D6;
-	text-decoration: none;
+  color: #0096D6;
+  text-decoration: none;
 }
 
 .tweet-navigation .next {
-	text-align: right;
+  text-align: right;
 }
 
 .navigation-number {
-	font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 1.4em;
-	text-align: center;
-	display:inline-block;
-	width:1.4em;
-	height:1.4em;
-	border-radius: 3px;
-	border: solid 1px;
-	margin-bottom: .3em;
+  font-family: "atrament-web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.4em;
+  text-align: center;
+  display:inline-block;
+  width:1.4em;
+  height:1.4em;
+  border-radius: 3px;
+  border: solid 1px;
+  margin-bottom: .3em;
 }
 
 footer {
   margin-top:15px;
-	padding: 1em 0 5em;
-	color:#FFF;
-	background-color: #104469;
-	overflow: auto;
+  padding: 1em 0 5em;
+  color:#FFF;
+  background-color: #104469;
+  overflow: auto;
 }
 
 footer a {
-	color:#FFFF77;
+  color:#FFFF77;
 }
 
 footer a:hover {
-	background-color: #FFFF77;
-	color:104469;
-	text-decoration: none;
+  background-color: #FFFF77;
+  color:104469;
+  text-decoration: none;
 }
 
 #mv-logo a {
-	text-indent: -9000px;
-	display:block;
-	width:290px;
-	height:90px;
-	background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
-	background-size: 290px 90px;
-	position:absolute;
-	top:0;
+  text-indent: -9000px;
+  display:block;
+  width:290px;
+  height:90px;
+  background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
+  background-size: 290px 90px;
+  position:absolute;
+  top:0;
 }
 
 .jumbotron {
-	padding:90px 0 10px 0;
+  padding:90px 0 10px 0;
 }
 
 .top-tweet-column ol {
@@ -282,26 +282,26 @@ footer a:hover {
     margin-bottom: 10px;
   }
   .rank-number {
-		font-size: 400%;
-		margin-top: -.2em;
-	}
+    font-size: 400%;
+    margin-top: -.2em;
+  }
 
   .top-tweet-column {
-  	min-height: 1px;
-  	padding-right: 15px;
-  	padding-left: 15px;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
   }
   #mv-logo a {
-		text-indent: -9000px;
-		display:block;
-		width:200px;
-		height:62px;
-		background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
-		background-size: 200px 62px;
-		position:absolute;
-		top:0;
-		right:20px;
-	}
+    text-indent: -9000px;
+    display:block;
+    width:200px;
+    height:62px;
+    background: transparent url('/assets/img/mv-logo-800x248.png') no-repeat top left;
+    background-size: 200px 62px;
+    position:absolute;
+    top:0;
+    right:20px;
+  }
   
   .top-tweet-column ol {
     margin:2em 0 0 0;
@@ -349,22 +349,24 @@ footer a:hover {
 }
 
 .hover-content{
-  display: none;
+  display: block;
   position: absolute;
   right: -115px;
   top: 0;
   width: 120px;
-  z-index: 9999;
+  z-index: 1200;
   padding-left: 5px;
 }
 
-.that-twitter-embed-thingy:hover .hover-content{
-  display: block;
- 
+.modal-backdrop{
+  z-index: 0;
 }
-.form-horizontal .controls{
-  margin-left: 120px;
+
+.content-registration{
+  position: absolute;
+  z-index: 9999;
 }
+
 .form-horizontal .control-label{
   float: left;
 }
@@ -378,5 +380,49 @@ footer a:hover {
 }
 
 .send_to_mv{
-  font-size: 18px;
+  font-size: 14px;
+}
+
+.modal-dialog{
+  width: 525px;
+}
+
+.registration .well{
+  background: #fff;
+}
+.registration .well h1{
+  margin: 0;
+  font-weight: bold;
+  color: #003366;
+
+}
+.registration .person-form{
+  margin: 20px;
+}
+.registration .well .control-group{
+  margin: 10px 0;
+}
+
+.registration .well .input-xlarge{
+  height: 55px;
+  border-radius:3px;
+  border: thin solid #ccc;
+  width: 100%; 
+  padding:0 5px;
+}
+
+.registration .btn-primary{
+  font-size: 24px;
+}
+.registration .devise-links{
+  margin-top: 30px;
+  font-size: 20px;
+  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  line-height: 30px;
+}
+
+.registration .error-message
+{
+  color: red;
 }
