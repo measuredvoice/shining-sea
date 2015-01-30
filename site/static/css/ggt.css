@@ -421,6 +421,17 @@ footer a:hover {
   font-family: 'Roboto', sans-serif;
   line-height: 30px;
 }
+.parent-buttons{
+  background: #fff;
+  padding: 10px;
+  box-shadow: 1px 1px 1px #333
+}
+
+.each_channel_name{
+  color: #555;
+  text-decoration: none;
+  padding: 5px 0;
+}
 
 .registration .error-message
 {

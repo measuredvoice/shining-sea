@@ -27,7 +27,10 @@
       function toggle_login_form(){
         $('.send_to_mv').click(function(){
           if (document.cookie.indexOf("account_data") > -1){
-            $(this).find('.to_channel').show();
+            var get_send_to_mv_id = this.parentElement.getAttribute('id');
+            var get_number = get_send_to_mv_id.split("send_to_mv")[1];
+            var to_channel_id = "to_channel" + get_number;
+            $("#"+to_channel_id).show();
             $(this).hide();
 
           }
@@ -71,15 +74,16 @@
           $('#before_login').hide();
           $('#after_login').show();
           for (i = 0; i < x.length; i++) {
-            var hover_content = "<div class='send_to_mv'><button class='channel_name btn-primary btn send_to_mv'>Send To MV</button></div>";
+            var hover_content = "<div class='send_to_mv' id='send_to_mv_"+i.toString()+"'><button class='channel_name btn-primary btn send_to_mv'>Send To MV</button></div><div class='to_channel' id='to_channel_"+i.toString()+"'> <div class='channel_name btn-primary btn'>To Channel</div><div class='parent-buttons'>";
             for (var j = account_data_cookie.length - 1; j > 0; j--) {
-              hover_content += "<div class='to_channel'><div>To Channel</div>"+"<button class='channel_name btn-primary btn'>#"+account_data_cookie[j]+"</button>" + "<br></div>";
+              hover_content += "<a href='#' class='each_channel_name'>#"+account_data_cookie[j]+"</a><br>";
             };
+            hover_content +="</div></div>"
             x[i].innerHTML = hover_content;
             $('.to_channel').hide();
             toggle_login_form();
           }
-          $('.channel_name').click(function(e) {
+          $('.each_channel_name').click(function(e) {
             e.preventDefault();
             var tweet_id = this.parentNode.id;
             var person_id = account_data_cookie[0];
@@ -119,6 +123,8 @@
             $('#after_login').show();
             $('#content-registration').hide();
             logged_in();
+            $('.fade').removeClass('in').addClass('out');
+
           },
           error: function(err) {
             var x = document.getElementsByClassName("error-message");
