@@ -17,14 +17,10 @@
   <body>
   <script type="text/javascript">
     $(document).ready(function(){
-      // $('#content-registration').hide();
-      // $('#after_login').hide();
-      // $('.log-form').click(function(){
-      //   $('#content-registration').toggle();
-      // })
-
-//      $('.to_channel').hide()
       function toggle_login_form(){
+        $('#myModal').removeClass('modal');
+        $('#modal-backdrop').removeClass('modal-dropbox');
+        $('#modal-backdrop').css('height','30px');
         $('.send_to_mv').click(function(){
           if (document.cookie.indexOf("account_data") > -1){
             var get_send_to_mv_id = this.parentElement.getAttribute('id');
@@ -35,8 +31,11 @@
 
           }
           else{
+            $('#myModal').addClass('modal');
+            $('#modal-backdrop').addClass('modal-dropbox');
             $('#myModal').modal('toggle');
             $('.hover-content').css('z-index',1);
+
           }
         });
       }
@@ -68,7 +67,7 @@
             }
           })
           var account_cookie = unescape(getCookie("account_data"));
-          var account_data_cookie = account_cookie.split(",");
+          var account_data_cookie = account_cookie.replace(/\+/gi, " ").split(",");
           var x = document.getElementsByClassName("hover-content");
           var i;
           $('#before_login').hide();
@@ -78,16 +77,18 @@
             for (var j = account_data_cookie.length - 1; j > 0; j--) {
               hover_content += "<a href='#' class='each_channel_name'>#"+account_data_cookie[j]+"</a><br>";
             };
-            hover_content +="</div></div>"
+            hover_content +="</div></div><div class='sent btn-primary btn'>Sent!</div>"
             x[i].innerHTML = hover_content;
             $('.to_channel').hide();
+            $('.sent').hide();
             toggle_login_form();
           }
           $('.each_channel_name').click(function(e) {
             e.preventDefault();
-            var tweet_id = this.parentNode.id;
+            var tweet_id = this.parentNode.parentNode.parentNode.id;
             var person_id = account_data_cookie[0];
             var channel_name = this.innerHTML;
+            var that = this
             var url = "/";
             $.ajax({
               type: "POST",
@@ -95,6 +96,12 @@
               data: {"tweet_id": tweet_id, "person_id": person_id, "channel_name": channel_name },
               dataType: "html",
               success: function(data) {
+                $("#"+that.parentNode.parentNode.id).hide();
+                $($(that.parentNode.parentNode.parentNode).find($(".sent"))[0]).show()
+                $('.sent').click(function(){
+                  $('.to_channel').show();
+                  $($(that.parentNode.parentNode.parentNode).find($(".sent"))[0]).hide()
+                })
               },
               error: function(err) {
               }
@@ -199,18 +206,6 @@
     		    </ol>
           </div>
           <div class="col-12 col-offset-1 col-lg-5 home-intro">
-            <h3>Measured Voice Connection</h3>
-            <!-- <div id="before_login">
-              <p> Log in to Measured Voice to import tweets to ideas</p>
-              <button class="btn btn-primary log-form">Log In</button>
-            </div>
-            <div id="after_login">
-              <p><b>Hover and click 'Send to MV' to send tweets to the ideas section of your Measured Voice channels</b></p>
-              <button class="btn btn-primary logout-form">Log Out</button>
-            </div> -->
-            
-          </div>
-          <div class="col-12 col-offset-1 col-lg-5 home-intro">
             <h3>What is this?</h3>
             <p>
               Every day, we look at every tweet sent by U.S. federal government Twitter accounts and rank them based on an algorithm that looks at audience size, retweets, and favorites. Great Gov Tweets highlights the amazing work Government communicators do every day.
@@ -234,14 +229,14 @@
             </p>
             <hr>
             <iframe src="/iframes/1" class="mv-ad" id="iframe1"></iframe>
-                                                                                                    </div>
+          </div>
         </div>
 			</div>
 		</div>
 	</div>
   <div id="content-registration" class="container">
-    <div class="registration modal fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:block">
-        <div class="modal-backdrop fade in" style="height: 984px;" data-dismiss="modal">
+    <div class="registration  fade"  id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:block">
+        <div class="fade in" id="modal-backdrop" style="height: 984px;" data-dismiss="modal">
         </div>
           <div class="modal-dialog">
             <div class="well ">
@@ -293,7 +288,7 @@
           </div>
     </div>
 
-</div>
+  </div>
   <footer>
     <div class="container">
       <div class="row">
